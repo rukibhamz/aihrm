@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Course;
+use App\Models\CourseCompletion;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class CourseController extends Controller
+{
+    public function index()
+    {
+        $courses = Course::with('creator')->paginate(12);
+        return view('lms.index', compact('courses'));
+    }
+
+    public function show(Course $course)
+    {
+        // Track progress (start course if not started)
+        CourseCompletion::firstOrCreate([
+            'user_id' => Auth::id(),
+            'course_id' => $course->id,
+        ]);
+
+        return view('lms.show', compact('course'));
+    }
+
+    public function complete(Course $course)
+    {
+        CourseCompletion::where('user_id', Auth::id())
+            ->where('course_id', $course->id)
+            ->update([
+                'status' => 'completed',
+                'completed_at' => now(),
+            ]);
+
+        return redirect()->route('lms.index')->with('success', 'Course completed!');
+    }
+}
