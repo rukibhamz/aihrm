@@ -3,7 +3,7 @@
 If the automated installer fails, please follow these steps:
 
 1.  **Install Dependencies**:
-    Open a terminal in `c:\xampp\htdocs\aihrm\laravel_core` and run:
+    Open a terminal in `c:\xampp\htdocs\aihrm\platform` and run:
     ```bash
     composer install
     npm install

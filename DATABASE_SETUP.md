@@ -21,7 +21,7 @@ Before running migrations, you need to:
 
 3. **Run migrations**:
    ```bash
-   cd c:\xampp\htdocs\aihrm\laravel_core
+   cd c:\xampp\htdocs\aihrm\platform
    c:\xampp\php\php.exe artisan migrate:fresh --seed
    ```
 
