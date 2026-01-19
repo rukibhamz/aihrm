@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AIRequest extends Model
 {
+    protected $table = 'ai_requests';
+
     protected $fillable = [
         'user_id',
         'feature',

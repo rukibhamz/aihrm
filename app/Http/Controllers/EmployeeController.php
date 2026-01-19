@@ -34,6 +34,7 @@ class EmployeeController extends Controller
             'email' => 'required|email|unique:users,email',
             'department_id' => 'required|exists:departments,id',
             'designation_id' => 'required|exists:designations,id',
+            'grade_level_id' => 'nullable|exists:grade_levels,id',
             'manager_id' => 'nullable|exists:users,id',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
@@ -43,11 +44,12 @@ class EmployeeController extends Controller
         ]);
 
         // 1. Create User Account
-        $password = 'password'; // Default password
+        $password = \Illuminate\Support\Str::random(10); // Generate random password
         $user = \App\Models\User::create([
             'name' => $validated['first_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
             'password' => \Illuminate\Support\Facades\Hash::make($password),
+            'must_change_password' => true,
         ]);
         
         // Assign default role (Employee)
@@ -58,6 +60,7 @@ class EmployeeController extends Controller
             'user_id' => $user->id,
             'department_id' => $validated['department_id'],
             'designation_id' => $validated['designation_id'],
+            'grade_level_id' => $validated['grade_level_id'] ?? null,
             'manager_id' => $validated['manager_id'],
             'phone' => $validated['phone'] ?? null,
             'address' => $validated['address'] ?? null,
@@ -93,7 +96,7 @@ class EmployeeController extends Controller
             ]);
         }
 
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully. Default password is "password".');
+        return redirect()->route('employees.index')->with('success', "Employee created successfully. Temporary password: {$password}");
     }
 
     public function show(Employee $employee)

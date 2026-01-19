@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use OwenIt\Auditing\Auditable;
 
-class Employee extends Model
+class Employee extends Model implements AuditableContract
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $guarded = [];
 
@@ -24,6 +26,11 @@ class Employee extends Model
     public function designation()
     {
         return $this->belongsTo(Designation::class);
+    }
+
+    public function gradeLevel()
+    {
+        return $this->belongsTo(GradeLevel::class);
     }
 
     public function manager()

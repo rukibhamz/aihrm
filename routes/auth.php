@@ -52,7 +52,23 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
+    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+
+    // Two-Factor Authentication Management
+    Route::get('two-factor/enable', [\App\Http\Controllers\Auth\TwoFactorController::class, 'enable'])
+        ->name('two-factor.enable');
+    Route::post('two-factor/confirm', [\App\Http\Controllers\Auth\TwoFactorController::class, 'confirm'])
+        ->name('two-factor.confirm');
+    Route::delete('two-factor/disable', [\App\Http\Controllers\Auth\TwoFactorController::class, 'disable'])
+        ->name('two-factor.disable');
+    Route::get('two-factor/recovery-codes', [\App\Http\Controllers\Auth\TwoFactorController::class, 'recoveryCodes'])
+        ->name('two-factor.recovery-codes');
+    Route::post('two-factor/recovery-codes', [\App\Http\Controllers\Auth\TwoFactorController::class, 'regenerateRecoveryCodes'])
+        ->name('two-factor.recovery-codes.regenerate');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');

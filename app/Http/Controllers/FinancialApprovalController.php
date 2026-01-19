@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FinancialRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\GeneralStatusChanged;
 
 class FinancialApprovalController extends Controller
 {
@@ -40,6 +41,14 @@ class FinancialApprovalController extends Controller
             'approved_by_manager' => Auth::id(),
         ]);
 
+        // Notify Employee
+        $financialRequest->user->notify(new GeneralStatusChanged(
+            "Expense Claim Reviewed",
+            "Your claim for {$financialRequest->amount} has been approved by your manager and sent to Finance.",
+            'info',
+            route('finance.index')
+        ));
+
         return redirect()->back()->with('success', 'Financial request approved. Sent to Finance for final approval.');
     }
 
@@ -53,6 +62,14 @@ class FinancialApprovalController extends Controller
             'status' => 'approved_finance',
             'approved_by_finance' => Auth::id(),
         ]);
+
+        // Notify Employee
+        $financialRequest->user->notify(new GeneralStatusChanged(
+            "Expense Claim Approved",
+            "Your claim for {$financialRequest->amount} has been approved by Finance.",
+            'success',
+            route('finance.index')
+        ));
 
         return redirect()->back()->with('success', 'Financial request approved by Finance.');
     }
@@ -68,6 +85,14 @@ class FinancialApprovalController extends Controller
             'paid_at' => now(),
         ]);
 
+        // Notify Employee
+        $financialRequest->user->notify(new GeneralStatusChanged(
+            "Expense Claim Paid",
+            "The payment for your claim of {$financialRequest->amount} has been processed.",
+            'success',
+            route('finance.index')
+        ));
+
         return redirect()->back()->with('success', 'Financial request marked as paid.');
     }
 
@@ -80,6 +105,14 @@ class FinancialApprovalController extends Controller
         $financialRequest->update([
             'status' => 'rejected',
         ]);
+
+        // Notify Employee
+        $financialRequest->user->notify(new GeneralStatusChanged(
+            "Expense Claim Rejected",
+            "Your claim for {$financialRequest->amount} has been rejected.",
+            'error',
+            route('finance.index')
+        ));
 
         return redirect()->back()->with('success', 'Financial request rejected.');
     }

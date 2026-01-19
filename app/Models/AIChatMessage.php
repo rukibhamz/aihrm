@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AIChatMessage extends Model
 {
+    protected $table = 'ai_chat_messages';
+    
     protected $fillable = [
         'user_id',
         'message',

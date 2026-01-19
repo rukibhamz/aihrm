@@ -1,127 +1,154 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Designations</h1>
-            <p class="mt-1 text-sm text-neutral-500">Manage job titles and roles</p>
+            <p class="mt-1 text-sm text-neutral-500">Manage job roles and designations</p>
         </div>
-        <button onclick="document.getElementById('createModal').showModal()" class="btn-primary">
+        <button x-data="" @click="$dispatch('open-modal', 'create-designation')" class="btn-primary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
             Add Designation
         </button>
     </div>
 
     @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm">
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
             {{ session('success') }}
         </div>
     @endif
 
-    @if($errors->any())
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
-        <table class="min-w-full divide-y divide-neutral-200">
-            <thead class="bg-neutral-50">
+    <div class="card overflow-hidden">
+        <table class="w-full text-left text-sm text-neutral-600">
+            <thead class="bg-neutral-50 border-b border-neutral-200 font-medium text-neutral-900">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Title</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Description</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Employees</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-neutral-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-4">Title</th>
+                    <th class="px-6 py-4">Employees</th>
+                    <th class="px-6 py-4 text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-neutral-200">
-                @forelse($designations as $desig)
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-neutral-900">{{ $desig->title }}</td>
-                    <td class="px-6 py-4 text-sm text-neutral-500">{{ Str::limit($desig->description, 50) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
-                            {{ $desig->employees_count }} employees
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button onclick="editDesignation({{ $desig->id }}, '{{ $desig->title }}', '{{ $desig->description }}')" class="text-neutral-600 hover:text-black mr-3">Edit</button>
-                        <form action="{{ route('admin.designations.destroy', $desig) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+            <tbody class="divide-y divide-neutral-200">
+                @forelse($designations as $designation)
+                    <tr class="hover:bg-neutral-50 transition">
+                        <td class="px-6 py-4 font-medium text-neutral-900">{{ $designation->title }}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {{ $designation->employees_count }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button x-data="" @click="$dispatch('open-modal', 'edit-designation-{{ $designation->id }}')" class="text-neutral-600 hover:text-black transition">Edit</button>
+                                <form action="{{ route('admin.designations.destroy', $designation) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-800 transition">Delete</button>
+                                </form>
+                            </div>
+
+                            <!-- Edit Modal -->
+                            <x-modal name="edit-designation-{{ $designation->id }}" focusable maxWidth="md">
+                                <form method="POST" action="{{ route('admin.designations.update', $designation) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <!-- Modal Header -->
+                                    <div class="px-6 pt-6 pb-4">
+                                        <h2 class="text-xl font-semibold text-neutral-900">Edit Designation</h2>
+                                    </div>
+
+                                    <!-- Modal Body -->
+                                    <div class="px-6 py-4 space-y-4">
+                                        <div>
+                                            <label for="edit-title-{{ $designation->id }}" class="block text-sm font-medium text-neutral-700 mb-1.5">
+                                                Designation Title
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                                id="edit-title-{{ $designation->id }}" 
+                                                name="title" 
+                                                value="{{ $designation->title }}"
+                                                required 
+                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal Footer -->
+                                    <div class="px-6 py-4 flex justify-end gap-2 border-t border-neutral-100">
+                                        <button 
+                                            type="button" 
+                                            @click="$dispatch('close')" 
+                                            class="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors"
+                                        >
+                                            CANCEL
+                                        </button>
+                                        <button 
+                                            type="submit" 
+                                            class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                                        >
+                                            UPDATE
+                                        </button>
+                                    </div>
+                                </form>
+                            </x-modal>
+                        </td>
+                    </tr>
                 @empty
-                <tr>
-                    <td colspan="4" class="px-6 py-12 text-center text-neutral-500">No designations found</td>
-                </tr>
+                    <tr>
+                        <td colspan="3" class="px-6 py-8 text-center text-neutral-500">No designations found.</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
-    </div>
-    
-    <div class="mt-4">
-        {{ $designations->links() }}
+        <div class="px-6 py-4 border-t border-neutral-200">
+            {{ $designations->links() }}
+        </div>
     </div>
 
     <!-- Create Modal -->
-    <dialog id="createModal" class="p-0 rounded-lg shadow-xl backdrop:bg-black/50 w-full max-w-md">
-        <div class="p-6">
-            <h3 class="text-lg font-bold mb-4">Add Designation</h3>
-            <form method="POST" action="{{ route('admin.designations.store') }}">
-                @csrf
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700 mb-2">Title *</label>
-                        <input type="text" name="title" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700 mb-2">Description</label>
-                        <textarea name="description" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"></textarea>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="document.getElementById('createModal').close()" class="btn-secondary">Cancel</button>
-                    <button type="submit" class="btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
+    <x-modal name="create-designation" focusable maxWidth="md">
+        <form method="POST" action="{{ route('admin.designations.store') }}">
+            @csrf
+            
+            <!-- Modal Header -->
+            <div class="px-6 pt-6 pb-4">
+                <h2 class="text-xl font-semibold text-neutral-900">Add Designation</h2>
+            </div>
 
-    <!-- Edit Modal -->
-    <dialog id="editModal" class="p-0 rounded-lg shadow-xl backdrop:bg-black/50 w-full max-w-md">
-        <div class="p-6">
-            <h3 class="text-lg font-bold mb-4">Edit Designation</h3>
-            <form method="POST" id="editForm">
-                @csrf
-                @method('PUT')
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700 mb-2">Title *</label>
-                        <input type="text" name="title" id="editTitle" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700 mb-2">Description</label>
-                        <textarea name="description" id="editDescription" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"></textarea>
-                    </div>
+            <!-- Modal Body -->
+            <div class="px-6 py-4 space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-neutral-700 mb-1.5">
+                        Designation Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        name="title" 
+                        required 
+                        placeholder="e.g. Senior Software Engineer"
+                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder-neutral-400"
+                    >
                 </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="document.getElementById('editModal').close()" class="btn-secondary">Cancel</button>
-                    <button type="submit" class="btn-primary">Update</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
+            </div>
 
-    <script>
-        function editDesignation(id, title, description) {
-            document.getElementById('editTitle').value = title;
-            document.getElementById('editDescription').value = description;
-            document.getElementById('editForm').action = `/admin/designations/${id}`;
-            document.getElementById('editModal').showModal();
-        }
-    </script>
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 flex justify-end gap-2 border-t border-neutral-100">
+                <button 
+                    type="button" 
+                    @click="$dispatch('close')" 
+                    class="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors"
+                >
+                    CANCEL
+                </button>
+                <button 
+                    type="submit" 
+                    class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                >
+                    CREATE
+                </button>
+            </div>
+        </form>
+    </x-modal>
 </x-app-layout>

@@ -73,10 +73,9 @@
                 <h3 class="font-semibold mb-4">Quick Actions</h3>
                 <div class="space-y-2">
                     @can('edit employees')
-                    <a href="#" class="block w-full btn-secondary text-center">Edit Profile</a>
+                    <a href="{{ route('employees.edit', $employee) }}" class="block w-full btn-secondary text-center">Edit Profile</a>
                     @endcan
-                    <a href="#" class="block w-full btn-secondary text-center">View Documents</a>
-                    <a href="#" class="block w-full btn-secondary text-center">Leave History</a>
+                    <a href="{{ route('leaves.index') }}?user_id={{ $employee->user_id }}" class="block w-full btn-secondary text-center">Leave History</a>
                 </div>
             </div>
         </div>

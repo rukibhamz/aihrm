@@ -17,7 +17,6 @@ class DesignationController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:designations,title',
-            'description' => 'nullable|string|max:500',
         ]);
 
         Designation::create($validated);
@@ -29,7 +28,6 @@ class DesignationController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255|unique:designations,title,' . $designation->id,
-            'description' => 'nullable|string|max:500',
         ]);
 
         $designation->update($validated);

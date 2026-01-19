@@ -33,7 +33,9 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button class="text-neutral-600 hover:text-black">Download PDF</button>
+                        <a href="{{ route('payslips.download', $payslip) }}" class="text-neutral-600 hover:text-black font-bold uppercase tracking-widest text-[10px] border border-neutral-200 px-3 py-1 rounded hover:border-black transition">
+                            Download PDF
+                        </a>
                     </td>
                 </tr>
                 @empty

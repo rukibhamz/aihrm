@@ -61,11 +61,37 @@
                                 @else
                                 <div class="text-sm text-neutral-400">Screening...</div>
                                 @endif
-                                <div class="mt-2">
+                                <div class="mt-2 flex items-center justify-end gap-2">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
                                         {{ $app->status === 'shortlisted' ? 'bg-green-100 text-green-800' : ($app->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-neutral-100 text-neutral-800') }}">
                                         {{ ucfirst($app->status) }}
                                     </span>
+                                    
+                                    <div class="relative" x-data="{ open: false }">
+                                        <button @click="open = !open" class="text-neutral-400 hover:text-black">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                                        </button>
+                                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-40 bg-white border border-neutral-200 rounded-md shadow-lg z-10 py-1">
+                                            <form action="{{ route('applications.updateStatus', $app) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="shortlisted">
+                                                <button type="submit" class="block w-full text-left px-4 py-2 text-xs text-green-600 hover:bg-neutral-50">Shortlist</button>
+                                            </form>
+                                            <form action="{{ route('applications.updateStatus', $app) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="rejected">
+                                                <button type="submit" class="block w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-neutral-50">Reject</button>
+                                            </form>
+                                            <form action="{{ route('applications.updateStatus', $app) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="pending">
+                                                <button type="submit" class="block w-full text-left px-4 py-2 text-xs text-neutral-600 hover:bg-neutral-50">Mark Pending</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

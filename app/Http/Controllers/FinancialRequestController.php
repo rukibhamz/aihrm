@@ -51,4 +51,14 @@ class FinancialRequestController extends Controller
 
         return redirect()->route('finance.index')->with('success', 'Request submitted successfully.');
     }
+
+    public function show(FinancialRequest $financialRequest)
+    {
+        // Ensure user can only view their own requests
+        if ($financialRequest->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('finance.show', compact('financialRequest'));
+    }
 }

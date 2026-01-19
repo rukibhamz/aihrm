@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+use Illuminate\Notifications\Notifiable;
+
 class Application extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
         'job_posting_id',
         'candidate_name',
@@ -31,5 +35,10 @@ class Application extends Model
     public function resumeAnalysis(): HasOne
     {
         return $this->hasOne(ResumeAnalysis::class);
+    }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->candidate_email;
     }
 }

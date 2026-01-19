@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaveController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Check if viewing another employee's leaves (admin feature)
+        $userId = $request->query('user_id', Auth::id());
+        
         $leaves = LeaveRequest::with('leaveType')
-            ->where('user_id', Auth::id())
+            ->where('user_id', $userId)
             ->latest()
             ->paginate(10);
+            
         return view('leaves.index', compact('leaves'));
     }
 
@@ -33,10 +37,11 @@ class LeaveController extends Controller
             'reason' => 'required|string|max:500',
         ]);
 
-        // Calculate Duration
-        $start = \Carbon\Carbon::parse($validated['start_date']);
-        $end = \Carbon\Carbon::parse($validated['end_date']);
-        $days = $start->diffInDays($end) + 1;
+        // Calculate Working Days (not calendar days)
+        $days = \App\Helpers\LeaveHelper::calculateWorkingDays(
+            $validated['start_date'],
+            $validated['end_date']
+        );
 
         // Check Balance
         $balance = \App\Models\LeaveBalance::where('user_id', Auth::id())
@@ -57,7 +62,7 @@ class LeaveController extends Controller
         $remaining = $balance->total_days - $balance->used_days;
 
         if ($days > $remaining) {
-            return back()->withErrors(['start_date' => "Insufficient leave balance. You have $remaining days remaining, but requested $days days."])->withInput();
+            return back()->withErrors(['start_date' => "Insufficient leave balance. You have $remaining working days remaining, but requested $days working days."])->withInput();
         }
 
         // Create Request

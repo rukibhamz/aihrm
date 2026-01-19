@@ -2,25 +2,21 @@
 
 namespace App\Services;
 
-use Anthropic\Anthropic;
 use App\Models\AIRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class AIService
 {
-    protected $client;
+    protected $apiKey;
     protected $model;
-    protected $maxTokens;
+    protected $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
 
     public function __construct()
     {
-        $this->client = Anthropic::factory()
-            ->withApiKey(config('services.anthropic.api_key'))
-            ->make();
-        
-        $this->model = config('services.anthropic.model', 'claude-3-5-sonnet-20241022');
-        $this->maxTokens = config('services.anthropic.max_tokens', 4096);
+        $this->apiKey = config('services.gemini.api_key');
+        $this->model = config('services.gemini.model', 'gemini-2.0-flash');
     }
 
     /**
@@ -44,7 +40,7 @@ class AIService
         
         $response = $this->sendRequest($prompt, 'chatbot');
         
-        return $response['content'][0]['text'] ?? 'I apologize, but I could not generate a response.';
+        return $this->extractTextFromResponse($response);
     }
 
     /**
@@ -72,27 +68,58 @@ class AIService
     }
 
     /**
-     * Send request to Claude API
+     * Send request to Gemini API
      */
     protected function sendRequest(string $prompt, string $feature): array
     {
         try {
-            $response = $this->client->messages()->create([
-                'model' => $this->model,
-                'max_tokens' => $this->maxTokens,
-                'messages' => [
-                    ['role' => 'user', 'content' => $prompt]
-                ],
-            ]);
+            $url = "{$this->baseUrl}{$this->model}:generateContent?key={$this->apiKey}";
+            
+            $response = Http::withoutVerifying()
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post($url, [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => $prompt]
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.7,
+                        'maxOutputTokens' => 2048,
+                    ]
+                ]);
 
-            // Track usage
-            $this->trackUsage($feature, $response->usage->inputTokens + $response->usage->outputTokens);
+            if ($response->failed()) {
+                Log::error('Gemini API Error Status: ' . $response->status());
+                Log::error('Gemini API Error Body: ' . $response->body());
+                throw new \Exception('Failed to communicate with AI service: ' . $response->body());
+            }
 
-            return $response->toArray();
+            $data = $response->json();
+            
+            // Track usage (Gemini doesn't always return token usage in simple responses, estimating)
+            // 1 token ~= 4 chars
+            $inputTokens = strlen($prompt) / 4;
+            $outputTokens = strlen($this->extractTextFromResponse($data)) / 4;
+            
+            $this->trackUsage($feature, (int)($inputTokens + $outputTokens));
+
+            return $data;
         } catch (\Exception $e) {
             Log::error('AI Service Error: ' . $e->getMessage());
             throw $e;
         }
+    }
+
+    /**
+     * Extract text from Gemini response
+     */
+    protected function extractTextFromResponse(array $response): string
+    {
+        return $response['candidates'][0]['content']['parts'][0]['text'] ?? 'I apologize, but I could not generate a response.';
     }
 
     /**
@@ -109,7 +136,7 @@ JOB DESCRIPTION:
 RESUME:
 {$resumeText}
 
-Please provide your analysis in the following JSON format:
+Please provide your analysis in the following JSON format ONLY (no markdown code blocks):
 {
     "match_score": <0-100>,
     "extracted_data": {
@@ -160,7 +187,7 @@ Analyze the following performance review data for patterns, bias, and insights.
 DATA:
 {$dataStr}
 
-Provide analysis in JSON format:
+Provide analysis in JSON format ONLY (no markdown code blocks):
 {
     "high_performers": ["employee_id1", "employee_id2"],
     "bias_detected": true/false,
@@ -184,7 +211,7 @@ Review the following HR data for labor law compliance issues (Nigerian labor law
 DATA:
 {$dataStr}
 
-Provide findings in JSON format:
+Provide findings in JSON format ONLY (no markdown code blocks):
 {
     "compliant": true/false,
     "issues": ["issue1", "issue2"],
@@ -199,7 +226,10 @@ PROMPT;
      */
     protected function parseResumeResponse(array $response): array
     {
-        $text = $response['content'][0]['text'] ?? '{}';
+        $text = $this->extractTextFromResponse($response);
+        
+        // Clean up markdown code blocks if present
+        $text = preg_replace('/^```json\s*|\s*```$/', '', $text);
         
         // Extract JSON from response
         if (preg_match('/\{[\s\S]*\}/', $text, $matches)) {
@@ -230,8 +260,9 @@ PROMPT;
      */
     protected function trackUsage(string $feature, int $tokens): void
     {
-        // Approximate cost: $3 per million tokens for Claude 3.5 Sonnet
-        $cost = ($tokens / 1000000) * 3;
+        // Gemini Pro is currently free (within limits) or low cost
+        // Estimating cost for tracking purposes (approx $0.50 per million input chars)
+        $cost = ($tokens / 1000000) * 0.5;
 
         AIRequest::create([
             'user_id' => Auth::id() ?? 1,

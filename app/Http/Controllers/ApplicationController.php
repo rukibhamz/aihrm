@@ -6,8 +6,10 @@ use App\Models\Application;
 use App\Models\JobPosting;
 use App\Models\ResumeAnalysis;
 use App\Services\AIService;
+use App\Notifications\ApplicationStatusChanged;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 
 class ApplicationController extends Controller
 {
@@ -16,6 +18,24 @@ class ApplicationController extends Controller
     public function __construct(AIService $aiService)
     {
         $this->aiService = $aiService;
+    }
+
+    public function updateStatus(Request $request, Application $application)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,shortlisted,rejected',
+        ]);
+
+        $application->update($validated);
+
+        // Notify the candidate
+        try {
+            $application->notify(new ApplicationStatusChanged($application));
+        } catch (\Exception $e) {
+            \Log::error('Failed to notify candidate: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Application status updated and candidate notified.');
     }
 
     public function create(JobPosting $job)
@@ -86,22 +106,57 @@ class ApplicationController extends Controller
             ]);
 
             // Update application with score
+            $status = $this->determineStatus($analysis);
             $application->update([
                 'ai_score' => $analysis['match_score'] ?? 0,
-                'status' => $this->determineStatus($analysis),
+                'status' => $status,
             ]);
+
+            // Notify candidate of initial screening result
+            try {
+                $application->notify(new ApplicationStatusChanged($application));
+            } catch (\Exception $e) {
+                \Log::error('Initial screening notification failed: ' . $e->getMessage());
+            }
         }
     }
 
     protected function extractResumeText(string $path): string
     {
-        // Simplified text extraction
-        // In production, use libraries like Smalot\PdfParser or similar
         $fullPath = Storage::disk('public')->path($path);
         
-        // For now, return placeholder text
-        // TODO: Implement actual PDF/DOCX parsing
-        return "Resume content will be extracted here using a PDF parser library.";
+        if (!file_exists($fullPath)) {
+            \Log::error("Resume file not found: " . $fullPath);
+            return "Resume file not found.";
+        }
+
+        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+
+        try {
+            if ($extension === 'pdf') {
+                $parser = new \Smalot\PdfParser\Parser();
+                $pdf = $parser->parseFile($fullPath);
+                return $pdf->getText();
+            }
+            
+            if ($extension === 'docx') {
+                $phpWord = \PhpOffice\PhpWord\IOFactory::load($fullPath);
+                $text = '';
+                foreach ($phpWord->getSections() as $section) {
+                    foreach ($section->getElements() as $element) {
+                        if (method_exists($element, 'getText')) {
+                            $text .= $element->getText() . "\n";
+                        }
+                    }
+                }
+                return $text;
+            }
+            
+            return "Resume content extraction for {$extension} is not yet supported. Please upload a PDF or DOCX file.";
+        } catch (\Exception $e) {
+            \Log::error('Resume Extraction Error: ' . $e->getMessage());
+            return "Error extracting resume content: " . $e->getMessage();
+        }
     }
 
     protected function determineStatus(array $analysis): string

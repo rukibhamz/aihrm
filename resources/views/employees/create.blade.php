@@ -1,12 +1,20 @@
 <x-app-layout>
     <!-- Page Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Add Employee</h1>
-        <p class="mt-1 text-sm text-neutral-500">Create a new employee profile</p>
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Add Employee</h1>
+            <p class="mt-1 text-sm text-neutral-500">Create a new employee profile</p>
+        </div>
+        <a href="{{ url()->previous() }}" class="btn-secondary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back
+        </a>
     </div>
 
     @if($errors->any())
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg max-w-3xl mx-auto">
             <div class="flex gap-3">
                 <svg class="w-5 h-5 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -23,7 +31,7 @@
         </div>
     @endif
 
-    <div class="card p-8 max-w-3xl">
+    <div class="card p-8 max-w-3xl mx-auto">
         <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             
@@ -68,11 +76,20 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-neutral-700 mb-2">Designation *</label>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Role *</label>
                         <select name="designation_id" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
-                            <option value="">Select Designation</option>
-                            @foreach($designations as $desig)
-                                <option value="{{ $desig->id }}">{{ $desig->title }}</option>
+                            <option value="">Select Role</option>
+                            @foreach($designations as $designation)
+                                <option value="{{ $designation->id }}">{{ $designation->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Grade Level</label>
+                        <select name="grade_level_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            <option value="">Select Grade Level</option>
+                            @foreach(\App\Models\GradeLevel::all() as $level)
+                                <option value="{{ $level->id }}">{{ $level->name }}</option>
                             @endforeach
                         </select>
                     </div>
