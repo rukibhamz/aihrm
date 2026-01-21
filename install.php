@@ -1,7 +1,7 @@
 <?php
 // install.php - The Setup Wizard
 
-if (file_exists(__DIR__ . '/platform/storage/installed')) {
+if (file_exists(__DIR__ . '/storage/installed')) {
     die("Application is already installed.");
 }
 
@@ -79,6 +79,17 @@ $step = $_GET['step'] ?? 1;
             <div class="flex-1 text-center">
                 <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-sm font-semibold <?= $step >= 4 ? 'bg-black text-white' : 'bg-neutral-200 text-neutral-500' ?>">3</div>
                 <div class="text-xs mt-2 text-neutral-600">Complete</div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-8">
+            <?php if ($step == 1): ?>
+            <form method="POST" action="install.php?step=2" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">Database Host</label>
+                    <input type="text" name="db_host" value="127.0.0.1" class="input-field" required>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Database Name</label>
                     <input type="text" name="db_name" value="aihrm" class="input-field" required>
@@ -106,7 +117,7 @@ $step = $_GET['step'] ?? 1;
                     $pdo = new PDO("mysql:host=$host;dbname=$name", $user, $pass);
                     
                     // Read .env.example
-                    $envContent = file_get_contents(__DIR__ . '/platform/.env.example');
+                    $envContent = file_get_contents(__DIR__ . '/.env.example');
                     
                     // Replace database configuration
                     $envContent = preg_replace('/DB_CONNECTION=.*/m', 'DB_CONNECTION=mysql', $envContent);
@@ -128,7 +139,7 @@ $step = $_GET['step'] ?? 1;
                     }
                     
                     // Write to .env
-                    file_put_contents(__DIR__ . '/platform/.env', $envContent);
+                    file_put_contents(__DIR__ . '/.env', $envContent);
                     
                     echo '<div class="text-center">';
                     echo '<svg class="w-16 h-16 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
@@ -148,8 +159,8 @@ $step = $_GET['step'] ?? 1;
             <?php elseif ($step == 3): ?>
                 <?php
                 // Run Migrations with Seeders
-                require __DIR__ . '/platform/vendor/autoload.php';
-                $app = require_once __DIR__ . '/platform/bootstrap/app.php';
+                require __DIR__ . '/vendor/autoload.php';
+                $app = require_once __DIR__ . '/bootstrap/app.php';
                 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
                 
                 echo "<h2 class='text-xl font-bold mb-4'>Setting up Database...</h2>";
@@ -203,6 +214,18 @@ $step = $_GET['step'] ?? 1;
                 <button type="submit" class="btn-primary mt-6">Complete Installation</button>
             </form>
             <?php elseif ($step == 5): ?>
+                <div class="text-center">
+                    <svg class="w-16 h-16 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <h2 class="text-2xl font-bold mb-2">Installation Complete!</h2>
+                    <p class="text-neutral-600 mb-8">AIHRM has been successfully installed and configured.</p>
+                    <a href="index.php" class="btn-primary inline-block">Go to Dashboard</a>
+                </div>
+                <?php
+                // Mark as installed
+                if (!is_dir(__DIR__ . '/storage')) mkdir(__DIR__ . '/storage', 0755, true);
+                file_put_contents(__DIR__ . '/storage/installed', date('Y-m-d H:i:s'));
+                ?>
+            <?php endif; ?>
         </div>
 
         <p class="text-center text-xs text-neutral-500 mt-6">&copy; <?= date('Y') ?> AIHRM. All rights reserved.</p>

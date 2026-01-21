@@ -1,3 +1,3 @@
 <?php
-header('Location: platform/public/');
+header('Location: public/');
 exit;
