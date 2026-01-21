@@ -22,14 +22,17 @@
         </div>
     @endif
 
-    <div class="card p-8 max-w-4xl">
-        <form method="POST" action="{{ route('employees.update', $employee) }}" enctype="multipart/form-data" class="space-y-8">
+    <div class="max-w-4xl mx-auto">
+        <form method="POST" action="{{ route('employees.update', $employee) }}" enctype="multipart/form-data" class="card p-8 space-y-8 shadow-sm border border-neutral-100">
             @csrf
             @method('PUT')
             
             <!-- Personal Information -->
             <div>
-                <h3 class="text-lg font-semibold mb-4 pb-2 border-b border-neutral-200">Personal Information</h3>
+                <h3 class="text-lg font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-100 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    Personal Information
+                </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">First Name *</label>

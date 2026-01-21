@@ -22,8 +22,8 @@
         </div>
     @endif
 
-    <div class="card p-8 max-w-4xl">
-        <form method="POST" action="{{ route('jobs.store') }}" class="space-y-6">
+    <div class="max-w-4xl mx-auto">
+        <form method="POST" action="{{ route('admin.jobs.store') }}" class="card p-8 space-y-6 shadow-sm border border-neutral-100">
             @csrf
             
             <div>
