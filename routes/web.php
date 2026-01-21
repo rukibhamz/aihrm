@@ -94,6 +94,10 @@ Route::middleware('auth')->group(function () {
         // LMS Admin
         Route::resource('admin/courses', \App\Http\Controllers\Admin\CourseController::class, ['as' => 'admin']);
 
+        // Announcements Admin
+        Route::resource('admin/announcements', \App\Http\Controllers\Admin\AnnouncementController::class, ['as' => 'admin']);
+        Route::patch('admin/announcements/{announcement}/publish', [\App\Http\Controllers\Admin\AnnouncementController::class, 'publish'])->name('admin.announcements.publish');
+
         // Leave Management
         Route::get('admin/leaves/calendar', [\App\Http\Controllers\Admin\LeaveController::class, 'calendar'])->name('admin.leaves.calendar');
         Route::post('admin/leaves/bulk-approve', [\App\Http\Controllers\Admin\LeaveController::class, 'bulkApprove'])->name('admin.leaves.bulk-approve');
@@ -139,6 +143,12 @@ Route::middleware('auth')->group(function () {
     Route::get('notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
     Route::get('notifications/poll', [\App\Http\Controllers\NotificationController::class, 'poll'])->name('notifications.poll');
     Route::get('notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+    // Announcements (Employee View)
+    Route::get('announcements', [\App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('announcements/unread-count', [\App\Http\Controllers\AnnouncementController::class, 'unreadCount'])->name('announcements.unreadCount');
+    Route::get('announcements/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'show'])->name('announcements.show');
+    Route::post('announcements/{announcement}/read', [\App\Http\Controllers\AnnouncementController::class, 'markAsRead'])->name('announcements.markAsRead');
 
     Route::get('admin/attendance/scanner', function() {
         return view('admin.attendance.scanner');

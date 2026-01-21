@@ -98,7 +98,10 @@
     @endrole
 
     <!-- Enhanced Widgets Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Announcements Widget -->
+        @include('dashboard.partials.announcements')
+
         <!-- Quick Actions Widget -->
         @include('dashboard.partials.quick-actions')
 

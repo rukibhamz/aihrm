@@ -120,13 +120,42 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
+                navigator.serviceWorker.register('/sw.js').then((registration) => {
+                    console.log('ServiceWorker registered:', registration.scope);
+                }).catch((error) => {
+                    console.log('ServiceWorker registration failed:', error);
+                });
             });
+        }
+
+        // Request notification permission
+        async function requestNotificationPermission() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                console.log('Notification permission:', permission);
+                return permission === 'granted';
+            }
+            return false;
+        }
+
+        // Show browser notification via service worker
+        async function showBrowserNotification(title, body, url) {
+            if ('serviceWorker' in navigator && Notification.permission === 'granted') {
+                const registration = await navigator.serviceWorker.ready;
+                registration.active.postMessage({
+                    type: 'SHOW_NOTIFICATION',
+                    title: title,
+                    body: body,
+                    url: url
+                });
+            }
         }
     </script>
     <script>
         // Notification Polling
         let lastNotificationId = null;
+        let lastAnnouncementCount = {{ $unreadAnnouncementCount ?? 0 }};
+        
         function pollNotifications() {
             fetch("{{ route('notifications.poll') }}")
                 .then(response => response.json())
@@ -145,11 +174,52 @@
                 .catch(error => console.error('Polling error:', error));
         }
 
+        // Announcement polling
+        function pollAnnouncements() {
+            fetch("{{ route('announcements.unreadCount') }}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > lastAnnouncementCount) {
+                        // New announcements!
+                        const newCount = data.count - lastAnnouncementCount;
+                        
+                        // Show toast notification
+                        window.dispatchEvent(new CustomEvent('notify', {
+                            detail: {
+                                message: `You have ${newCount} new announcement${newCount > 1 ? 's' : ''}`,
+                                type: 'info'
+                            }
+                        }));
+
+                        // Show browser notification if permitted
+                        if (Notification.permission === 'granted') {
+                            showBrowserNotification(
+                                'New Announcement',
+                                `You have ${newCount} new announcement${newCount > 1 ? 's' : ''}`,
+                                '/announcements'
+                            );
+                        }
+                    }
+                    lastAnnouncementCount = data.count;
+                })
+                .catch(error => console.error('Announcement polling error:', error));
+        }
+
         // Start polling every 30 seconds
         @auth
             setInterval(pollNotifications, 30000);
+            setInterval(pollAnnouncements, 60000); // Poll announcements every minute
+            
             // Initial check
             setTimeout(pollNotifications, 2000);
+            setTimeout(pollAnnouncements, 5000);
+            
+            // Request notification permission on first visit
+            if ('Notification' in window && Notification.permission === 'default') {
+                setTimeout(() => {
+                    requestNotificationPermission();
+                }, 10000); // Ask after 10 seconds
+            }
         @endauth
     </script>
 </body>

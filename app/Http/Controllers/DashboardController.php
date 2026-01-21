@@ -7,7 +7,9 @@ use App\Models\Employee;
 use App\Models\LeaveRequest;
 use App\Models\Payroll;
 use App\Models\Department;
+use App\Models\Announcement;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -30,6 +32,22 @@ class DashboardController extends Controller
         $leaveTrendsData = $this->getLeaveTrendsData();
         $payrollCostData = $this->getPayrollCostData();
 
+        // Latest announcements for the current user
+        $user = Auth::user();
+        $latestAnnouncements = Announcement::published()
+            ->visibleTo($user)
+            ->pinnedFirst()
+            ->with('author')
+            ->take(5)
+            ->get();
+
+        $unreadAnnouncementCount = Announcement::published()
+            ->visibleTo($user)
+            ->whereDoesntHave('readBy', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->count();
+
         return view('dashboard', compact(
             'total_employees',
             'pending_leaves',
@@ -40,7 +58,9 @@ class DashboardController extends Controller
             'avg_ai_score',
             'employeeGrowthData',
             'leaveTrendsData',
-            'payrollCostData'
+            'payrollCostData',
+            'latestAnnouncements',
+            'unreadAnnouncementCount'
         ));
     }
 

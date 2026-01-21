@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('content');
+            $table->enum('type', ['all', 'department'])->default('all');
+            $table->boolean('pinned')->default(false);
+            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
