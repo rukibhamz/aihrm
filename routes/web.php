@@ -40,7 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:view employees')->group(function () {
         Route::patch('employees/{employee}/reset-password', [\App\Http\Controllers\EmployeeController::class, 'resetPassword'])->name('employees.reset-password');
         Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
-        Route::resource('leaves', \App\Http\Controllers\LeaveController::class);
         Route::resource('jobs', \App\Http\Controllers\JobPostingController::class, ['as' => 'admin']);
         
         // ATS / Applications
@@ -58,6 +57,9 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/payroll/{payroll}', [\App\Http\Controllers\Admin\PayrollController::class, 'show'])->name('admin.payroll.show');
         Route::patch('admin/payroll/{payroll}/status', [\App\Http\Controllers\Admin\PayrollController::class, 'updateStatus'])->name('admin.payroll.status');
     });
+
+    // Leave Management (All Authenticated Users)
+    Route::resource('leaves', \App\Http\Controllers\LeaveController::class);
 
     // Employee Routes
     Route::middleware(['auth'])->group(function () { 
