@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -19,11 +20,12 @@ class EmployeeController extends Controller
     {
         $departments = Department::all();
         $designations = Designation::all();
+        $roles = Role::all();
         // Get all potential managers (anyone with Manager role or just all employees for flexibility)
         // For now, let's allow any employee to be a manager for simplicity
         $managers = Employee::with('user')->where('status', 'active')->get();
         
-        return view('employees.create', compact('departments', 'designations', 'managers'));
+        return view('employees.create', compact('departments', 'designations', 'managers', 'roles'));
     }
 
     public function store(Request $request)
@@ -41,6 +43,7 @@ class EmployeeController extends Controller
             'address' => 'nullable|string|max:500',
             'dob' => 'nullable|date',
             'join_date' => 'nullable|date',
+            'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -55,8 +58,8 @@ class EmployeeController extends Controller
             'must_change_password' => !$request->filled('password'), // Only force change if auto-generated
         ]);
         
-        // Assign default role (Employee)
-        $user->assignRole('Employee');
+        // Assign selected role
+        $user->assignRole($validated['role']);
 
         // Create or find designation by title
         $designation = Designation::firstOrCreate(['title' => $request->designation]);
@@ -143,12 +146,13 @@ class EmployeeController extends Controller
     {
         $departments = Department::all();
         $designations = Designation::all();
+        $roles = Role::all();
         $managers = Employee::with('user')
             ->where('status', 'active')
             ->where('id', '!=', $employee->id) // Prevent self-selection
             ->get();
             
-        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers'));
+        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers', 'roles'));
     }
 
     public function update(Request $request, Employee $employee)
@@ -165,6 +169,7 @@ class EmployeeController extends Controller
             'dob' => 'nullable|date',
             'join_date' => 'nullable|date',
             'status' => 'required|in:active,inactive,terminated',
+            'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -173,6 +178,9 @@ class EmployeeController extends Controller
             'name' => $validated['first_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
         ]);
+
+        // Sync role
+        $employee->user->syncRoles([$validated['role']]);
 
         // Create or find designation by title
         $designation = Designation::firstOrCreate(['title' => $request->designation]);

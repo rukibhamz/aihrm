@@ -90,6 +90,16 @@
                             class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">System Role *</label>
+                        <select name="role" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            @foreach($roles as $role)
+                                <option value="{{ $role->name }}" {{ old('role', $employee->user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Direct Manager</label>
                         <select name="manager_id" 
                             class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">

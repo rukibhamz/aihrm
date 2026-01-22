@@ -280,7 +280,7 @@
         <a href="{{ route('profile.edit') }}" class="flex-shrink-0 w-full group block">
             <div class="flex items-center">
                 <div class="inline-block h-9 w-9 rounded-full bg-neutral-700 flex items-center justify-center text-white font-bold">
-                    {{ substr(Auth::user()->name ?? 'U', 0, 2) }}
+                    {{ substr(Auth::user()?->name ?? 'U', 0, 2) }}
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-white group-hover:text-neutral-300">
