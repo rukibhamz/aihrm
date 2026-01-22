@@ -4,154 +4,237 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Careers | AIHRM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        .hero-overlay {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.85) 100%);
+        body { font-family: 'Inter', sans-serif; }
+        .hero-section {
+            background-color: #4f46e5;
+            background-image: radial-gradient(circle at top right, #6366f1 0%, #4338ca 100%);
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+            padding-bottom: 150px;
         }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -10%;
+            width: 120%;
+            height: 200px;
+            background: #f9fafb;
+            border-radius: 50% 50% 0 0;
+            z-index: 1;
+        }
+        .nav-link { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.875rem; transition: color 0.2s; }
+        .nav-link:hover { color: #fff; }
+        .search-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+            margin-top: -80px;
+            padding: 35px;
+            border: 1px solid #f3f4f6;
+        }
+        .category-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+        }
+        .category-card:hover { border-color: #4f46e5; box-shadow: 0 20px 40px -10px rgba(79,70,229,0.1); transform: translateY(-5px); }
+        .count-badge { background: #eef2ff; color: #4f46e5; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.75rem; }
+        .primary-btn { background: #4f46e5; padding: 12px 28px; border-radius: 8px; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 14px 0 rgba(79,70,229,0.3); }
+        .primary-btn:hover { background: #4338ca; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,70,229,0.4); }
+        .nav-primary-btn { background: #ffffff; color: #4f46e5; padding: 8px 20px; border-radius: 8px; font-weight: 700; transition: all 0.2s; font-size: 0.875rem; }
+        .nav-primary-btn:hover { background: #f3f4f6; transform: scale(1.02); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 antialiased min-h-screen flex flex-col">
-    <!-- Fixed Navigation (Updated for Contrast) -->
-    <nav class="bg-black/20 backdrop-blur-xl border-b border-white/10 fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Platform Consistent Header -->
+    <header class="absolute top-0 left-0 w-full z-50">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-lg transform -rotate-3 hover:rotate-0 transition-transform">
+                    <span class="text-black font-black text-sm">AI</span>
+                </div>
+                <div class="text-white">
+                    <div class="font-bold text-xl tracking-tight leading-none">AIHRM</div>
+                    <div class="text-[10px] uppercase font-black tracking-widest opacity-70 mt-0.5">Careers Portal</div>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="/" class="nav-link">Home</a>
+                <a href="{{ route('jobs.index') }}" class="nav-link">Browse Job</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
             <div class="flex items-center gap-4">
-                <a href="/" class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                        <span class="text-black font-black text-sm">AI</span>
-                    </div>
-                    <span class="font-extrabold text-xl tracking-tight text-white">AIHRM</span>
-                </a>
-                <span class="hidden sm:inline-flex px-2.5 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-lg border border-white/20">Careers</span>
-            </div>
-            <div class="flex items-center gap-6">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="text-sm font-bold text-white/80 hover:text-white transition-colors">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="px-7 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/20 active:scale-95">
-                        Login
-                    </a>
+                    <a href="{{ route('login') }}" class="nav-link">Log in</a>
                 @endauth
+                <a href="#" class="nav-primary-btn">Join Our Team</a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <!-- Hero Section (Fixed with Inline Height for Guaranteed Layout) -->
-    <section style="height: 70vh; min-height: 600px;" class="relative flex items-center justify-center overflow-hidden bg-gray-900">
-        <!-- Background Image -->
-        <div class="absolute inset-0">
-            <img src="{{ asset('images/hero_team.png') }}" alt="Join Our Team" class="w-full h-full object-cover">
-            <div class="absolute inset-0 hero-overlay"></div>
-        </div>
-        
-        <!-- Hero Content (Centered) -->
-        <div class="relative z-10 text-center max-w-4xl px-6">
-            <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white mb-8 leading-[1.1] tracking-tight">
-                Join our mission to build the <span class="text-indigo-400">Future of Work</span>.
-            </h1>
-            <p class="text-lg md:text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-                We're a team of visionaries and builders creating the next generation of human resources intelligence. Explore our open roles and find your place.
-            </p>
-            <div class="flex justify-center">
-                <a href="#openings" class="px-12 py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg hover:bg-indigo-700 transition shadow-2xl shadow-indigo-600/40 transform hover:-translate-y-1 active:scale-95">
-                    View Open Positions
-                </a>
+    <!-- Brand Hero -->
+    <section class="hero-section text-white flex items-center">
+        <div class="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center gap-10">
+            <div class="flex-1 text-center md:text-left relative z-10">
+                <div class="inline-block bg-white/10 text-white/90 px-4 py-1.5 rounded-full text-xs font-bold mb-4 backdrop-blur-sm border border-white/10">
+                    {{ $jobs->total() }}+ Open positions available
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight tracking-tight">Find your <br> next <span class="text-indigo-200">Chapter</span>.</h1>
+                <p class="text-white/80 max-w-lg mb-10 leading-relaxed text-sm font-medium">
+                    Help us build the next generation of enterprise intelligence. Explore opportunities tailored to your skills.
+                </p>
+                <a href="#open-roles" class="bg-white text-indigo-600 px-8 py-4 rounded-xl font-black text-sm tracking-wide hover:bg-indigo-50 transition shadow-xl inline-block active:scale-95">Explore All Roles</a>
+            </div>
+            <div class="hidden md:block flex-1 relative">
+                <!-- Platform Consistent Abstract Graphic -->
+                <div class="relative h-[400px] flex items-center justify-center">
+                    <div class="absolute w-80 h-80 bg-indigo-400/20 rounded-full blur-[80px]"></div>
+                    <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2rem] shadow-2xl rotate-3">
+                        <div class="flex gap-4 mb-6">
+                            <div class="w-10 h-10 bg-indigo-500 rounded-xl"></div>
+                            <div class="space-y-2 flex-1">
+                                <div class="w-3/4 h-3 bg-white/30 rounded-full"></div>
+                                <div class="w-1/2 h-2 bg-white/10 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="w-full h-12 bg-white/5 rounded-xl border border-white/5"></div>
+                            <div class="w-full h-12 bg-white/5 rounded-xl border border-white/5"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Opportunities Hub -->
-    <main id="openings" class="flex-1 bg-white">
-        <!-- Section Header -->
-        <div class="max-w-6xl mx-auto px-6 py-24 text-center">
-            <h2 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Current Opportunities</h2>
-            <p class="text-gray-500 font-semibold text-lg">Find the role that matches your skills and ambitions</p>
+    <!-- Search Section -->
+    <section id="open-roles" class="px-6 mb-32">
+        <div class="max-w-6xl mx-auto">
+            <form action="{{ route('jobs.index') }}" method="GET" class="search-card grid grid-cols-1 md:grid-cols-10 gap-6 items-center">
+                <div class="md:col-span-3">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Keyword</label>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="e.g. Designer, Engineer" class="w-full border-gray-100 border-x-0 border-t-0 border-b focus:ring-0 focus:border-indigo-500 py-3 text-sm font-bold text-gray-900 placeholder:text-gray-300">
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Location</label>
+                    <select name="location" class="w-full border-gray-100 border-x-0 border-t-0 border-b focus:ring-0 focus:border-indigo-500 py-3 text-sm font-bold text-gray-900 bg-transparent cursor-pointer">
+                        <option value="">Anywhere</option>
+                        @foreach($locations as $loc)
+                            <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Category</label>
+                    <select name="department" class="w-full border-gray-100 border-x-0 border-t-0 border-b focus:ring-0 focus:border-indigo-500 py-3 text-sm font-bold text-gray-900 bg-transparent cursor-pointer">
+                        <option value="">All Categories</option>
+                        @foreach($departments as $dept)
+                            <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="md:col-span-1 pt-4 md:pt-6">
+                    <button type="submit" class="primary-btn text-white w-full h-14 flex items-center justify-center active:scale-95">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </div>
+            </form>
+            <div class="mt-8 flex flex-wrap items-center gap-4">
+                <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Popular:</span>
+                @foreach(['Engineering', 'Marketing', 'Product'] as $pop)
+                    <a href="{{ route('jobs.index', ['department' => $pop]) }}" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">{{ $pop }}</a>
+                @endforeach
+            </div>
         </div>
+    </section>
 
-        <!-- Job Cards (Standardized Premium Style) -->
-        <div class="max-w-6xl mx-auto px-6 pb-32">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                @forelse ($jobs as $job)
-                    <div class="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_50px_-10px_rgba(79,70,229,0.15)] hover:border-indigo-100 transition-all duration-500 group flex flex-col h-full">
-                        <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-8 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        
-                        <div class="mb-8 flex-1">
-                            <h3 class="text-2xl font-extrabold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors">{{ $job->title }}</h3>
-                            <div class="flex flex-wrap items-center gap-3">
-                                <span class="px-3 py-1 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest rounded-lg">{{ $job->department }}</span>
-                                <span class="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-lg">Remote</span>
+    <!-- Popular Categories -->
+    <section class="max-w-6xl mx-auto px-6 mb-32">
+        <div class="flex items-center gap-3 mb-12">
+            <h2 class="text-3xl font-bold text-gray-900">Popular Categories</h2>
+            <div class="h-[2px] w-12 bg-indigo-100"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach($departmentsByCount->take(8) as $dept)
+                <div class="category-card flex flex-col group relative overflow-hidden">
+                    <div class="font-bold text-lg text-gray-900 group-hover:text-indigo-600 transition mb-3">{{ $dept->department }}</div>
+                    <div class="flex items-center gap-3">
+                        <span class="count-badge">{{ $dept->total }}</span>
+                        <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Positions</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section class="max-w-6xl mx-auto px-6 pb-40">
+        <div class="flex items-center justify-between mb-12 pb-6 border-b border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-900">Featured Roles</h2>
+            <a href="{{ route('jobs.index') }}" class="text-sm font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-2 group">
+                View All Jobs
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        
+        <div class="space-y-5">
+            @forelse ($jobs as $job)
+                <div class="bg-white p-6 md:p-10 rounded-2xl border border-gray-100 hover:border-indigo-100 transition-all hover:shadow-xl hover:shadow-indigo-500/[0.04] group/card">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 bg-gray-50 group-hover/card:bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 transition-colors">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 group-hover/card:text-indigo-600 transition cursor-pointer mb-1">{{ $job->title }}</h3>
+                                <div class="flex flex-wrap items-center gap-y-2 gap-x-5 text-xs text-gray-400 font-bold uppercase tracking-wider">
+                                    <span class="flex items-center gap-2 text-indigo-500">{{ $job->department }}</span>
+                                    <span class="flex items-center gap-2"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ $job->created_at->diffForHumans() }}</span>
+                                    <span class="flex items-center gap-2">{{ $job->location }}</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="pt-8 border-t border-gray-50 flex items-center justify-between">
-                            <a href="{{ route('jobs.show', $job) }}" class="inline-flex items-center text-xs font-black text-indigo-600 uppercase tracking-[0.2em] hover:translate-x-1 transition-transform">
-                                View Role
-                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{ $job->created_at->diffForHumans() }}</span>
+                        <div class="flex items-center">
+                            <a href="{{ route('jobs.show', $job) }}" class="primary-btn text-white text-sm px-10">Job Details</a>
                         </div>
                     </div>
-                @empty
-                    <div class="col-span-full py-32 text-center bg-gray-50/50 rounded-[3rem] border-2 border-dashed border-gray-100">
-                        <p class="text-gray-400 font-bold text-lg">No open roles at the moment.</p>
-                        <p class="text-gray-400 text-sm mt-1">We're constantly expanding. Check back soon.</p>
-                    </div>
-                @endforelse
-            </div>
+                </div>
+            @empty
+                <div class="py-24 text-center text-gray-400 bg-white rounded-3xl border border-dashed border-gray-200">
+                    <p class="font-bold text-lg mb-2">No positions found</p>
+                    <p class="text-sm">Try broadening your search or clearing filters.</p>
+                </div>
+            @endforelse
         </div>
 
-        <!-- Values Section (Modern Dark Mode) -->
-        <section class="py-32 bg-slate-950 text-white relative overflow-hidden">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.2),transparent_50%)]"></div>
-            
-            <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
-                <span class="text-indigo-400 text-xs font-black uppercase tracking-[0.5em] mb-6 block">Our Culture</span>
-                <h2 class="text-5xl font-extrabold mb-24 tracking-tighter">Values that define us.</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-24">
-                    <div class="group">
-                        <div class="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border border-white/10 group-hover:border-indigo-500/50 group-hover:bg-indigo-500/10 transition-all duration-500 transform group-hover:-translate-y-2">
-                            <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-black uppercase tracking-widest mb-4">Ownership</h3>
-                        <p class="text-gray-500 font-medium leading-relaxed">Lead and decide from day one.</p>
-                    </div>
-                    <div class="group">
-                        <div class="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border border-white/10 group-hover:border-indigo-500/50 group-hover:bg-indigo-500/10 transition-all duration-500 transform group-hover:-translate-y-2">
-                            <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-black uppercase tracking-widest mb-4">Innovation</h3>
-                        <p class="text-gray-500 font-medium leading-relaxed">Challenge the status quo daily.</p>
-                    </div>
-                    <div class="group">
-                        <div class="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border border-white/10 group-hover:border-indigo-500/50 group-hover:bg-indigo-500/10 transition-all duration-500 transform group-hover:-translate-y-2">
-                            <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-black uppercase tracking-widest mb-4">Community</h3>
-                        <p class="text-gray-500 font-medium leading-relaxed">Modern workplace, human-centric.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <div class="mt-20">
+            {{ $jobs->links() }}
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-20">
+    <footer class="bg-white border-t border-gray-100 py-16 mt-auto">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="flex items-center justify-center gap-3 mb-8">
-                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg">
-                    <span class="text-white font-bold text-[10px]">AI</span>
+             <div class="flex items-center justify-center gap-3 mb-6">
+                <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-[9px]">AI</span>
                 </div>
-                <span class="font-extrabold text-gray-900 tracking-tight text-2xl">AIHRM</span>
+                <span class="font-bold text-gray-900 tracking-tight text-xl">AIHRM</span>
             </div>
-            <p class="text-sm text-gray-400 font-extrabold uppercase tracking-[0.4em] mb-4">Empowering Workplace Intelligence</p>
-            <p class="text-xs text-gray-400">© {{ date('Y') }} AIHRM Inc. All rights reserved.</p>
+            <p class="text-[10px] text-gray-400 font-black uppercase tracking-[0.4em]">Empowering Workforce Intelligence</p>
+            <p class="text-xs text-gray-400 mt-4">© {{ date('Y') }} AIHRM. All rights reserved.</p>
         </div>
     </footer>
 </body>

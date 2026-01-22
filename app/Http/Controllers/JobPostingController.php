@@ -8,13 +8,49 @@ use Illuminate\Support\Facades\Auth;
 
 class JobPostingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = JobPosting::with('creator')
+        $query = JobPosting::query()->where('status', 'open');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('requirements', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('department')) {
+            $query->where('department', $request->input('department'));
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', $request->input('location'));
+        }
+
+        $jobs = $query->with('creator')
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
+
+        $departments = JobPosting::where('status', 'open')
+            ->whereNotNull('department')
+            ->distinct()
+            ->pluck('department');
+
+        $locations = JobPosting::where('status', 'open')
+            ->whereNotNull('location')
+            ->distinct()
+            ->pluck('location');
+
+        $departmentsByCount = JobPosting::where('status', 'open')
+            ->select('department', \DB::raw('count(*) as total'))
+            ->groupBy('department')
+            ->orderBy('total', 'desc')
+            ->get();
         
-        return view('jobs.index', compact('jobs'));
+        return view('jobs.index', compact('jobs', 'departments', 'locations', 'departmentsByCount'));
     }
 
     public function create()
