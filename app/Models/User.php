@@ -71,4 +71,14 @@ class User extends Authenticatable implements AuditableContract
     {
         return $this->hasOne(SalaryStructure::class);
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function payslips()
+    {
+        return $this->hasMany(Payslip::class);
+    }
 }

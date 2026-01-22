@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $attendances = Attendance::where('user_id', Auth::id())
+        $userId = auth()->id();
+        
+        // If a user_id is provided, check if the authenticated user can view it
+        if ($request->has('user_id')) {
+            if (!auth()->user()->hasAnyRole(['Admin', 'HR'])) {
+                abort(403, 'Unauthorized access to employee records.');
+            }
+            $userId = $request->user_id;
+        }
+
+        $attendances = Attendance::where('user_id', $userId)
             ->orderBy('date', 'desc')
             ->paginate(10);
 

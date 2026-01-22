@@ -21,9 +21,9 @@ class PayslipController extends Controller
 
     public function download(Payslip $payslip)
     {
-        // Ensure user owns this payslip
-        if ($payslip->user_id !== auth()->id()) {
-            abort(403);
+        // Ensure user owns this payslip OR has elevated roles
+        if ($payslip->user_id !== auth()->id() && !auth()->user()->hasAnyRole(['Admin', 'HR', 'Finance'])) {
+            abort(403, 'Unauthorized access to payslip.');
         }
 
         $payslip->load(['user', 'payroll']);

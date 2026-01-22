@@ -37,6 +37,18 @@ class LeaveController extends Controller
             'reason' => 'required|string|max:500',
         ]);
 
+        $employee = Auth::user()->employee;
+        $leaveType = LeaveType::find($validated['leave_type_id']);
+
+        // Gender-based restrictions
+        if ($leaveType->name === 'Maternity Leave' && $employee->gender !== 'female') {
+            return back()->withErrors(['leave_type_id' => 'Maternity Leave is only available for female employees.'])->withInput();
+        }
+
+        if ($leaveType->name === 'Paternity Leave' && $employee->gender !== 'male') {
+            return back()->withErrors(['leave_type_id' => 'Paternity Leave is only available for male employees.'])->withInput();
+        }
+
         // Calculate Working Days (not calendar days)
         $days = \App\Helpers\LeaveHelper::calculateWorkingDays(
             $validated['start_date'],

@@ -26,6 +26,11 @@ class SalaryStructure extends Model
 
     public function getNetSalaryAttribute()
     {
-        return $this->gross_salary - ($this->pension_employee + $this->tax_paye);
+        return $this->gross_salary - $this->total_deductions;
+    }
+
+    public function getTotalDeductionsAttribute()
+    {
+        return ($this->pension_employee ?? 0) + ($this->tax_paye ?? 0);
     }
 }

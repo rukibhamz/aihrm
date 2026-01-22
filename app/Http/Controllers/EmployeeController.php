@@ -42,6 +42,7 @@ class EmployeeController extends Controller
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'dob' => 'nullable|date',
+            'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
@@ -74,6 +75,7 @@ class EmployeeController extends Controller
             'phone' => $validated['phone'] ?? null,
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
+            'gender' => $validated['gender'],
             'join_date' => $validated['join_date'] ?? now(),
             'status' => 'active',
         ]);
@@ -138,7 +140,24 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-        $employee->load(['user', 'department', 'designation', 'manager']);
+        $user = auth()->user();
+        $relations = ['user', 'department', 'designation', 'manager'];
+
+        // Conditional loading based on roles
+        if ($user->hasAnyRole(['Admin', 'HR'])) {
+            $relations[] = 'user.attendances';
+        }
+
+        if ($user->hasAnyRole(['Admin', 'HR', 'Finance'])) {
+            $relations[] = 'user.payslips';
+        }
+
+        if ($user->hasAnyRole(['Admin', 'Finance'])) {
+            $relations[] = 'user.salaryStructure';
+        }
+
+        $employee->load($relations);
+        
         return view('employees.show', compact('employee'));
     }
 
@@ -167,6 +186,7 @@ class EmployeeController extends Controller
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'dob' => 'nullable|date',
+            'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'status' => 'required|in:active,inactive,terminated',
             'role' => 'required|exists:roles,name',
@@ -193,6 +213,7 @@ class EmployeeController extends Controller
             'phone' => $validated['phone'] ?? null,
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
+            'gender' => $validated['gender'],
             'join_date' => $validated['join_date'] ?? null,
             'status' => $validated['status'],
         ]);

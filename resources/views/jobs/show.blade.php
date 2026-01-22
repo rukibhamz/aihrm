@@ -1,77 +1,122 @@
-<x-app-layout>
-    <div class="mb-12">
-        <a href="{{ route('jobs.index') }}" class="inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-700 transition mb-6">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            Back to Careers
-        </a>
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <span class="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full">
-                        {{ $job->department ?? 'General' }}
-                    </span>
-                    @if($job->location)
-                        <span class="px-3 py-1 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-full">
-                            {{ $job->location }}
-                        </span>
-                    @endif
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $job->title }} | Careers | AIHRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-CklSuxFb.css') }}">
+    <script type="module" src="{{ asset('build/assets/app-CJy8ASEk.js') }}"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-sm border-b border-gray-200 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">AI</span>
+                    </div>
+                    <span class="font-bold text-xl">AIHRM</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">{{ $job->title }}</h1>
+                <div class="flex items-center gap-6">
+                    <a href="{{ url('/') }}" class="text-sm font-medium text-gray-600 hover:text-black">Home</a>
+                    <a href="{{ route('jobs.index') }}" class="text-sm font-medium text-gray-600 hover:text-black">Careers</a>
+                    <a href="{{ route('login') }}" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
+                        Dashboard
+                    </a>
+                </div>
             </div>
-            
-            <a href="{{ route('applications.create', $job) }}" class="px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/20 transform hover:-translate-y-0.5 text-center">
-                Apply for this position
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <a href="{{ route('jobs.index') }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-black transition mb-8 group">
+                <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Back to Careers
             </a>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <!-- Main Content -->
-        <div class="lg:col-span-8 space-y-12">
-            <!-- Description -->
-            <div class="bg-white p-8 md:p-12 rounded-[2rem] border border-gray-100 shadow-sm">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <div class="w-8 h-1 bg-indigo-600 rounded-full"></div>
-                    Role Description
-                </h2>
-                <div class="prose prose-indigo max-w-none text-gray-600 leading-relaxed">
-                    {!! nl2br(e($job->description)) !!}
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded uppercase tracking-widest border border-indigo-100">
+                            {{ $job->department ?? 'General' }}
+                        </span>
+                        @if($job->location)
+                            <span class="px-2 py-0.5 border border-gray-200 text-gray-500 text-[10px] font-bold rounded uppercase tracking-widest italic">
+                                {{ $job->location }}
+                            </span>
+                        @endif
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight italic">{{ $job->title }}</h1>
                 </div>
-            </div>
-
-            <!-- Requirements -->
-            <div class="bg-white p-8 md:p-12 rounded-[2rem] border border-gray-100 shadow-sm">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <div class="w-8 h-1 bg-indigo-600 rounded-full"></div>
-                    Requirements
-                </h2>
-                <div class="prose prose-indigo max-w-none text-gray-600 leading-relaxed">
-                    {!! nl2br(e($job->requirements)) !!}
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar / Extras -->
-        <div class="lg:col-span-4 space-y-8">
-            <!-- Apply Card -->
-            <div class="bg-indigo-600 rounded-[2rem] p-8 text-white shadow-2xl shadow-indigo-600/20 sticky top-32">
-                <h3 class="text-2xl font-bold mb-4">Ready to apply?</h3>
-                <p class="text-indigo-100 text-sm mb-8 leading-relaxed">
-                    Join a team of visionaries and builders creating the next generation of HR intelligence.
-                </p>
-                <a href="{{ route('applications.create', $job) }}" class="flex items-center justify-center w-full px-8 py-4 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition shadow-lg">
-                    Apply Now
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
                 
-                <div class="mt-12 pt-8 border-t border-white/10 space-y-4">
-                    <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-indigo-200">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Posted {{ $job->created_at->diffForHumans() }}
+                <a href="{{ route('applications.create', $job) }}" class="px-10 py-4 bg-indigo-600 text-white rounded-lg font-bold text-base hover:bg-indigo-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-center">
+                    Apply for this position
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-8 space-y-8">
+                    <!-- Description -->
+                    <div class="bg-white p-8 md:p-10 rounded-xl border border-gray-200 shadow-sm">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3 italic">
+                            <div class="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                            Role Description
+                        </h2>
+                        <div class="prose prose-neutral max-w-none text-gray-600 leading-relaxed font-medium text-sm">
+                            {!! nl2br(e($job->description)) !!}
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="bg-white p-8 md:p-10 rounded-xl border border-gray-200 shadow-sm">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3 italic">
+                            <div class="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                            Requirements
+                        </h2>
+                        <div class="prose prose-neutral max-w-none text-gray-600 leading-relaxed font-medium text-sm">
+                            {!! nl2br(e($job->requirements)) !!}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-4 space-y-8">
+                    <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm sticky top-32">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4 italic">Ready to apply?</h3>
+                        <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">
+                            Join a team of visionaries and builders creating the next generation of HR intelligence.
+                        </p>
+                        <a href="{{ route('applications.create', $job) }}" class="w-full flex items-center justify-center py-4 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition group">
+                            Apply Now
+                            <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                        
+                        <div class="mt-8 pt-8 border-t border-gray-100">
+                            <div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 italic">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Posted {{ $job->created_at->diffForHumans() }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 text-center">
+            <p class="text-xs text-gray-500">© 2025 AIHRM. All rights reserved.</p>
+            <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">Enterprise Intelligence Layer.</p>
+        </div>
+    </footer>
+</body>
+</html>

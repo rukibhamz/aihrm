@@ -64,6 +64,14 @@
                         <input type="date" name="dob" value="{{ old('dob', $employee->dob ? $employee->dob->format('Y-m-d') : '') }}" 
                             class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Gender *</label>
+                        <select name="gender" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            <option value="">Select Gender</option>
+                            <option value="male" {{ old('gender', $employee->gender) == 'male' ? 'selected' : '' }}>Male</option>
+                            <option value="female" {{ old('gender', $employee->gender) == 'female' ? 'selected' : '' }}>Female</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
