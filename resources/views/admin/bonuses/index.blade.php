@@ -64,7 +64,7 @@
     </div>
 
     <!-- Create Modal -->
-    <div id="createModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="createModal" class="hidden fixed inset-0 bg-neutral-900/50 backdrop-blur-sm flex items-center justify-center z-50">
         <div class="bg-white rounded-lg p-8 max-w-md w-full">
             <h2 class="text-xl font-bold mb-4">Add New Bonus</h2>
             <form action="{{ route('admin.bonuses.store') }}" method="POST" class="space-y-4">

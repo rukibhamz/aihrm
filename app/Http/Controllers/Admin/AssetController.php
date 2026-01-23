@@ -11,7 +11,45 @@ use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
-    // ... index, create methods remain same
+    /**
+     * Display a listing of the assets.
+     */
+    public function index(Request $request)
+    {
+        $query = Asset::query()->with('assignedTo');
+
+        // Search by name or serial number
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('serial_number', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $assets = $query->latest()->paginate(10);
+
+        return view('admin.assets.index', compact('assets'));
+    }
+
+    /**
+     * Show the form for creating a new asset.
+     */
+    public function create()
+    {
+        $users = User::all();
+        return view('admin.assets.create', compact('users'));
+    }
 
     public function store(Request $request)
     {

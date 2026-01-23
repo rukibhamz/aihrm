@@ -126,7 +126,7 @@
     </div>
 
     <!-- Create Modal -->
-    <dialog id="createGoalModal" class="p-0 rounded-xl shadow-2xl backdrop:bg-black/40 w-full max-w-lg open:animate-fade-in-up">
+    <dialog id="createGoalModal" class="p-0 rounded-xl shadow-2xl backdrop:bg-black/40 w-full max-w-2xl open:animate-fade-in-up">
         <div class="bg-white">
             <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
                 <h3 class="text-lg font-bold">New Performance Goal</h3>

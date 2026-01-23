@@ -33,7 +33,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 pt-24">
+    <main class="flex-1" style="padding-top: 180px;">
         <!-- Hero Section -->
         <div class="bg-black text-white py-16 px-6">
             <div class="max-w-7xl mx-auto text-center">
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="w-full mt-6 py-3 bg-black text-white rounded-lg font-bold text-sm hover:bg-neutral-900 transition shadow-sm">
+                    <button type="submit" class="w-full mt-6 py-4 bg-black text-white rounded-lg font-bold text-base hover:bg-neutral-900 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         Search Opportunities
                     </button>
                 </form>

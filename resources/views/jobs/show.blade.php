@@ -34,7 +34,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 pt-32 pb-20">
+    <main class="flex-1 pb-20" style="padding-top: 180px;">
         <div class="max-w-7xl mx-auto px-6">
             <a href="{{ route('jobs.index') }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-black transition mb-8 group">
                 <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
@@ -94,7 +94,7 @@
                         <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">
                             Join a team of visionaries and builders creating the next generation of HR intelligence.
                         </p>
-                        <a href="{{ route('applications.create', $job) }}" class="w-full flex items-center justify-center py-4 bg-black text-white rounded-lg font-bold hover:bg-neutral-900 transition group">
+                        <a href="{{ route('applications.create', $job) }}" class="w-full flex items-center justify-center py-4 bg-black text-white rounded-lg font-bold hover:bg-neutral-900 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 group">
                             Apply Now
                             <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>

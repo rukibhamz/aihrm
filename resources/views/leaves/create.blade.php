@@ -2,6 +2,16 @@
     <div class="max-w-2xl mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 mt-6">
         <div class="p-6 bg-white border-b border-gray-200">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Request Leave</h2>
+
+            @if($errors->any())
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             
             <form method="POST" action="{{ route('leaves.store') }}">
                 @csrf
