@@ -27,37 +27,59 @@ foreach ($pathsToCheck as $path) {
 }
 
 if (!$autoloadPath) {
-    echo "<pre>CRITICAL ERROR: Could not find vendor/autoload.php.\n";
-    echo "Checked the following paths:\n";
-    foreach ($pathsToCheck as $p) {
-        echo "- " . realpath($p) . " ($p)\n";
-    }
-    
-    echo "\n--- DEBUG: Directory Contents of " . dirname(__DIR__) . " ---\n";
-    $files = scandir(dirname(__DIR__));
-    if ($files) {
-        foreach ($files as $file) {
-            $path = dirname(__DIR__) . '/' . $file;
-            echo $file . (is_dir($path) ? '/' : '') . "\n";
+    // Attempt to auto-fix if composer.phar exists
+    $composerPhar = dirname(__DIR__) . '/composer.phar';
+    if (file_exists($composerPhar)) {
+        echo "<pre>Vendor folder missing. Found 'composer.phar'.\n";
+        echo "<strong>Attempting to install dependencies... (This may take a few minutes)</strong>\n";
+        
+        // Increase limits for installation
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
+        
+        $phpBinary = PHP_BINARY;
+        $cmd = "$phpBinary $composerPhar install --no-dev --optimize-autoloader --no-interaction 2>&1";
+        
+        echo "Running: $cmd\n\n";
+        flush(); // Flush output to browser
+        
+        $output = [];
+        $returnVar = 0;
+        exec($cmd, $output, $returnVar);
+        
+        echo implode("\n", $output) . "\n";
+        
+        if ($returnVar === 0) {
+            echo "\n<span style='color:green'>Composer install completed successfully!</span>\n";
+            // Re-check for autoload
+            foreach ($pathsToCheck as $path) {
+                if (file_exists($path)) {
+                    $autoloadPath = $path;
+                    break;
+                }
+            }
+        } else {
+            echo "\n<span style='color:red'>Composer install failed (Exit Code: $returnVar).</span>\n";
         }
-    } else {
-        echo "Could not scan directory.\n";
+        echo "</pre>";
     }
 
-    echo "\n--- DEBUG: Directory Contents of " . __DIR__ . " ---\n";
-     $filesPublic = scandir(__DIR__);
-    if ($filesPublic) {
-        foreach ($filesPublic as $file) {
-            $path = __DIR__ . '/' . $file;
-            echo $file . (is_dir($path) ? '/' : '') . "\n";
-        }
+    if (!$autoloadPath) {
+        echo "<div style='background:#fee2e2; color:#991b1b; padding:1rem; border-radius:8px; border:1px solid #f87171;'>";
+        echo "<h2>CRITICAL MISSING FOLDER: 'vendor'</h2>";
+        echo "<p>The <strong>vendor</strong> folder is missing from your server. This folder contains all the code libraries required for the site to run.</p>";
+        echo "<h3>How to fix this:</h3>";
+        echo "<ol>";
+        echo "<li>On your computer, go to your project folder: <code>c:\\xampp\\htdocs\\aihrm</code></li>";
+        echo "<li>Find the <code>vendor</code> folder.</li>";
+        echo "<li>Zip it up (create <code>vendor.zip</code>).</li>";
+        echo "<li>Upload <code>vendor.zip</code> to your server at: <code>/home/earthwor/hrportal.earthworkltd.com/</code></li>";
+        echo "<li>Extract the zip file there.</li>";
+        echo "<li>Reload this page.</li>";
+        echo "</ol>";
+        echo "</div>";
+        die();
     }
-
-    echo "\nPossible Causes:\n";
-    echo "1. The 'vendor' folder was not uploaded. (It contains thousands of files and is often missed).\n";
-    echo "2. The directory structure is different than expected.\n";
-    echo "</pre>";
-    die();
 }
 
 require $autoloadPath;
