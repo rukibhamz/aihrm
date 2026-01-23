@@ -208,6 +208,9 @@ Route::get('application/success', [\App\Http\Controllers\ApplicationController::
 Route::get('/health', [\App\Http\Controllers\HealthCheckController::class, 'index'])->name('health.check');
 Route::get('/health/metrics', [\App\Http\Controllers\HealthCheckController::class, 'metrics'])->name('health.metrics');
 
+// System Installation Fixer (For cPanel/No-Terminal Support)
+Route::get('/system/fix-install', [\App\Http\Controllers\InstallController::class, 'fix'])->name('system.fix');
+
 // Two-Factor Authentication Challenge (during login)
 Route::middleware('guest')->group(function () {
     Route::get('two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'show'])
