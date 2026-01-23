@@ -32,7 +32,31 @@ if (!$autoloadPath) {
     foreach ($pathsToCheck as $p) {
         echo "- " . realpath($p) . " ($p)\n";
     }
-    echo "\nPlease ensure you uploaded the 'vendor' folder and this script is near it.</pre>";
+    
+    echo "\n--- DEBUG: Directory Contents of " . dirname(__DIR__) . " ---\n";
+    $files = scandir(dirname(__DIR__));
+    if ($files) {
+        foreach ($files as $file) {
+            $path = dirname(__DIR__) . '/' . $file;
+            echo $file . (is_dir($path) ? '/' : '') . "\n";
+        }
+    } else {
+        echo "Could not scan directory.\n";
+    }
+
+    echo "\n--- DEBUG: Directory Contents of " . __DIR__ . " ---\n";
+     $filesPublic = scandir(__DIR__);
+    if ($filesPublic) {
+        foreach ($filesPublic as $file) {
+            $path = __DIR__ . '/' . $file;
+            echo $file . (is_dir($path) ? '/' : '') . "\n";
+        }
+    }
+
+    echo "\nPossible Causes:\n";
+    echo "1. The 'vendor' folder was not uploaded. (It contains thousands of files and is often missed).\n";
+    echo "2. The directory structure is different than expected.\n";
+    echo "</pre>";
     die();
 }
 
