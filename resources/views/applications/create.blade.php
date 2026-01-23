@@ -25,7 +25,7 @@
                 <div class="flex items-center gap-6">
                     <a href="{{ url('/') }}" class="text-sm font-medium text-gray-600 hover:text-black">Home</a>
                     <a href="{{ route('jobs.index') }}" class="text-sm font-medium text-gray-600 hover:text-black">Careers</a>
-                    <a href="{{ route('login') }}" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
+                    <a href="{{ route('login') }}" class="px-6 py-2 bg-black text-white rounded-lg font-semibold hover:bg-neutral-900 transition">
                         Dashboard
                     </a>
                 </div>
@@ -47,7 +47,7 @@
 
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 md:p-12">
                 <!-- AI Highlight Card -->
-                <div class="mb-12 p-6 bg-indigo-600 rounded-xl flex flex-col md:flex-row items-center gap-6 text-white shadow-lg">
+                <div class="mb-12 p-6 bg-black rounded-xl flex flex-col md:flex-row items-center gap-6 text-white shadow-lg">
                     <div class="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center shadow-sm text-white flex-shrink-0">
                         <svg class="w-8 h-8 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
@@ -55,7 +55,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-bold mb-1 italic">AI-Powered Screening</h3>
-                        <p class="text-sm text-indigo-100 leading-relaxed font-medium">Our intelligence system automatically matches your skills and experience with our requirements to fast-track your application.</p>
+                        <p class="text-sm text-neutral-300 leading-relaxed font-medium">Our intelligence system automatically matches your skills and experience with our requirements to fast-track your application.</p>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                     <!-- Personal Info Section -->
                     <div class="space-y-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-sm">01</div>
+                            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-sm">01</div>
                             <h2 class="text-xl font-bold text-gray-900 italic">Personal Information</h2>
                         </div>
                         
@@ -73,19 +73,19 @@
                             <div class="space-y-2">
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">First Name</label>
                                 <input type="text" name="first_name" required 
-                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm font-medium" 
+                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm font-medium" 
                                     placeholder="John">
                             </div>
                             <div class="space-y-2">
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Last Name</label>
                                 <input type="text" name="last_name" required 
-                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm font-medium" 
+                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm font-medium" 
                                     placeholder="Doe">
                             </div>
                             <div class="md:col-span-2 space-y-2">
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Email Address</label>
                                 <input type="email" name="email" required 
-                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm font-medium" 
+                                    class="w-full px-5 py-3 border border-gray-200 bg-gray-50 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm font-medium" 
                                     placeholder="john@example.com">
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                     <!-- Document Upload Section -->
                     <div class="space-y-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-sm">02</div>
+                            <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-sm">02</div>
                             <h2 class="text-xl font-bold text-gray-900 italic">Resume / CV</h2>
                         </div>
                         
@@ -102,8 +102,8 @@
                             <div class="relative group">
                                 <input type="file" name="resume" required accept=".pdf,.doc,.docx" 
                                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                                <div class="p-10 border-2 border-dashed border-gray-200 rounded-xl text-center group-hover:border-indigo-600 group-hover:bg-indigo-50 transition duration-300">
-                                    <div class="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4 text-gray-400 group-hover:text-indigo-600 transition">
+                                <div class="p-10 border-2 border-dashed border-gray-200 rounded-xl text-center group-hover:border-black group-hover:bg-neutral-50 transition duration-300">
+                                    <div class="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4 text-gray-400 group-hover:text-black transition">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                                     </div>
                                     <h3 class="text-sm font-bold text-gray-900 mb-1 italic">Upload your resume</h3>
@@ -115,7 +115,7 @@
 
                     <div class="pt-8 pl-11 flex flex-col sm:flex-row gap-6 items-center justify-between">
                         <p class="text-xs text-gray-400 max-w-xs font-medium italic">By clicking submit, you agree to our recruitment privacy policy.</p>
-                        <button type="submit" class="px-12 py-4 bg-indigo-600 text-white rounded-lg font-bold text-base hover:bg-indigo-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <button type="submit" class="px-12 py-4 bg-black text-white rounded-lg font-bold text-base hover:bg-neutral-900 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                             Submit Application
                         </button>
                     </div>

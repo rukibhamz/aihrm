@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="{{ url('/') }}" class="text-sm font-medium text-gray-600 hover:text-black">Home</a>
-                    <a href="{{ route('login') }}" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
+                    <a href="{{ route('login') }}" class="px-6 py-2 bg-black text-white rounded-lg font-semibold hover:bg-neutral-900 transition">
                         Dashboard
                     </a>
                 </div>
@@ -59,11 +59,11 @@
                             <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Job Search</label>
                             <input type="text" name="search" value="{{ request('search') }}" 
                                 placeholder="Title, keyword..."
-                                class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm">
+                                class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Organization</label>
-                            <select name="department" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm">
+                            <select name="department" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm">
                                 <option value="">All Categories</option>
                                 @foreach($departments as $dept)
                                     <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
@@ -72,7 +72,7 @@
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Presence</label>
-                            <select name="location" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-600 focus:border-indigo-600 transition text-sm">
+                            <select name="location" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition text-sm">
                                 <option value="">All Locations</option>
                                 @foreach($locations as $loc)
                                     <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="w-full mt-6 py-3 bg-indigo-600 text-white rounded-lg font-bold text-sm hover:bg-indigo-700 transition shadow-sm">
+                    <button type="submit" class="w-full mt-6 py-3 bg-black text-white rounded-lg font-bold text-sm hover:bg-neutral-900 transition shadow-sm">
                         Search Opportunities
                     </button>
                 </form>
@@ -121,7 +121,7 @@
                                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                                     {{ $job->created_at->diffForHumans() }}
                                 </span>
-                                <a href="{{ route('jobs.show', $job) }}" class="text-indigo-600 hover:text-indigo-700 text-sm font-bold flex items-center gap-1 group transition">
+                                <a href="{{ route('jobs.show', $job) }}" class="text-black hover:text-neutral-900 text-sm font-bold flex items-center gap-1 group transition">
                                     View Detail
                                     <svg class="w-4 h-4 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>

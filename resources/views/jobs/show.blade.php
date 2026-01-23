@@ -25,7 +25,7 @@
                 <div class="flex items-center gap-6">
                     <a href="{{ url('/') }}" class="text-sm font-medium text-gray-600 hover:text-black">Home</a>
                     <a href="{{ route('jobs.index') }}" class="text-sm font-medium text-gray-600 hover:text-black">Careers</a>
-                    <a href="{{ route('login') }}" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
+                    <a href="{{ route('login') }}" class="px-6 py-2 bg-black text-white rounded-lg font-semibold hover:bg-neutral-900 transition">
                         Dashboard
                     </a>
                 </div>
@@ -44,7 +44,7 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded uppercase tracking-widest border border-indigo-100">
+                        <span class="px-2 py-0.5 bg-neutral-100 text-neutral-600 text-[10px] font-bold rounded uppercase tracking-widest border border-neutral-200">
                             {{ $job->department ?? 'General' }}
                         </span>
                         @if($job->location)
@@ -56,7 +56,7 @@
                     <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight italic">{{ $job->title }}</h1>
                 </div>
                 
-                <a href="{{ route('applications.create', $job) }}" class="px-10 py-4 bg-indigo-600 text-white rounded-lg font-bold text-base hover:bg-indigo-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-center">
+                <a href="{{ route('applications.create', $job) }}" class="px-10 py-4 bg-black text-white rounded-lg font-bold text-base hover:bg-neutral-900 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-center">
                     Apply for this position
                 </a>
             </div>
@@ -67,7 +67,7 @@
                     <!-- Description -->
                     <div class="bg-white p-8 md:p-10 rounded-xl border border-gray-200 shadow-sm">
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3 italic">
-                            <div class="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                            <div class="w-1.5 h-6 bg-black rounded-full"></div>
                             Role Description
                         </h2>
                         <div class="prose prose-neutral max-w-none text-gray-600 leading-relaxed font-medium text-sm">
@@ -78,7 +78,7 @@
                     <!-- Requirements -->
                     <div class="bg-white p-8 md:p-10 rounded-xl border border-gray-200 shadow-sm">
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3 italic">
-                            <div class="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                            <div class="w-1.5 h-6 bg-black rounded-full"></div>
                             Requirements
                         </h2>
                         <div class="prose prose-neutral max-w-none text-gray-600 leading-relaxed font-medium text-sm">
@@ -94,7 +94,7 @@
                         <p class="text-gray-500 text-sm mb-8 leading-relaxed font-medium">
                             Join a team of visionaries and builders creating the next generation of HR intelligence.
                         </p>
-                        <a href="{{ route('applications.create', $job) }}" class="w-full flex items-center justify-center py-4 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition group">
+                        <a href="{{ route('applications.create', $job) }}" class="w-full flex items-center justify-center py-4 bg-black text-white rounded-lg font-bold hover:bg-neutral-900 transition group">
                             Apply Now
                             <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
