@@ -34,7 +34,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 pb-20" style="padding-top: 180px;">
+    <main class="flex-1 pb-20" style="padding-top: 80px;">
         <div class="max-w-4xl mx-auto px-6">
             <div class="mb-12 text-center">
                 <a href="{{ route('jobs.show', $job) }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-black transition mb-6 group">
