@@ -9,13 +9,43 @@
 
 define('LARAVEL_START', microtime(true));
 
-// Validating path to bootstrap
-if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    die("Error: Vendor autoload not found. Is this file in the 'public' folder?");
+// Search for critical files in common locations
+$pathsToCheck = [
+    __DIR__ . '/../vendor/autoload.php',           // Standard: public/../vendor
+    __DIR__ . '/vendor/autoload.php',              // Flat: everything in public_html
+    __DIR__ . '/../../vendor/autoload.php',        // Nested: public/html/public/../vendor
+    $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php', // cPanel: public_html/../vendor
+    __DIR__ . '/aihrm/vendor/autoload.php',        // Subfolder install
+];
+
+$autoloadPath = null;
+foreach ($pathsToCheck as $path) {
+    if (file_exists($path)) {
+        $autoloadPath = $path;
+        break;
+    }
 }
 
-require __DIR__ . '/../vendor/autoload.php';
-$app = require __DIR__ . '/../bootstrap/app.php';
+if (!$autoloadPath) {
+    echo "<pre>CRITICAL ERROR: Could not find vendor/autoload.php.\n";
+    echo "Checked the following paths:\n";
+    foreach ($pathsToCheck as $p) {
+        echo "- " . realpath($p) . " ($p)\n";
+    }
+    echo "\nPlease ensure you uploaded the 'vendor' folder and this script is near it.</pre>";
+    die();
+}
+
+require $autoloadPath;
+
+// Find bootstrap/app.php relative to the autoloader
+$appBootstrapPath = dirname($autoloadPath) . '/../bootstrap/app.php';
+
+if (!file_exists($appBootstrapPath)) {
+    die("Error: Found autoloader but could not find bootstrap/app.php at: $appBootstrapPath");
+}
+
+$app = require $appBootstrapPath;
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
