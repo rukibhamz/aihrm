@@ -16,6 +16,7 @@ echo "<!DOCTYPE html>
         h1 { font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; color: #111827; }
         pre { background: #111827; color: #a5f3fc; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; margin-top: 1rem; }
         .status { margin-bottom: 1rem; padding: 1rem; border-radius: 8px; border: 1px solid transparent; }
+        .status.info { background-color: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
         .status.ok { background-color: #f0fdf4; border-color: #bbf7d0; color: #166534; }
         .status.error { background-color: #fef2f2; border-color: #fecaca; color: #991b1b; }
         .step { margin-bottom: 1.5rem; }
@@ -25,39 +26,49 @@ echo "<!DOCTYPE html>
 </head>
 <body>
 <div class='container'>
-    <h1>🚀 System Diagnostic & Fixer</h1>";
+    <h1>🚀 System Diagnostic & Fixer v2</h1>";
 
 // 1. Check Directory Structure
 $basePath = dirname(__DIR__);
 $vendorPath = $basePath . '/vendor';
+
+echo "<div class='step'><div class='step-title'>1. Checking Critical Directories</div>";
+
+// Check for nested vendor (common zip mistake)
+if (is_dir($basePath . '/vendor/vendor')) {
+    die("<div class='status error'><strong>FOLDER ERROR DETECTED:</strong><br>Found <code>vendor/vendor</code>. <br>You extracted the zip file inside the existing folder.<br>Please move the files out one level.</div>");
+}
+
+if (!file_exists($vendorPath . '/autoload.php')) {
+    echo "<div class='status error'><strong>CRITICAL FAILURE:</strong><br>The file <code>vendor/autoload.php</code> was not found so we cannot start.</div>";
+    
+    echo "<h3>Current Files in Root Folder:</h3><pre>";
+    $files = scandir($basePath);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+        $label = is_dir($basePath . '/' . $file) ? '[DIR] ' : '      ';
+        echo $label . $file . "\n";
+    }
+    echo "</pre>";
+    
+    echo "<div class='status info'><strong>How to Fix:</strong><br>
+    1. Upload <code>vendor.zip</code> to your root folder.<br>
+    2. Extract it.<br>
+    3. Ensure <code>autoload.php</code> is inside the <code>vendor</code> folder directly.</div>";
+    die("</div></body></html>");
+}
+
+echo "<div class='status ok'>Vendor directory and autoloader found.</div></div>";
+
+// 2. Fix Permissions (Before Laravel Boots)
 $storagePath = $basePath . '/storage';
 $bootstrapPath = $basePath . '/bootstrap/cache';
 
-echo "<div class='step'><div class='step-title'>1. Checking Critical Directories</div>";
-if (!file_exists($vendorPath)) {
-    die("<div class='status error'>CRITICAL FAILURE: 'vendor' directory not found at <code>$vendorPath</code>.<br>Please upload the vendor folder.</div>");
-}
-echo "<div class='status ok'>Vendor directory found.</div>";
-
-// 2. Fix Permissions (Before Laravel Boots)
-echo "<div class='step-title'>2. Checking Permissions</div>";
+echo "<div class='step'><div class='step-title'>2. Checking Permissions</div>";
 $directories = [$storagePath, $bootstrapPath];
 foreach ($directories as $dir) {
-    if (!file_exists($dir)) {
-        mkdir($dir, 0755, true);
-    }
-    
-    // Try to set permissions
-    try {
-        chmod($dir, 0775);
-        echo "<div style='color:green'>✔ Set 0775 on " . basename($dir) . "</div>";
-    } catch (Exception $e) {
-        echo "<div style='color:orange'>⚠ Could not chmod " . basename($dir) . " (Might be OK if owner is correct).</div>";
-    }
-    
-    if (!is_writable($dir)) {
-        echo "<div class='status error'>ERROR: " . basename($dir) . " is not writable! Usage may fail.</div>";
-    }
+    if (!file_exists($dir)) { mkdir($dir, 0755, true); }
+    try { chmod($dir, 0775); echo "<div style='color:green'>✔ Set 0775 on " . basename($dir) . "</div>"; } catch (Exception $e) {}
 }
 echo "</div>";
 
@@ -69,10 +80,7 @@ try {
     $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
     echo "<div class='status ok'>Application booted successfully!</div>";
 } catch (Throwable $e) {
-    echo "<div class='status error'><strong>BOOTSTRAP FAILED</strong><br>";
-    echo "Message: " . $e->getMessage() . "<br>";
-    echo "File: " . $e->getFile() . " on line " . $e->getLine();
-    echo "</div>";
+    echo "<div class='status error'><strong>BOOTSTRAP FAILED</strong><br>Message: " . $e->getMessage() . "</div>";
     echo "<pre>" . $e->getTraceAsString() . "</pre>";
     die("</div></body></html>");
 }
@@ -80,30 +88,19 @@ echo "</div>";
 
 // 4. Run Artisan Maintenance Commands
 echo "<div class='step'><div class='step-title'>4. Running Maintenance Commands</div><pre>";
-
 function run_cmd($kernel, $cmd, $params = []) {
     echo "> php artisan $cmd ... ";
-    try {
-        $kernel->call($cmd, $params);
-        echo "DONE\n";
-    } catch (Exception $e) {
-        echo "FAILED: " . $e->getMessage() . "\n";
-    }
+    try { $kernel->call($cmd, $params); echo "DONE\n"; } 
+    catch (Exception $e) { echo "FAILED: " . $e->getMessage() . "\n"; }
 }
 
-// Clear all caches first
 run_cmd($kernel, 'optimize:clear');
 run_cmd($kernel, 'config:clear');
 
 // Check/Generate Key
 $envFile = $basePath . '/.env';
-if (!file_exists($envFile)) {
-    if (file_exists($basePath . '/.env.example')) {
-        copy($basePath . '/.env.example', $envFile);
-        echo "Created .env from .env.example\n";
-    } else {
-        echo "WARNING: No .env or .env.example found!\n";
-    }
+if (!file_exists($envFile) && file_exists($basePath . '/.env.example')) {
+    copy($basePath . '/.env.example', $envFile);
 }
 if (file_exists($envFile) && !str_contains(file_get_contents($envFile), 'APP_KEY=base64')) {
     run_cmd($kernel, 'key:generate', ['--force' => true]);
@@ -113,10 +110,8 @@ run_cmd($kernel, 'migrate', ['--force' => true]);
 run_cmd($kernel, 'storage:link');
 run_cmd($kernel, 'view:clear');
 
-echo "</pre></div>";
-echo "<div class='status ok' style='text-align:center; font-weight:bold; margin-top:2rem;'>
+echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; margin-top:2rem;'>
         🎉 SYSTEM REPAIRED! <br>
         <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO HOMEPAGE</a>
       </div>";
-
 echo "</div></body></html>";
