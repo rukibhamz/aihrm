@@ -132,10 +132,14 @@ run_cmd($kernel, 'view:clear');
 // 5. Force Reset Admin User
 echo "<div class='step'><div class='step-title'>5. Resetting Admin Account</div>";
 try {
-    $user = \App\Models\User::firstOrCreate(
-        ['email' => 'admin@aihrm.com'],
-        ['name' => 'System Admin']
-    );
+    // Check DB Connection
+    $dbConnection = DB::connection()->getName();
+    $dbName = DB::connection()->getDatabaseName();
+    echo "<div>Using Database Connection: <strong>$dbConnection</strong> ($dbName)</div>";
+
+    // Use firstOrNew to avoid 'NOT NULL' constraint on insert
+    $user = \App\Models\User::firstOrNew(['email' => 'admin@aihrm.com']);
+    $user->name = 'System Admin';
     $user->password = \Illuminate\Support\Facades\Hash::make('password');
     $user->save();
     
@@ -160,6 +164,7 @@ echo "</div>";
 
 echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; margin-top:2rem;'>
         🎉 SYSTEM REPAIRED! <br>
+        <div style='font-size:0.9em; color:#666; margin-bottom:10px;'>Running on: $dbConnection</div>
         <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO LOGIN</a>
       </div>";
 echo "</div></body></html>";
