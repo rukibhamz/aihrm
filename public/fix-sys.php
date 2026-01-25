@@ -40,8 +40,25 @@ if (is_dir($basePath . '/vendor/vendor')) {
 }
 
 if (!file_exists($vendorPath . '/autoload.php')) {
-    echo "<div class='status error'><strong>CRITICAL FAILURE:</strong><br>The file <code>vendor/autoload.php</code> was not found so we cannot start.</div>";
+    echo "<div class='status error'><strong>CRITICAL FAILURE:</strong><br>The file <code>vendor/autoload.php</code> was not found.</div>";
     
+    // Check inside vendor
+    if (is_dir($vendorPath)) {
+        echo "<h3>Contents of 'vendor' folder:</h3><pre>";
+        $vFiles = scandir($vendorPath);
+        $count = 0;
+        foreach ($vFiles as $file) {
+            if ($file === '.' || $file === '..') continue;
+            echo "$file\n";
+            $count++;
+            if ($count > 10) { echo "... (and more)\n"; break; }
+        }
+        if ($count === 0) echo "[EMPTY FOLDER]";
+        echo "</pre>";
+    } else {
+         echo "<h3>'vendor' folder is missing entirely.</h3>";
+    }
+
     echo "<h3>Current Files in Root Folder:</h3><pre>";
     $files = scandir($basePath);
     foreach ($files as $file) {
@@ -52,9 +69,11 @@ if (!file_exists($vendorPath . '/autoload.php')) {
     echo "</pre>";
     
     echo "<div class='status info'><strong>How to Fix:</strong><br>
-    1. Upload <code>vendor.zip</code> to your root folder.<br>
-    2. Extract it.<br>
-    3. Ensure <code>autoload.php</code> is inside the <code>vendor</code> folder directly.</div>";
+    The <code>vendor</code> folder exists but does not contain <code>autoload.php</code>.<br>
+    This usually means the folder is empty or corrupted.<br>
+    1. <strong>Delete</strong> the current <code>vendor</code> folder on the server.<br>
+    2. Upload your <code>vendor.zip</code> again.<br>
+    3. Extract it carefully.</div>";
     die("</div></body></html>");
 }
 
