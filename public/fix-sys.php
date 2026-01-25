@@ -126,8 +126,16 @@ if (file_exists($envFile) && !str_contains(file_get_contents($envFile), 'APP_KEY
 }
 
 run_cmd($kernel, 'migrate', ['--force' => true]);
+// Force Run Permission Seeder (Critical for access)
+run_cmd($kernel, 'db:seed', ['--class' => 'RolePermissionSeeder', '--force' => true]);
 run_cmd($kernel, 'storage:link');
 run_cmd($kernel, 'view:clear');
+
+// Clear Spatie Permission Cache
+try {
+    app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    echo "<div>✔ Permission Cache Cleared.</div>";
+} catch (Exception $e) { echo "<div>⚠ Could not clear permission cache: ".$e->getMessage()."</div>"; }
 
 // 5. Force Reset Admin User
 echo "<div class='step'><div class='step-title'>5. Resetting Admin Account</div>";
@@ -161,6 +169,9 @@ try {
     echo "<div class='status error'>Failed to reset user: " . $e->getMessage() . "</div>";
 }
 echo "</div>";
+
+// Final Cache Wipe to ensure new Gate logic applies
+run_cmd($kernel, 'optimize:clear');
 
 echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; margin-top:2rem;'>
         🎉 SYSTEM REPAIRED! <br>

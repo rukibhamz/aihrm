@@ -20,6 +20,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Implicitly grant "Admin" role all permissions
+        // This works in the app by using Gate::before rule; but Spatie typically uses its own Gate registration.
+        // Ideally we use Gate::before allow.
+        try {
+            \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+                return $user->hasRole('Admin') ? true : null;
+            });
+        } catch (\Exception $e) {
+            // Failsafe if role table not migrated yet
+        }
+
         // Use built assets in production, dev server in development
         Vite::useBuildDirectory('build');
         
