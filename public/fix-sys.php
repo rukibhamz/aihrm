@@ -129,8 +129,37 @@ run_cmd($kernel, 'migrate', ['--force' => true]);
 run_cmd($kernel, 'storage:link');
 run_cmd($kernel, 'view:clear');
 
+// 5. Force Reset Admin User
+echo "<div class='step'><div class='step-title'>5. Resetting Admin Account</div>";
+try {
+    $user = \App\Models\User::firstOrCreate(
+        ['email' => 'admin@aihrm.com'],
+        ['name' => 'System Admin']
+    );
+    $user->password = \Illuminate\Support\Facades\Hash::make('password');
+    $user->save();
+    
+    // Assign Role if exists
+    if (class_exists(\Spatie\Permission\Models\Role::class)) {
+        try {
+            $role = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'Admin']);
+            $user->assignRole($role);
+            echo "<div>✔ Assigned 'Admin' role.</div>";
+        } catch (Exception $ex) { echo "<div>⚠ Role assignment skipped (spatie not ready).</div>"; }
+    }
+    
+    echo "<div class='status ok'>
+        <strong>Admin Account Verified:</strong><br>
+        Email: <code>admin@aihrm.com</code><br>
+        Password: <code>password</code>
+    </div>";
+} catch (Exception $e) {
+    echo "<div class='status error'>Failed to reset user: " . $e->getMessage() . "</div>";
+}
+echo "</div>";
+
 echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; margin-top:2rem;'>
         🎉 SYSTEM REPAIRED! <br>
-        <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO HOMEPAGE</a>
+        <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO LOGIN</a>
       </div>";
 echo "</div></body></html>";
