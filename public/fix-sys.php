@@ -126,7 +126,7 @@ foreach ($directories as $dir) {
 }
 echo "</div>";
 
-// 3. Bootstrap Laravel (With Try-Catch)
+// 3. Booting Application
 echo "<div class='step'><div class='step-title'>3. Booting Application</div>";
 try {
     require $vendorPath . '/autoload.php';
@@ -135,6 +135,18 @@ try {
     echo "<div class='status ok'>Application booted successfully!</div>";
 } catch (Throwable $e) {
     echo "<div class='status error'><strong>BOOTSTRAP FAILED</strong><br>Message: " . $e->getMessage() . "</div>";
+    
+    // Check for vendor.zip again
+    $vendorZipParams = '';
+    if (file_exists($basePath . '/vendor.zip')) {
+        $vendorZipParams = "<div style='margin-top:10px; padding:10px; background:#fff; border:1px solid #ccc;'>
+            <strong>POSSIBLE FIX DETECTED:</strong><br>
+            Found <code>vendor.zip</code> in root.<br>
+            <a href='?extract_vendor=1' style='display:inline-block; margin-top:5px; padding:5px 10px; background:#dc2626; color:white; text-decoration:none; border-radius:3px;'>💥 Emergency Re-Extract (Overwrite)</a>
+        </div>";
+    }
+
+    echo $vendorZipParams;
     echo "<pre>" . $e->getTraceAsString() . "</pre>";
     die("</div></body></html>");
 }
@@ -160,10 +172,22 @@ if (file_exists($envFile) && !str_contains(file_get_contents($envFile), 'APP_KEY
     run_cmd($kernel, 'key:generate', ['--force' => true]);
 }
 
-run_cmd($kernel, 'migrate', ['--force' => true]);
-// Force Run Permission Seeder (Critical for access)
-run_cmd($kernel, 'db:seed', ['--class' => 'RolePermissionSeeder', '--force' => true]);
-run_cmd($kernel, 'storage:link');
+// Installation Logic
+if (isset($_GET['install_sys'])) {
+    echo "\n--- STARTING INSTALLATION ---\n";
+    run_cmd($kernel, 'migrate:fresh', ['--force' => true]);
+    run_cmd($kernel, 'db:seed', ['--force' => true]);
+    run_cmd($kernel, 'storage:link');
+    run_cmd($kernel, 'key:generate', ['--force' => true]);
+    echo "--- INSTALLATION COMPLETE ---\n";
+    echo "</pre><div class='status ok'>Installation Finished. You can now login.</div>";
+} else {
+    run_cmd($kernel, 'migrate', ['--force' => true]);
+    // Force Run Permission Seeder (Critical for access)
+    run_cmd($kernel, 'db:seed', ['--class' => 'RolePermissionSeeder', '--force' => true]);
+    run_cmd($kernel, 'storage:link');
+}
+
 run_cmd($kernel, 'view:clear');
 
 // Clear Spatie Permission Cache
@@ -183,7 +207,9 @@ try {
     // Use firstOrNew to avoid 'NOT NULL' constraint on insert
     $user = \App\Models\User::firstOrNew(['email' => 'admin@aihrm.com']);
     $user->name = 'System Admin';
-    $user->password = \Illuminate\Support\Facades\Hash::make('password');
+    if (!$user->exists) {
+        $user->password = \Illuminate\Support\Facades\Hash::make('password');
+    }
     $user->save();
     
     // Assign Role if exists
@@ -198,7 +224,7 @@ try {
     echo "<div class='status ok'>
         <strong>Admin Account Verified:</strong><br>
         Email: <code>admin@aihrm.com</code><br>
-        Password: <code>password</code>
+        Password: <code>password</code> (if new)
     </div>";
 } catch (Exception $e) {
     echo "<div class='status error'>Failed to reset user: " . $e->getMessage() . "</div>";
@@ -212,5 +238,10 @@ echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; m
         🎉 SYSTEM REPAIRED! <br>
         <div style='font-size:0.9em; color:#666; margin-bottom:10px;'>Running on: $dbConnection</div>
         <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO LOGIN</a>
+        <br><br>
+        <div style='border-top:1px solid #ccc; padding-top:10px; margin-top:10px;'>
+             <strong>Fresh Install Needed?</strong><br>
+             <a href='?install_sys=1' onclick=\"return confirm('WARNING: This will WIPE the database. Continue?')\" style='color:#dc2626; font-size:0.9em;'>⚠ Run Full Installation (Wipe DB)</a>
+        </div>
       </div>";
 echo "</div></body></html>";
