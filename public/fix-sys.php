@@ -148,6 +148,14 @@ try {
             Found <code>$foundPath</code>.<br>
             <a href='?extract_vendor=1' style='display:inline-block; margin-top:5px; padding:5px 10px; background:#dc2626; color:white; text-decoration:none; border-radius:3px;'>💥 Emergency Re-Extract (Overwrite)</a>
         </div>";
+    } else {
+         $vendorZipParams = "<div style='margin-top:10px; padding:10px; background:#fff; border:1px solid #ccc; color: #b91c1c;'>
+            <strong>DEBUG - ARCHIVE NOT FOUND:</strong><br>
+            Tried to find vendor.zip at: <br>
+            1. " . $basePath . '/vendor.zip' . " (Root)<br>
+            2. " . __DIR__ . '/vendor.zip' . " (Public/Current)<br>
+            <br>Please upload <code>vendor.zip</code> to one of these locations.
+        </div>";
     }
 
     echo $vendorZipParams;
