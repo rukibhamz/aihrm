@@ -31,7 +31,8 @@ echo "<!DOCTYPE html>
 
 // 0. Emergency zip extractor (Before anything else)
 $basePath = dirname(__DIR__);
-$vendorZip = $basePath . '/vendor.zip';
+// Check both root and public (current dir)
+$vendorZip = file_exists($basePath . '/vendor.zip') ? $basePath . '/vendor.zip' : __DIR__ . '/vendor.zip';
 
 if (isset($_GET['extract_vendor'])) {
     ini_set('memory_limit', '512M');
@@ -49,7 +50,7 @@ if (isset($_GET['extract_vendor'])) {
             echo "<div class='status error'><strong>ERROR:</strong> Failed to open vendor.zip</div>";
         }
     } else {
-        echo "<div class='status error'><strong>ERROR:</strong> vendor.zip not found in $basePath</div>";
+        echo "<div class='status error'><strong>ERROR:</strong> vendor.zip not found in ".dirname($vendorZip)."</div>";
     }
     echo "</div>";
 }
@@ -57,6 +58,7 @@ if (isset($_GET['extract_vendor'])) {
 if (file_exists($vendorZip) && !isset($_GET['extract_vendor'])) {
     echo "<div class='status info' style='border-left: 5px solid #2563eb;'>
         <strong>📦 Recovery Archive Detect (vendor.zip)</strong><br>
+        Found in: <code>".basename(dirname($vendorZip))."/vendor.zip</code><br>
         If you are experiencing 'Class not found' or 'autoload' errors, your vendor folder is likely corrupted.<br>
         <a href='?extract_vendor=1' style='display:inline-block;margin-top:10px;padding:10px 20px;background:#2563eb;color:white;text-decoration:none;border-radius:5px;font-weight:bold;'>📂 Extract vendor.zip & Overwrite Files</a>
     </div>";
@@ -138,10 +140,12 @@ try {
     
     // Check for vendor.zip again
     $vendorZipParams = '';
-    if (file_exists($basePath . '/vendor.zip')) {
+    // $vendorZip is defined at top of file
+    if (file_exists($vendorZip)) {
+        $foundPath = basename(dirname($vendorZip)) . '/vendor.zip';
         $vendorZipParams = "<div style='margin-top:10px; padding:10px; background:#fff; border:1px solid #ccc;'>
             <strong>POSSIBLE FIX DETECTED:</strong><br>
-            Found <code>vendor.zip</code> in root.<br>
+            Found <code>$foundPath</code>.<br>
             <a href='?extract_vendor=1' style='display:inline-block; margin-top:5px; padding:5px 10px; background:#dc2626; color:white; text-decoration:none; border-radius:3px;'>💥 Emergency Re-Extract (Overwrite)</a>
         </div>";
     }
