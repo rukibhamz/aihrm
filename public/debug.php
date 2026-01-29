@@ -26,4 +26,21 @@ listDir(__DIR__);
 
 // List Parent Directory (should be project root)
 listDir(dirname(__DIR__));
+
+echo "<h3>Database Configuration (.env)</h3>";
+$envPath = dirname(__DIR__) . '/.env';
+if (file_exists($envPath)) {
+    $envContent = file_get_contents($envPath);
+    preg_match('/DB_HOST=(.*)/', $envContent, $dbHost);
+    preg_match('/DB_DATABASE=(.*)/', $envContent, $dbName);
+    preg_match('/DB_USERNAME=(.*)/', $envContent, $dbUser);
+    
+    echo "<ul>";
+    echo "<li><strong>Host:</strong> " . ($dbHost[1] ?? 'Not Set') . "</li>";
+    echo "<li><strong>Database:</strong> " . ($dbName[1] ?? 'Not Set') . "</li>";
+    echo "<li><strong>Username:</strong> " . ($dbUser[1] ?? 'Not Set') . "</li>";
+    echo "</ul>";
+} else {
+    echo "<p style='color:red'><strong>.env file not found!</strong></p>";
+}
 ?>
