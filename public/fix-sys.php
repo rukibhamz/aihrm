@@ -26,10 +26,45 @@ echo "<!DOCTYPE html>
 </head>
 <body>
 <div class='container'>
-    <h1>🚀 System Diagnostic & Fixer v2</h1>";
+
+    <h1>🚀 System Diagnostic & Fixer v2.1</h1>";
+
+// 0. Emergency zip extractor (Before anything else)
+$basePath = dirname(__DIR__);
+$vendorZip = $basePath . '/vendor.zip';
+
+if (isset($_GET['extract_vendor'])) {
+    ini_set('memory_limit', '512M');
+    set_time_limit(300);
+    echo "<div class='step'><div class='step-title'>0. Extracting vendor.zip</div>";
+    if (file_exists($vendorZip)) {
+        $zip = new ZipArchive;
+        if ($zip->open($vendorZip) === TRUE) {
+            $zip->extractTo($basePath);
+            $zip->close();
+            echo "<div class='status ok'><strong>SUCCESS:</strong> vendor.zip extracted successfully to $basePath.</div>";
+            echo "<script>setTimeout(function(){ window.location.href = 'fix-sys.php'; }, 3000);</script>";
+            echo "<p>Reloading page in 3 seconds...</p>";
+        } else {
+            echo "<div class='status error'><strong>ERROR:</strong> Failed to open vendor.zip</div>";
+        }
+    } else {
+        echo "<div class='status error'><strong>ERROR:</strong> vendor.zip not found in $basePath</div>";
+    }
+    echo "</div>";
+}
+
+if (file_exists($vendorZip) && !isset($_GET['extract_vendor'])) {
+    echo "<div class='status info' style='border-left: 5px solid #2563eb;'>
+        <strong>📦 Recovery Archive Detect (vendor.zip)</strong><br>
+        If you are experiencing 'Class not found' or 'autoload' errors, your vendor folder is likely corrupted.<br>
+        <a href='?extract_vendor=1' style='display:inline-block;margin-top:10px;padding:10px 20px;background:#2563eb;color:white;text-decoration:none;border-radius:5px;font-weight:bold;'>📂 Extract vendor.zip & Overwrite Files</a>
+    </div>";
+}
+
 
 // 1. Check Directory Structure
-$basePath = dirname(__DIR__);
+// $basePath already defined above
 $vendorPath = $basePath . '/vendor';
 
 echo "<div class='step'><div class='step-title'>1. Checking Critical Directories</div>";
