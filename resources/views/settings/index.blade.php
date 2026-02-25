@@ -216,21 +216,48 @@
                         </div>
                     </div>
 
-                    <div class="pt-6 border-t border-neutral-200">
-                        <h3 class="text-lg font-semibold mb-4">Branding</h3>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-neutral-700 mb-2">Company Logo</label>
-                            @if($settings['company_logo'])
-                                <div class="mb-3">
-                                    <img src="{{ Storage::url($settings['company_logo']) }}" alt="Company Logo" class="h-16 border border-neutral-200 rounded">
-                                </div>
-                            @endif
-                            <input type="file" name="company_logo" accept="image/*"
-                                class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
-                            <p class="mt-1 text-xs text-neutral-500">Recommended: Square image, max 2MB</p>
+                <!-- Branding -->
+                <div class="pt-6 border-t border-neutral-200">
+                    <h3 class="text-lg font-semibold mb-4 text-neutral-800">Branding</h3>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Company Logo</label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 bg-neutral-100 rounded-lg flex items-center justify-center border border-dashed border-neutral-300 overflow-hidden">
+                                @if(isset($settings['company_logo']) && $settings['company_logo'])
+                                    <img src="{{ Storage::url($settings['company_logo']) }}" alt="Logo" class="max-w-full max-h-full object-contain">
+                                @else
+                                    <svg class="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                @endif
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" name="company_logo" class="block w-full text-sm text-neutral-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-black file:text-white
+                                    hover:file:bg-neutral-800 transition">
+                                <p class="mt-1 text-xs text-neutral-500">Recommended size: 200x200px. PNG or SVG preferred.</p>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Appearance -->
+                <div class="pt-6 border-t border-neutral-200">
+                    <h3 class="text-lg font-semibold mb-4 text-neutral-800">Appearance</h3>
+                    <div class="max-w-xs">
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Primary Theme Color</label>
+                        <div class="flex items-center gap-3">
+                            <input type="color" name="primary_color" value="{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}"
+                                class="w-12 h-10 border border-neutral-300 rounded-md cursor-pointer p-1">
+                            <input type="text" value="{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}" 
+                                class="w-32 px-3 py-2 border border-neutral-300 rounded-lg text-sm bg-neutral-50" readonly>
+                        </div>
+                        <p class="mt-2 text-xs text-neutral-500">Choose the primary color used for buttons, links, and accents across the platform.</p>
+                    </div>
+                </div>
 
                     <div class="flex gap-3 pt-6 border-t border-neutral-200">
                         <button type="submit" class="btn-primary">Save Settings</button>

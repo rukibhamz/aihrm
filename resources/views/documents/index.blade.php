@@ -4,7 +4,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-black">
+                <h2 class="text-2xl font-bold text-neutral-800">
                     My Documents
                 </h2>
                 <p class="text-sm text-gray-500">Securely store and access your personal documents.</p>

@@ -39,7 +39,7 @@
             <!-- Background Image with Overlay -->
             <div class="absolute inset-0 z-0">
                 <img src="{{ asset('images/careers_hero.png') }}" alt="Careers" class="w-full h-full object-cover grayscale opacity-50">
-                <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80"></div>
+                <div class="absolute inset-0 bg-neutral-900/70"></div>
             </div>
 
             <div class="relative z-10 max-w-5xl mx-auto text-center py-16">

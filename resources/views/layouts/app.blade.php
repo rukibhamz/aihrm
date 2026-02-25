@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -16,9 +16,12 @@
     <meta name="theme-color" content="#000000">
 
     <style>
-        * { font-family: 'Inter', sans-serif; }
+        :root {
+            --primary-color: {{ \App\Models\Setting::get('primary_color', '#000000') }};
+        }
+        * { font-family: 'Poppins', 'Inter', sans-serif; }
         .btn-primary {
-            background: #000;
+            background: var(--primary-color);
             color: #fff;
             padding: 0.625rem 1.25rem;
             border-radius: 0.375rem;
@@ -26,10 +29,10 @@
             font-size: 0.875rem;
             letter-spacing: -0.01em;
             transition: all 0.15s ease;
-            border: 1px solid #000;
+            border: 1px solid var(--primary-color);
         }
         .btn-primary:hover {
-            background: #1a1a1a;
+            filter: brightness(1.1);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
@@ -45,7 +48,8 @@
             border: 1px solid #e5e5e5;
         }
         .btn-secondary:hover {
-            border-color: #000;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
             transform: translateY(-1px);
         }
         .card {
@@ -58,9 +62,12 @@
             border-color: #d4d4d4;
             box-shadow: 0 4px 16px rgba(0,0,0,0.04);
         }
+        .text-primary { color: var(--primary-color); }
+        .bg-primary { background-color: var(--primary-color); }
+        .border-primary { border-color: var(--primary-color); }
     </style>
 </head>
-<body class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
+<body x-data="{ mobileMenuOpen: false }" class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
     
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -76,7 +83,7 @@
                 </div>
                 <span class="font-bold text-lg tracking-tight">AIHRM</span>
             </a>
-            <button @click="open = !open" x-data="{ open: false }" class="text-neutral-500 hover:text-black">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-neutral-500 hover:text-black">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
@@ -104,7 +111,45 @@
                     <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                 </button>
 
-                </form>
+                <!-- User Profile Dropdown -->
+                <div class="relative ml-2" x-data="{ open: false }">
+                    <button @click="open = !open" @click.away="open = false" class="flex items-center gap-3 p-1 rounded-full hover:bg-neutral-100 transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-neutral-900 flex items-center justify-center text-white font-bold text-xs">
+                            {{ substr(Auth::user()?->name ?? 'U', 0, 2) }}
+                        </div>
+                        <span class="hidden lg:block text-sm font-medium text-neutral-700">{{ Auth::user()?->name ?? 'User' }}</span>
+                        <svg class="h-4 w-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 mt-2 w-48 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50 overflow-hidden" 
+                         x-cloak>
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            Your Profile
+                        </a>
+                        <div class="border-t border-neutral-100"></div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                Log Out
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </header>
 

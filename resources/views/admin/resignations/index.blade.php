@@ -6,7 +6,7 @@
     </x-slot>
 
 <div class="mb-6 flex justify-between items-center">
-    <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-black">
+    <h2 class="text-2xl font-bold text-neutral-800">
         Resignation Requests
     </h2>
     <div class="flex gap-2">

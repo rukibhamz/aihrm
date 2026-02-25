@@ -83,7 +83,7 @@
                     <!-- Background Image -->
                     <div class="absolute inset-0">
                         <img :src="slide.image" :alt="slide.title" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
+                        <div class="absolute inset-0 bg-neutral-900/70"></div>
                     </div>
 
                     <!-- Content -->
@@ -118,7 +118,8 @@
         <!-- Quick Access Cards -->
         <div class="max-w-6xl mx-auto px-6 py-6 w-full">
             <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Quick Access</h2>
+                <h2 class="text-2xl font-bold text-neutral-800">
+Quick Access</h2>
                 <p class="text-gray-600 text-sm">Everything you need, right at your fingertips</p>
             </div>
 

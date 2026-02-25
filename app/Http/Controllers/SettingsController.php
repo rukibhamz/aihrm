@@ -37,6 +37,9 @@ class SettingsController extends Controller
             'google_client_secret' => Setting::get('google_client_secret', ''),
             'zoho_client_id' => Setting::get('zoho_client_id', ''),
             'zoho_client_secret' => Setting::get('zoho_client_secret', ''),
+            
+            // Branding & Theme
+            'primary_color' => Setting::get('primary_color', '#000000'),
         ];
 
         return view('settings.index', compact('settings'));
@@ -72,6 +75,9 @@ class SettingsController extends Controller
             'google_client_secret' => 'nullable|string|max:255',
             'zoho_client_id' => 'nullable|string|max:255',
             'zoho_client_secret' => 'nullable|string|max:255',
+            
+            // Branding & Theme
+            'primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
         ]);
 
         // Handle logo upload
@@ -116,6 +122,9 @@ class SettingsController extends Controller
         Setting::set('google_client_secret', $validated['google_client_secret'] ?? '');
         Setting::set('zoho_client_id', $validated['zoho_client_id'] ?? '');
         Setting::set('zoho_client_secret', $validated['zoho_client_secret'] ?? '');
+
+        // Save Branding & Theme
+        Setting::set('primary_color', $validated['primary_color'] ?? '#000000');
 
         return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
     }
