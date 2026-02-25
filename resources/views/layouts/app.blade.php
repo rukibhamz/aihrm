@@ -65,6 +65,26 @@
         .text-primary { color: var(--primary-color); }
         .bg-primary { background-color: var(--primary-color); }
         .border-primary { border-color: var(--primary-color); }
+
+        /* Sidebar Theme */
+        .sidebar-nav-link-active {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+        .sidebar-nav-link-active svg {
+            color: #ffffff !important;
+        }
+        .sidebar-nav-link-hover:hover {
+            color: #ffffff !important;
+        }
+        .sidebar-sub-link-active {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .sidebar-sub-link-active span {
+            color: var(--primary-color) !important;
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body x-data="{ mobileMenuOpen: false }" class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
