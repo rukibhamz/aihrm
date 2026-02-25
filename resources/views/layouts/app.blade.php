@@ -94,13 +94,15 @@
         }
     </style>
 </head>
-<body x-data="{ mobileMenuOpen: false }" class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
+<body x-data="{ mobileMenuOpen: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
+      x-init="$watch('sidebarCollapsed', value => localStorage.setItem('sidebarCollapsed', value))"
+      class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
     
     <!-- Sidebar -->
     @include('layouts.sidebar')
 
     <!-- Mobile Header & Main Content -->
-    <div class="flex-1 flex flex-col md:pl-64 h-screen overflow-hidden">
+    <div class="flex-1 flex flex-col transition-all duration-300" :class="sidebarCollapsed ? 'md:pl-20' : 'md:pl-64'">
         
         <!-- Mobile Header -->
         <div class="md:hidden flex items-center justify-between bg-white border-b border-neutral-200 px-4 py-3">
@@ -119,9 +121,13 @@
 
         <!-- Top Bar (Desktop) -->
         <header class="bg-white border-b border-neutral-200 h-16 flex items-center justify-between px-6 md:px-8">
-            <h2 class="font-semibold text-xl text-neutral-800 leading-tight">
-                {{ $header ?? 'Dashboard' }}
-            </h2>
+            <div class="flex items-center gap-4">
+                <button @click="sidebarCollapsed = !sidebarCollapsed" class="hidden md:flex text-neutral-500 hover:text-black transition-colors focus:outline-none">
+                    <svg class="w-6 h-6 transition-transform duration-300" :class="sidebarCollapsed ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
             
             <div class="flex items-center gap-4">
                 <a href="{{ route('chatbot.index') }}" class="text-neutral-500 hover:text-indigo-600 transition-colors" title="AI Assistant">

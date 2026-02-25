@@ -43,7 +43,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                <a href="{{ route('leaves.show', $leave) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                             </td>
                         </tr>
                         @empty

@@ -27,4 +27,9 @@ class LeaveRequest extends Model implements AuditableContract
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+
+    public function reliefOfficer()
+    {
+        return $this->belongsTo(User::class, 'relief_officer_id');
+    }
 }

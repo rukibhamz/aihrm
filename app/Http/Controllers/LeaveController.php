@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\LeaveRequest;
 use App\Models\LeaveType;
+use App\Models\User;
+use App\Notifications\ReliefOfficerAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class LeaveController extends Controller
 {
@@ -25,7 +28,8 @@ class LeaveController extends Controller
     public function create()
     {
         $leaveTypes = LeaveType::all();
-        return view('leaves.create', compact('leaveTypes'));
+        $users = User::where('id', '!=', Auth::id())->get(); // Exclude self
+        return view('leaves.create', compact('leaveTypes', 'users'));
     }
 
     public function store(Request $request)
@@ -78,18 +82,64 @@ class LeaveController extends Controller
         }
 
         // Create Request
-        LeaveRequest::create([
+        $leaveRequest = LeaveRequest::create([
             'user_id' => Auth::id(),
             'leave_type_id' => $validated['leave_type_id'],
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'reason' => $validated['reason'],
+            'relief_officer_id' => $request->relief_officer_id,
+            'relief_officer_status' => $request->relief_officer_id ? 'pending' : 'none',
             'status' => 'pending',
         ]);
+        
+        // Notify Relief Officer
+        if ($leaveRequest->relief_officer_id) {
+            $reliefOfficer = User::find($leaveRequest->relief_officer_id);
+            $reliefOfficer->notify(new ReliefOfficerAssigned($leaveRequest));
+        }
         
         // Note: Balance is deducted upon APPROVAL, not request. 
         // Logic for deduction should be in LeaveApprovalController.
 
         return redirect()->route('leaves.index')->with('success', 'Leave request submitted successfully.');
+    }
+
+    public function show(LeaveRequest $leaf)
+    {
+        $leaf->load(['leaveType', 'user.employee']);
+        return view('leaves.show', compact('leaf'));
+    }
+
+    public function reliefRequests()
+    {
+        $requests = LeaveRequest::with(['user.employee', 'leaveType'])
+            ->where('relief_officer_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+            
+        return view('leaves.relief-requests', compact('requests'));
+    }
+
+    public function updateReliefStatus(Request $request, LeaveRequest $leaveRequest)
+    {
+        if ($leaveRequest->relief_officer_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'relief_officer_status' => 'required|in:accepted,rejected',
+        ]);
+
+        $leaveRequest->update([
+            'relief_officer_status' => $validated['relief_officer_status']
+        ]);
+
+        $statusText = $validated['relief_officer_status'] === 'accepted' ? 'accepted' : 'rejected';
+        
+        // Optional: Notify requester that relief was accepted/rejected
+        // $leaveRequest->user->notify(new ReliefStatusUpdated($leaveRequest));
+
+        return back()->with('success', "You have $statusText the relief officer request.");
     }
 }

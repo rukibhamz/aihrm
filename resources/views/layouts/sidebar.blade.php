@@ -46,6 +46,7 @@
 </div>
 
 <!-- Static Sidebar for Desktop -->
-<div class="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-neutral-900 text-white shadow-xl">
+<div class="hidden md:flex md:flex-col md:fixed md:inset-y-0 bg-neutral-900 text-white shadow-xl transition-all duration-300"
+     :class="sidebarCollapsed ? 'md:w-20' : 'md:w-64'">
     @include('layouts.sidebar-content')
 </div>

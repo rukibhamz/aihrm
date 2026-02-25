@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
     });
 
     // Leave Management (All Authenticated Users)
+    Route::get('leaves/relief-requests', [\App\Http\Controllers\LeaveController::class, 'reliefRequests'])->name('leaves.relief-requests');
+    Route::patch('leaves/{leaveRequest}/relief-status', [\App\Http\Controllers\LeaveController::class, 'updateReliefStatus'])->name('leaves.relief-status');
     Route::resource('leaves', \App\Http\Controllers\LeaveController::class);
 
     // Employee Routes
