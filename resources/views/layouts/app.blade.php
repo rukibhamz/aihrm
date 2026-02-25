@@ -85,6 +85,13 @@
             color: var(--primary-color) !important;
             opacity: 1 !important;
         }
+        .sidebar-nav-parent-active svg {
+            color: var(--primary-color) !important;
+        }
+        .sidebar-nav-parent-active span {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body x-data="{ mobileMenuOpen: false }" class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
