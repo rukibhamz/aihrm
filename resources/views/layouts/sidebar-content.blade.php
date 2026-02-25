@@ -13,8 +13,8 @@
     }
 @endphp
 <!-- Logo -->
-<div class="flex items-center justify-start px-6 h-16 bg-neutral-950 border-b border-neutral-800 transition-all duration-300" :class="sidebarCollapsed ? 'px-4' : 'px-6'">
-    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+<div class="flex items-center h-16 bg-neutral-950 border-b border-neutral-800 transition-all duration-300" :class="sidebarCollapsed ? 'justify-center px-0' : 'justify-start px-6'">
+    <a href="{{ route('dashboard') }}" class="flex items-center transition-all duration-300" :class="sidebarCollapsed ? 'gap-0' : 'gap-2'">
         <div class="w-8 h-8 bg-white rounded-md flex-shrink-0 flex items-center justify-center">
             <span class="text-neutral-900 font-bold text-sm">AI</span>
         </div>
@@ -24,7 +24,7 @@
 
 <!-- Navigation -->
 <div class="flex-1 flex flex-col overflow-y-auto pt-5 pb-4">
-    <nav x-data="{ activeMenu: '{{ $activeMenu }}' }" class="mt-5 flex-1 px-2 space-y-1">
+    <nav x-data="{ activeMenu: '{{ $activeMenu }}' }" class="mt-5 flex-1 space-y-1 transition-all duration-300" :class="sidebarCollapsed ? 'px-0' : 'px-2'">
         <!-- Dashboard -->
         <a href="{{ route('dashboard') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('dashboard') ? 'sidebar-nav-link-active' : 'text-neutral-300 hover:bg-neutral-800 hover:text-white sidebar-nav-link-hover' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
             <svg class="flex-shrink-0 h-6 w-6 {{ request()->routeIs('dashboard') ? '' : 'text-neutral-400 group-hover:text-white' }}" :class="sidebarCollapsed ? '' : 'mr-3'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
