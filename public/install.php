@@ -1,11 +1,17 @@
 <?php
 // install.php - The Setup Wizard
+set_time_limit(0);
+ini_set('memory_limit', '512M');
 
 if (file_exists(__DIR__ . '/../storage/installed') && file_exists(__DIR__ . '/../.env')) {
     header("Content-Type: text/html; charset=UTF-8");
     echo "AIHRM is already installed. If you need to re-install, please remove the <code>storage/installed</code> file.";
     exit;
 }
+
+// Enable output flushing for migration feedback
+if (ob_get_level() == 0) ob_start();
+ob_implicit_flush(1);
 
 $step = $_GET['step'] ?? 1;
 ?>
@@ -148,6 +154,9 @@ $step = $_GET['step'] ?? 1;
                     }
                     
                     // Write to .env
+                    if (!is_writable(__DIR__ . '/../')) {
+                        throw new Exception("Root directory is not writable. Please check permissions.");
+                    }
                     file_put_contents(__DIR__ . '/../.env', $envContent);
                     
                     echo '<div class="text-center">';
@@ -168,16 +177,36 @@ $step = $_GET['step'] ?? 1;
             <?php elseif ($step == 3): ?>
                 <?php
                 // Run Migrations with Seeders
-                require __DIR__ . '/../vendor/autoload.php';
-                $app = require_once __DIR__ . '/../bootstrap/app.php';
-                $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
-                
-                echo "<h2 class='text-xl font-bold mb-4'>Setting up Database...</h2>";
-                echo "<div class='bg-neutral-50 p-4 rounded-lg mb-4 max-h-64 overflow-y-auto text-xs font-mono'>";
                 try {
+                    $vendorPath = __DIR__ . '/../vendor/autoload.php';
+                    if (!file_exists($vendorPath)) {
+                        throw new Exception("Vendor directory missing. Please run <code>composer install</code> or upload the <code>vendor</code> folder.");
+                    }
+                    require $vendorPath;
+
+                    $appPath = __DIR__ . '/../bootstrap/app.php';
+                    if (!file_exists($appPath)) {
+                        throw new Exception("Bootstrap app file missing. Please check your installation files.");
+                    }
+                    $app = require_once $appPath;
+                    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+                    
+                    echo "<h2 class='text-xl font-bold mb-4'>Setting up Database...</h2>";
+                    echo "<div class='bg-neutral-50 p-4 rounded-lg mb-4 max-h-64 overflow-y-auto text-xs font-mono' id='migration-output'>";
+                    
+                    // Flush buffer to show header
+                    ob_flush();
+                    flush();
+
                     // Run migrations with seeders
                     $kernel->call('migrate:fresh', ['--force' => true, '--seed' => true]);
-                    echo nl2br(htmlspecialchars($kernel->output()));
+                    $output = $kernel->output();
+                    echo nl2br(htmlspecialchars($output));
+                    
+                    // Final flush
+                    ob_end_flush();
+                    flush();
+
                     echo "</div>";
                     echo "<div class='space-y-2 mb-6'>";
                     echo "<div class='flex items-center gap-2 text-sm text-green-600'><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'/></svg> Database tables created</div>";

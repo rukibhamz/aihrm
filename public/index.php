@@ -5,8 +5,8 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// Redirect to installer if not installed
-if (!file_exists(__DIR__ . '/../storage/installed') && file_exists(__DIR__ . '/install.php')) {
+// Redirect to installer if not installed or env missing
+if ((!file_exists(__DIR__ . '/../storage/installed') || !file_exists(__DIR__ . '/../.env')) && file_exists(__DIR__ . '/install.php')) {
     header('Location: install.php');
     exit;
 }
