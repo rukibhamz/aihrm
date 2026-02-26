@@ -1,5 +1,17 @@
 <x-app-layout>
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="mb-6 flex items-center justify-between">
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -121,12 +133,16 @@
 
         @if($leaf->status === 'pending')
         <div class="mt-6 flex justify-end gap-3">
-            <button type="button" class="px-4 py-2 text-sm font-bold text-neutral-600 hover:text-red-600 transition-colors">
-                Cancel Request
-            </button>
-            <button type="button" class="px-6 py-2 bg-neutral-900 text-white rounded-lg text-sm font-bold hover:bg-black transition-colors shadow-lg shadow-neutral-200">
+            <form method="POST" action="{{ route('leaves.destroy', $leaf) }}" onsubmit="return confirm('Are you sure you want to cancel this leave request? This action cannot be undone.');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-4 py-2 text-sm font-bold text-neutral-600 hover:text-red-600 transition-colors">
+                    Cancel Request
+                </button>
+            </form>
+            <a href="{{ route('leaves.edit', $leaf) }}" class="px-6 py-2 bg-neutral-900 text-white rounded-lg text-sm font-bold hover:bg-black transition-colors shadow-lg shadow-neutral-200">
                 Edit Request
-            </button>
+            </a>
         </div>
         @endif
     </div>

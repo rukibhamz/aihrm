@@ -7,8 +7,17 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Leave Requests</h2>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Leave Requests</h2>
+                    <p class="text-sm text-gray-500 mt-1">You can edit or cancel pending leave requests</p>
+                </div>
                 <a href="{{ route('leaves.create') }}" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
                     Request Leave
                 </a>
@@ -43,7 +52,17 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('leaves.show', $leave) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                <div class="flex items-center gap-3">
+                                    <a href="{{ route('leaves.show', $leave) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                    @if($leave->status === 'pending')
+                                        <a href="{{ route('leaves.edit', $leave) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                        <form method="POST" action="{{ route('leaves.destroy', $leave) }}" class="inline" onsubmit="return confirm('Are you sure you want to cancel this leave request?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Cancel</button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         @empty

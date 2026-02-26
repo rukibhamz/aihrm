@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:view employees')->group(function () {
         Route::patch('employees/{employee}/reset-password', [\App\Http\Controllers\EmployeeController::class, 'resetPassword'])->name('employees.reset-password');
         Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
-        Route::resource('jobs', \App\Http\Controllers\JobPostingController::class, ['as' => 'admin']);
+        Route::resource('admin/jobs', \App\Http\Controllers\JobPostingController::class)->names('admin.jobs');
         
         // ATS / Applications
         Route::get('admin/recruitment/kanban', [\App\Http\Controllers\Admin\ApplicationController::class, 'kanban'])->name('admin.applications.kanban');
