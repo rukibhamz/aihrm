@@ -98,15 +98,17 @@
                 </div>
                 <div class="md:px-6 flex flex-col justify-center">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Experience</span>
-                    <span class="font-bold text-gray-900 text-lg">3+ Years</span>
+                    <span class="font-bold text-gray-900 text-lg">{{ $job->experience_level ?? 'Any' }}</span>
                 </div>
                 <div class="md:px-6 flex flex-col justify-center">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Deadline</span>
-                    <span class="font-bold text-gray-900 text-lg">{{ \Carbon\Carbon::now()->addDays(30)->format('M d, Y') }}</span>
+                    <span class="font-bold text-gray-900 text-lg">
+                        {{ $job->application_deadline ? $job->application_deadline->format('M d, Y') : 'Open' }}
+                    </span>
                 </div>
                 <div class="md:px-6 flex flex-col justify-center">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Reporting To</span>
-                    <span class="font-bold text-gray-900 text-lg">{{ $job->department ?? 'Operations' }} Dir.</span>
+                    <span class="font-bold text-gray-900 text-lg">{{ $job->reporting_to ?? 'Hiring Manager' }}</span>
                 </div>
             </div>
         </div>

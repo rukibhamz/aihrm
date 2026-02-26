@@ -48,6 +48,26 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">Experience Level</label>
+                    <input type="text" name="experience_level" value="{{ old('experience_level') }}"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        placeholder="e.g., 3+ Years">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">Application Deadline</label>
+                    <input type="date" name="application_deadline" value="{{ old('application_deadline') }}"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">Reporting To</label>
+                    <input type="text" name="reporting_to" value="{{ old('reporting_to') }}"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        placeholder="e.g., Engineering Dir.">
+                </div>
+            </div>
+
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Job Description *</label>
                 <textarea name="description" required rows="6"

@@ -87,6 +87,9 @@ class JobPostingController extends Controller
             'requirements' => 'required|string',
             'department' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
+            'experience_level' => 'nullable|string|max:255',
+            'application_deadline' => 'nullable|date',
+            'reporting_to' => 'nullable|string|max:255',
             'status' => 'required|in:open,closed,draft',
         ]);
 

@@ -17,12 +17,16 @@ class JobPosting extends Model
         'job_type',
         'min_salary',
         'max_salary',
+        'experience_level',
+        'application_deadline',
+        'reporting_to',
         'status',
         'created_by',
     ];
 
     protected $casts = [
         'status' => 'string',
+        'application_deadline' => 'date',
     ];
 
     public function creator(): BelongsTo
