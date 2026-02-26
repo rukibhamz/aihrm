@@ -56,14 +56,27 @@
             </div>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="#features" class="text-sm font-medium text-gray-600 hover:text-gray-900">Features</a>
-                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Solutions</a>
-                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Resources</a>
-                <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900">Log In</a>
-                <a href="#" class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700">Post a Job</a>
+                <a href="{{ route('login') }}" class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700">Log In</a>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 absolute w-full z-50 shadow-xl">
+        <div class="px-6 py-5 space-y-2 flex flex-col">
+            <a href="{{ route('login') }}" class="w-full py-3 bg-blue-600 text-white text-center font-semibold rounded-lg hover:bg-blue-700 mt-4">Log In</a>
+        </div>
+    </div>
 
     <main class="flex-1 max-w-7xl mx-auto px-6 py-12 w-full">
         <!-- Hero Title -->
@@ -219,7 +232,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-col items-end shrink-0 gap-3">
+                                <div class="flex flex-col items-start md:items-end w-full md:w-auto shrink-0 gap-3 mt-4 md:mt-0">
                                     <span class="text-xs text-gray-400 font-medium whitespace-nowrap">Posted {{ $job->created_at->diffForHumans() }}</span>
                                     <a href="{{ route('jobs.show', $job) }}" class="px-5 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-lg hover:bg-blue-100 transition-colors w-full md:w-auto text-center">
                                         Apply Now
@@ -291,4 +304,31 @@
         </div>
     </footer>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconBars = document.getElementById('menu-icon-bars');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIconBars.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
+            });
+            
+            // Close menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconBars.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+        }
+    });
+</script>
 </html>

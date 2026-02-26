@@ -27,14 +27,27 @@
             </div>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="#features" class="text-sm font-medium text-gray-600 hover:text-gray-900">Features</a>
-                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Solutions</a>
-                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Resources</a>
-                <a href="#" class="text-sm font-medium text-gray-600 hover:text-gray-900">Pricing</a>
                 <a href="{{ route('login') }}" class="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700">Log In</a>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 absolute w-full z-50 shadow-xl">
+        <div class="px-6 py-5 space-y-2 flex flex-col">
+            <a href="{{ route('login') }}" class="w-full py-3 bg-blue-600 text-white text-center font-semibold rounded-lg hover:bg-blue-700 mt-4">Log In</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="py-20 px-6">
@@ -48,8 +61,8 @@
                         <span class="text-xs font-semibold text-blue-700">Now: AI-Powered Analytics</span>
                     </div>
                     
-                    <div id="hero-content" class="min-h-[220px] transition-opacity duration-300">
-                        <h1 id="hero-title" class="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    <div id="hero-content" class="min-h-[220px] sm:min-h-[180px] transition-opacity duration-300">
+                        <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                             Your Workforce,<br>
                             <span class="text-blue-600">Fully Managed.</span>
                         </h1>
@@ -59,7 +72,7 @@
                         </p>
                     </div>
                     
-                    <a href="{{ route('login') }}" class="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 mb-10">
+                    <a href="{{ route('login') }}" class="w-full sm:w-auto text-center inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 mb-10">
                         Access Dashboard
                     </a>
                     
@@ -70,59 +83,10 @@
                     </div>
                 </div>
                 
-                <!-- Right Mockup -->
-                <div>
-                    <div class="rounded-2xl bg-gradient-to-br from-teal-400 via-cyan-400 to-blue-400 p-8 shadow-2xl">
-                        <div class="bg-white rounded-xl p-6">
-                            <!-- Header -->
-                            <div class="flex items-center justify-between mb-6">
-                                <div>
-                                    <div class="h-3 w-32 bg-gray-200 rounded mb-2"></div>
-                                    <div class="h-2 w-48 bg-gray-100 rounded"></div>
-                                </div>
-                                <div class="w-2 h-2 bg-cyan-500 rounded-full"></div>
-                            </div>
-                            
-                            <!-- List Items -->
-                            <div class="space-y-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded"></div>
-                                    <div class="flex-1">
-                                        <div class="h-2 w-3/4 bg-gray-200 rounded mb-1.5"></div>
-                                        <div class="h-2 w-1/2 bg-gray-100 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded"></div>
-                                    <div class="flex-1">
-                                        <div class="h-2 w-2/3 bg-gray-200 rounded mb-1.5"></div>
-                                        <div class="h-2 w-1/3 bg-gray-100 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded"></div>
-                                    <div class="flex-1">
-                                        <div class="h-2 w-4/5 bg-gray-200 rounded mb-1.5"></div>
-                                        <div class="h-2 w-2/5 bg-gray-100 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded"></div>
-                                    <div class="flex-1">
-                                        <div class="h-2 w-3/5 bg-gray-200 rounded mb-1.5"></div>
-                                        <div class="h-2 w-2/5 bg-gray-100 rounded"></div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 bg-gray-100 rounded"></div>
-                                    <div class="flex-1">
-                                        <div class="h-2 w-1/2 bg-gray-200 rounded mb-1.5"></div>
-                                        <div class="h-2 w-1/4 bg-gray-100 rounded"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Right Image -->
+                <div class="relative w-full overflow-hidden rounded-2xl shadow-2xl group">
+                    <div class="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl z-10"></div>
+                    <img id="hero-image" src="{{ asset('images/hero_team.png') }}" alt="AIHRM System Dashboard" class="w-full h-auto object-cover transform transition-all duration-500 hover:scale-[1.02]">
                 </div>
                 
             </div>
@@ -245,12 +209,12 @@
                             <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
                                 <div class="h-full w-1/2 bg-blue-400 rounded-full"></div>
                             </div>
-                            <div class="flex items-end justify-center gap-3 h-40 pt-8">
-                                <div class="w-12 bg-blue-600 rounded-t" style="height: 45%"></div>
-                                <div class="w-12 bg-blue-500 rounded-t" style="height: 70%"></div>
-                                <div class="w-12 bg-blue-600 rounded-t" style="height: 55%"></div>
-                                <div class="w-12 bg-blue-500 rounded-t" style="height: 85%"></div>
-                                <div class="w-12 bg-blue-600 rounded-t" style="height: 65%"></div>
+                            <div class="flex items-end justify-center gap-2 sm:gap-3 h-40 pt-8">
+                                <div class="w-8 sm:w-12 bg-blue-600 rounded-t transition-all duration-500 hover:h-full" style="height: 45%"></div>
+                                <div class="w-8 sm:w-12 bg-blue-500 rounded-t transition-all duration-500 hover:h-full" style="height: 70%"></div>
+                                <div class="w-8 sm:w-12 bg-blue-600 rounded-t transition-all duration-500 hover:h-full" style="height: 55%"></div>
+                                <div class="w-8 sm:w-12 bg-blue-500 rounded-t transition-all duration-500 hover:h-full" style="height: 85%"></div>
+                                <div class="w-8 sm:w-12 bg-blue-600 rounded-t transition-all duration-500 hover:h-full" style="height: 65%"></div>
                             </div>
                         </div>
                     </div>
@@ -293,15 +257,18 @@
         const slides = [
             {
                 title: 'Your Workforce,<br><span class="text-blue-600">Fully Managed.</span>',
-                desc: 'Streamline your HR processes with AIHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.'
+                desc: 'Streamline your HR processes with AIHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.',
+                image: '{{ asset('images/hero_team.png') }}'
             },
             {
                 title: 'Data-Driven<br><span class="text-blue-600">HR Decisions.</span>',
-                desc: 'Leverage advanced analytics to understand employee performance and improve retention. Make strategic workforce decisions backed by real-time data insights.'
+                desc: 'Leverage advanced analytics to understand employee performance and improve retention. Make strategic workforce decisions backed by real-time data insights.',
+                image: '{{ asset('images/hero_growth.png') }}'
             },
             {
                 title: 'Seamless<br><span class="text-blue-600">Global Payroll.</span>',
-                desc: 'Process payroll across multiple regions effortlessly. Handle tax compliance, multi-currency payments, and direct deposits with zero manual errors.'
+                desc: 'Process payroll across multiple regions effortlessly. Handle tax compliance, multi-currency payments, and direct deposits with zero manual errors.',
+                image: '{{ asset('images/hero_finance.png') }}'
             }
         ];
 
@@ -309,16 +276,19 @@
         const titleEl = document.getElementById('hero-title');
         const descEl = document.getElementById('hero-desc');
         const contentEl = document.getElementById('hero-content');
+        const imageEl = document.getElementById('hero-image');
         const indicators = document.querySelectorAll('.indicator-btn');
         let slideInterval;
 
         function updateSlide(index) {
             contentEl.style.opacity = '0';
+            imageEl.style.opacity = '0.5';
             
             setTimeout(() => {
                 currentSlide = index;
                 titleEl.innerHTML = slides[index].title;
                 descEl.innerHTML = slides[index].desc;
+                imageEl.src = slides[index].image;
                 
                 indicators.forEach((ind, i) => {
                     if (i === index) {
@@ -331,6 +301,7 @@
                 });
                 
                 contentEl.style.opacity = '1';
+                imageEl.style.opacity = '1';
             }, 300);
         }
 
@@ -351,6 +322,30 @@
         }
 
         startAutoSlide();
+        
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconBars = document.getElementById('menu-icon-bars');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuIconBars.classList.toggle('hidden');
+                menuIconClose.classList.toggle('hidden');
+            });
+            
+            // Close menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconBars.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+        }
     });
 </script>
 </html>
