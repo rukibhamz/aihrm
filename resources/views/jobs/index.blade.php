@@ -89,7 +89,7 @@
 
         <!-- Search Bar -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mb-10 flex flex-col md:flex-row gap-2">
-            <form action="{{ route('jobs.index') }}" method="GET" class="flex-1 flex flex-col md:flex-row gap-2 w-full">
+            <form id="filter-form" action="{{ route('jobs.index') }}" method="GET" class="flex-1 flex flex-col md:flex-row gap-2 w-full">
                 <div class="relative flex-1 flex items-center bg-gray-50 rounded-lg px-4 border border-gray-100">
                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Job title, keywords, or company..." class="w-full bg-transparent border-none focus:ring-0 text-sm py-3 text-gray-900 placeholder-gray-400">
@@ -109,9 +109,9 @@
                 <div class="relative w-full md:w-64 flex items-center bg-gray-50 rounded-lg border border-gray-100 group">
                     <select name="type" class="w-full bg-transparent border-none focus:ring-0 text-sm py-3 px-4 text-gray-700 appearance-none cursor-pointer">
                         <option value="">Employment Type</option>
-                        <option value="Full-time">Full-time</option>
-                        <option value="Contract">Contract</option>
-                        <option value="Part-time">Part-time</option>
+                        <option value="Full-time" {{ request('type') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
+                        <option value="Contract" {{ request('type') == 'Contract' ? 'selected' : '' }}>Contract</option>
+                        <option value="Part-time" {{ request('type') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
                     </select>
                     <svg class="w-4 h-4 text-gray-400 absolute right-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
@@ -130,25 +130,25 @@
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Categories</h3>
                     <ul class="space-y-1">
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 bg-blue-50 text-blue-700 rounded-lg font-medium text-sm">
+                            <a href="{{ route('jobs.index', array_merge(request()->query(), ['department' => 'Engineering', 'search' => request('search')])) }}" class="flex items-center gap-3 px-4 py-2.5 {{ request('department') == 'Engineering' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg font-medium text-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                                 Engineering
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-lg font-medium text-sm transition-colors">
+                            <a href="{{ route('jobs.index', array_merge(request()->query(), ['department' => 'Human Resources', 'search' => request('search')])) }}" class="flex items-center gap-3 px-4 py-2.5 {{ request('department') == 'Human Resources' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg font-medium text-sm transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                 Human Resources
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-lg font-medium text-sm transition-colors">
+                            <a href="{{ route('jobs.index', array_merge(request()->query(), ['department' => 'Marketing', 'search' => request('search')])) }}" class="flex items-center gap-3 px-4 py-2.5 {{ request('department') == 'Marketing' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg font-medium text-sm transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
                                 Marketing
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-lg font-medium text-sm transition-colors">
+                            <a href="{{ route('jobs.index', array_merge(request()->query(), ['department' => 'Sales & Finance', 'search' => request('search')])) }}" class="flex items-center gap-3 px-4 py-2.5 {{ request('department') == 'Sales & Finance' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg font-medium text-sm transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Sales & Finance
                             </a>
@@ -160,20 +160,20 @@
                     <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Salary Range</h3>
                     <ul class="space-y-3">
                         <li class="flex items-center gap-3">
-                            <input type="checkbox" id="salary1" class="form-checkbox">
-                            <label for="salary1" class="text-sm text-gray-600 cursor-pointer select-none">$50k - $80k</label>
+                            <input type="checkbox" name="salary[]" value="50k-80k" form="filter-form" onchange="this.form.submit()" id="salary1" class="form-checkbox" {{ is_array(request('salary')) && in_array('50k-80k', request('salary')) ? 'checked' : '' }}>
+                            <label for="salary1" class="text-sm text-gray-600 cursor-pointer select-none">{{ \App\Models\Setting::get('currency_symbol', '₦') }}50k - {{ \App\Models\Setting::get('currency_symbol', '₦') }}80k</label>
                         </li>
                         <li class="flex items-center gap-3">
-                            <input type="checkbox" id="salary2" class="form-checkbox" checked>
-                            <label for="salary2" class="text-sm text-gray-600 cursor-pointer select-none">$80k - $120k</label>
+                            <input type="checkbox" name="salary[]" value="80k-120k" form="filter-form" onchange="this.form.submit()" id="salary2" class="form-checkbox" {{ is_array(request('salary')) && in_array('80k-120k', request('salary')) ? 'checked' : '' }}>
+                            <label for="salary2" class="text-sm text-gray-600 cursor-pointer select-none">{{ \App\Models\Setting::get('currency_symbol', '₦') }}80k - {{ \App\Models\Setting::get('currency_symbol', '₦') }}120k</label>
                         </li>
                         <li class="flex items-center gap-3">
-                            <input type="checkbox" id="salary3" class="form-checkbox">
-                            <label for="salary3" class="text-sm text-gray-600 cursor-pointer select-none">$120k - $180k</label>
+                            <input type="checkbox" name="salary[]" value="120k-180k" form="filter-form" onchange="this.form.submit()" id="salary3" class="form-checkbox" {{ is_array(request('salary')) && in_array('120k-180k', request('salary')) ? 'checked' : '' }}>
+                            <label for="salary3" class="text-sm text-gray-600 cursor-pointer select-none">{{ \App\Models\Setting::get('currency_symbol', '₦') }}120k - {{ \App\Models\Setting::get('currency_symbol', '₦') }}180k</label>
                         </li>
                         <li class="flex items-center gap-3">
-                            <input type="checkbox" id="salary4" class="form-checkbox">
-                            <label for="salary4" class="text-sm text-gray-600 cursor-pointer select-none">$180k+</label>
+                            <input type="checkbox" name="salary[]" value="180k+" form="filter-form" onchange="this.form.submit()" id="salary4" class="form-checkbox" {{ is_array(request('salary')) && in_array('180k+', request('salary')) ? 'checked' : '' }}>
+                            <label for="salary4" class="text-sm text-gray-600 cursor-pointer select-none">{{ \App\Models\Setting::get('currency_symbol', '₦') }}180k+</label>
                         </li>
                     </ul>
                 </div>
@@ -218,13 +218,20 @@
                                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                                 {{ $job->location ?? 'Remote' }}
                                             </div>
-                                            <div class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-bold uppercase tracking-wider">
-                                                Remote
-                                            </div>
+                                            @if (strpos($job->location ?? 'Remote', 'Remote') !== false)
+                                                <div class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-[10px] font-bold uppercase tracking-wider">
+                                                    Remote
+                                                </div>
+                                            @endif
                                             <div class="flex items-center gap-1.5 text-gray-500">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                                Full-time
+                                                {{ $job->job_type ?? 'Full-time' }}
                                             </div>
+                                            @if($job->min_salary && $job->max_salary)
+                                            <div class="flex items-center gap-1.5 text-gray-600 font-semibold">
+                                                {{ \App\Models\Setting::get('currency_symbol', '₦') }}{{ number_format($job->min_salary) }} - {{ \App\Models\Setting::get('currency_symbol', '₦') }}{{ number_format($job->max_salary) }}
+                                            </div>
+                                            @endif
                                         </div>
                                         <p class="text-sm text-gray-500 leading-relaxed max-w-2xl line-clamp-2">
                                             {{ \Illuminate\Support\Str::limit($job->description, 150) }}

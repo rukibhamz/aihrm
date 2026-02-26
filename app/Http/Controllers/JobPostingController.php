@@ -29,6 +29,27 @@ class JobPostingController extends Controller
             $query->where('location', $request->input('location'));
         }
 
+        if ($request->filled('type')) {
+            $query->where('job_type', $request->input('type'));
+        }
+
+        if ($request->filled('salary')) {
+            $salaries = $request->input('salary'); // Array of values like '50k-80k', '80k-120k', '180k+'
+            $query->where(function($q) use ($salaries) {
+                foreach ($salaries as $range) {
+                    if ($range === '50k-80k') {
+                        $q->orWhereBetween('min_salary', [50000, 80000]);
+                    } elseif ($range === '80k-120k') {
+                        $q->orWhereBetween('min_salary', [80000, 120000]);
+                    } elseif ($range === '120k-180k') {
+                        $q->orWhereBetween('min_salary', [120000, 180000]);
+                    } elseif ($range === '180k+') {
+                        $q->orWhere('min_salary', '>=', 180000);
+                    }
+                }
+            });
+        }
+
         $jobs = $query->with('creator')
             ->latest()
             ->paginate(15)
@@ -84,8 +105,15 @@ class JobPostingController extends Controller
         $applications = $job->applications()
             ->orderByDesc('ai_score')
             ->get();
+
+        $similarJobs = JobPosting::where('department', $job->department)
+            ->where('id', '!=', $job->id)
+            ->where('status', 'open')
+            ->latest()
+            ->take(2)
+            ->get();
         
-        return view('jobs.show', compact('job', 'applications'));
+        return view('jobs.show', compact('job', 'applications', 'similarJobs'));
     }
 
     public function edit(JobPosting $job)

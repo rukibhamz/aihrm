@@ -14,6 +14,9 @@ class JobPosting extends Model
         'requirements',
         'department',
         'location',
+        'job_type',
+        'min_salary',
+        'max_salary',
         'status',
         'created_by',
     ];

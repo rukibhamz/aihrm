@@ -55,7 +55,7 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 
                 <!-- Left Content -->
-                <div>
+                <div class="order-2 lg:order-1">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full mb-6">
                         <span class="w-2 h-2 bg-blue-600 rounded-full"></span>
                         <span class="text-xs font-semibold text-blue-700">Now: AI-Powered Analytics</span>
@@ -84,7 +84,7 @@
                 </div>
                 
                 <!-- Right Image -->
-                <div class="relative w-full overflow-hidden rounded-2xl shadow-2xl group">
+                <div class="relative w-full overflow-hidden rounded-2xl shadow-2xl group order-1 lg:order-2">
                     <div class="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl z-10"></div>
                     <img id="hero-image" src="{{ asset('images/hero_team.png') }}" alt="AIHRM System Dashboard" class="w-full h-auto object-cover transform transition-all duration-500 hover:scale-[1.02]">
                 </div>
@@ -318,7 +318,7 @@
         });
 
         function startAutoSlide() {
-            slideInterval = setInterval(nextSlide, 5000);
+            slideInterval = setInterval(nextSlide, 8000);
         }
 
         startAutoSlide();
