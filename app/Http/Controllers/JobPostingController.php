@@ -10,6 +10,18 @@ class JobPostingController extends Controller
 {
     public function index(Request $request)
     {
+        $query = JobPosting::query();
+        
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+        
+        $jobs = $query->with('creator')->latest()->paginate(15);
+        return view('admin.jobs.index', compact('jobs'));
+    }
+
+    public function publicIndex(Request $request)
+    {
         $query = JobPosting::query()->where('status', 'open');
 
         if ($request->filled('search')) {
@@ -71,7 +83,7 @@ class JobPostingController extends Controller
             ->orderBy('total', 'desc')
             ->get();
         
-        return view('jobs.index', compact('jobs', 'departments', 'locations', 'departmentsByCount'));
+        return view('jobs.careers', compact('jobs', 'departments', 'locations', 'departmentsByCount'));
     }
 
     public function create()

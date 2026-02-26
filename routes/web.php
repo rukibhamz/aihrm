@@ -187,7 +187,7 @@ Route::middleware('auth')->group(function () {
 
 }); // End of Auth Middleware Group
 
-    Route::get('jobs', [\App\Http\Controllers\JobPostingController::class, 'index'])->name('jobs.index');
+    Route::get('jobs', [\App\Http\Controllers\JobPostingController::class, 'publicIndex'])->name('jobs.index');
     Route::get('jobs/{job}', [\App\Http\Controllers\JobPostingController::class, 'show'])->name('jobs.show');
 Route::get('jobs/{job}/apply', [\App\Http\Controllers\ApplicationController::class, 'create'])->name('applications.create');
 
