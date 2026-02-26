@@ -49,6 +49,15 @@ class ApplicationController extends Controller
             'candidate_name' => 'required|string|max:255',
             'candidate_email' => 'required|email|max:255',
             'candidate_phone' => 'nullable|string|max:20',
+            'current_city' => 'nullable|string|max:255',
+            'current_job_title' => 'nullable|string|max:255',
+            'expected_salary' => 'nullable|string|max:255',
+            'notice_period' => 'nullable|string|max:255',
+            'years_of_experience' => 'nullable|string|max:255',
+            'cover_letter' => 'nullable|string',
+            'motivation' => 'nullable|string',
+            'linkedin_url' => 'nullable|url|max:255',
+            'portfolio_url' => 'nullable|url|max:255',
             'resume' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB max
         ]);
 
@@ -61,6 +70,15 @@ class ApplicationController extends Controller
             'candidate_name' => $validated['candidate_name'],
             'candidate_email' => $validated['candidate_email'],
             'candidate_phone' => $validated['candidate_phone'] ?? null,
+            'current_city' => $validated['current_city'] ?? null,
+            'current_job_title' => $validated['current_job_title'] ?? null,
+            'expected_salary' => $validated['expected_salary'] ?? null,
+            'notice_period' => $validated['notice_period'] ?? null,
+            'years_of_experience' => $validated['years_of_experience'] ?? null,
+            'cover_letter' => $validated['cover_letter'] ?? null,
+            'motivation' => $validated['motivation'] ?? null,
+            'linkedin_url' => $validated['linkedin_url'] ?? null,
+            'portfolio_url' => $validated['portfolio_url'] ?? null,
             'resume_path' => $resumePath,
             'status' => 'screening',
         ]);
