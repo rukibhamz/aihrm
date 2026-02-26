@@ -180,7 +180,7 @@ $step = $_GET['step'] ?? 1;
                 try {
                     $vendorPath = __DIR__ . '/../vendor/autoload.php';
                     if (!file_exists($vendorPath)) {
-                        throw new Exception("Vendor directory missing. Please run <code>composer install</code> or upload the <code>vendor</code> folder.");
+                        throw new Exception("Vendor directory missing. Please run <code>composer install</code>, upload the <code>vendor</code> folder, or use the <a href='fix-sys.php' class='text-blue-600 underline'>System Fixer</a> to extract a <code>vendor.zip</code> archive.");
                     }
                     require $vendorPath;
 

@@ -23,5 +23,4 @@ Homestead.yaml
 Thumbs.db
 
 vendor.zip
-/vendor/
 /node_modules/
