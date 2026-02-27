@@ -22,7 +22,7 @@ class SsoController extends Controller
      * Map provider names to Socialite driver names
      */
     protected array $driverMap = [
-        'azure' => 'microsoft-azure',
+        'azure' => 'azure',
         'google' => 'google',
         'zoho' => 'zoho',
     ];
