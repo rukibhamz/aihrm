@@ -72,11 +72,6 @@ class PerformanceReviewController extends Controller
             'status' => $validated['status'],
         ]);
         
-        // If submitted, trigger AI analysis (Placeholder)
-        if ($validated['status'] === 'submitted') {
-            // TODO: Call AIService::analyzePerformance($review)
-        }
-
         return back()->with('success', 'Review updated successfully.');
     }
 }

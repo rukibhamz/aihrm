@@ -40,6 +40,10 @@ class SettingsController extends Controller
             'google_client_secret' => Setting::get('google_client_secret', ''),
             'zoho_client_id' => Setting::get('zoho_client_id', ''),
             'zoho_client_secret' => Setting::get('zoho_client_secret', ''),
+            'sso_azure_enabled' => Setting::get('sso_azure_enabled', 'no'),
+            'sso_google_enabled' => Setting::get('sso_google_enabled', 'no'),
+            'sso_zoho_enabled' => Setting::get('sso_zoho_enabled', 'no'),
+            'sso_allow_registration' => Setting::get('sso_allow_registration', 'no'),
             
             // Branding & Theme
             'primary_color' => Setting::get('primary_color', '#000000'),
@@ -81,6 +85,10 @@ class SettingsController extends Controller
             'google_client_secret' => 'nullable|string|max:255',
             'zoho_client_id' => 'nullable|string|max:255',
             'zoho_client_secret' => 'nullable|string|max:255',
+            'sso_azure_enabled' => 'nullable|in:yes,no',
+            'sso_google_enabled' => 'nullable|in:yes,no',
+            'sso_zoho_enabled' => 'nullable|in:yes,no',
+            'sso_allow_registration' => 'nullable|in:yes,no',
             
             // Branding & Theme
             'primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
@@ -132,6 +140,12 @@ class SettingsController extends Controller
         Setting::set('zoho_client_id', $validated['zoho_client_id'] ?? '');
         Setting::set('zoho_client_secret', $validated['zoho_client_secret'] ?? '');
 
+        // Save SSO Toggle Settings
+        Setting::set('sso_azure_enabled', $validated['sso_azure_enabled'] ?? 'no');
+        Setting::set('sso_google_enabled', $validated['sso_google_enabled'] ?? 'no');
+        Setting::set('sso_zoho_enabled', $validated['sso_zoho_enabled'] ?? 'no');
+        Setting::set('sso_allow_registration', $validated['sso_allow_registration'] ?? 'no');
+        
         // Save Branding & Theme
         Setting::set('primary_color', $validated['primary_color'] ?? '#000000');
 

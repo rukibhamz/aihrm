@@ -7,16 +7,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// SSO Routes (must be outside auth middleware for unauthenticated access)
+Route::get('auth/{provider}', [\App\Http\Controllers\Auth\SsoController::class, 'redirectToProvider'])
+    ->where('provider', 'azure|google|zoho')
+    ->name('sso.login');
+Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SsoController::class, 'handleProviderCallback'])
+    ->where('provider', 'azure|google|zoho')
+    ->name('sso.callback');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['verified', 'force_password_change'])->name('dashboard');
 
     // Password Change Routes
     Route::get('change-password', [\App\Http\Controllers\Auth\PasswordChangeController::class, 'show'])->name('password.change.show');
     Route::post('change-password', [\App\Http\Controllers\Auth\PasswordChangeController::class, 'update'])->name('password.change.update');
-
-    // SSO Routes
-    Route::get('auth/{provider}', [\App\Http\Controllers\Auth\SsoController::class, 'redirectToProvider'])->name('sso.login');
-    Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SsoController::class, 'handleProviderCallback'])->name('sso.callback');
 
 
 
@@ -68,8 +71,6 @@ Route::middleware('auth')->group(function () {
          Route::get('my-payslips', [\App\Http\Controllers\Employee\PayslipController::class, 'index'])->name('my-payslips.index');
          Route::get('my-payslips/{payslip}/download', [\App\Http\Controllers\Employee\PayslipController::class, 'download'])->name('my-payslips.download');
     });
-    Route::get('chatbot', [\App\Http\Controllers\ChatbotController::class, 'index'])->name('chatbot.index');
-    Route::post('chatbot/send', [\App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
 
     // Admin Only Routes
     Route::middleware('role:Admin')->group(function () {
@@ -136,11 +137,6 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/leaves/bulk-approve', [\App\Http\Controllers\Admin\LeaveController::class, 'bulkApprove'])->name('admin.leaves.bulk-approve');
         Route::post('admin/leaves/bulk-reject', [\App\Http\Controllers\Admin\LeaveController::class, 'bulkReject'])->name('admin.leaves.bulk-reject');
         Route::resource('admin/leaves', \App\Http\Controllers\Admin\LeaveController::class, ['as' => 'admin'])->only(['index', 'update']);
-        // AI Tools
-        Route::get('admin/ai/compliance', [\App\Http\Controllers\Admin\AIController::class, 'compliance'])->name('admin.ai.compliance');
-        Route::post('admin/ai/compliance/run', [\App\Http\Controllers\Admin\AIController::class, 'runComplianceCheck'])->name('admin.ai.compliance.run');
-        Route::get('admin/ai/performance', [\App\Http\Controllers\Admin\AIController::class, 'performance'])->name('admin.ai.performance');
-        Route::post('admin/ai/performance/analyze', [\App\Http\Controllers\Admin\AIController::class, 'analyzePerformance'])->name('admin.ai.performance.analyze');
 
         Route::resource('admin/leave-types', \App\Http\Controllers\Admin\LeaveTypeController::class, ['as' => 'admin']);
         Route::resource('admin/leave-balances', \App\Http\Controllers\Admin\LeaveBalanceController::class, ['as' => 'admin'])->only(['index', 'update']);
@@ -220,12 +216,6 @@ Route::middleware('guest')->group(function () {
     Route::get('two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'show'])
         ->name('two-factor.challenge');
     Route::post('two-factor-challenge', [\App\Http\Controllers\Auth\TwoFactorChallengeController::class, 'store']);
-});
-
-// Audit Logs (Admin only)
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('admin.audit-logs.index');
-    Route::get('audit-logs/{audit}', [\App\Http\Controllers\Admin\AuditLogController::class, 'show'])->name('admin.audit-logs.show');
 });
 
 require __DIR__.'/auth.php';

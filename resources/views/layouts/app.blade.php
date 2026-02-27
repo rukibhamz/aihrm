@@ -334,6 +334,7 @@
             }
         @endauth
     </script>
+    @stack('scripts')
 </body>
 </html>
 

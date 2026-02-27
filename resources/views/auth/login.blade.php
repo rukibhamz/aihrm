@@ -44,6 +44,14 @@
             </x-primary-button>
         </div>
 
+        @php
+            $ssoAzure = \App\Models\Setting::get('sso_azure_enabled', 'no') === 'yes';
+            $ssoGoogle = \App\Models\Setting::get('sso_google_enabled', 'no') === 'yes';
+            $ssoZoho = \App\Models\Setting::get('sso_zoho_enabled', 'no') === 'yes';
+            $anySsoEnabled = $ssoAzure || $ssoGoogle || $ssoZoho;
+        @endphp
+
+        @if($anySsoEnabled)
         <!-- SSO Divider -->
         <div class="relative my-6">
             <div class="absolute inset-0 flex items-center">
@@ -56,20 +64,40 @@
 
         <!-- SSO Buttons -->
         <div class="grid grid-cols-1 gap-3">
-            <a href="{{ route('sso.login', 'azure') }}" class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <svg class="h-5 w-5 mr-2" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 0L0 0L0 21L10.5 21V0Z" fill="#F25022"/><path d="M21 0L10.5 0V21H21V0Z" fill="#00A4EF"/><path d="M10.5 0L0 0L0 10.5H10.5V0Z" fill="#7FBA00"/><path d="M21 0L10.5 0V10.5H21V0Z" fill="#FFB900"/><path d="M10.5 10.5H0V21H10.5V10.5Z" fill="#F25022"/><path d="M21 10.5H10.5V21H21V10.5Z" fill="#00A4EF"/></svg>
-                Microsoft Azure
+            @if($ssoAzure)
+            <a href="{{ route('sso.login', 'azure') }}" class="flex items-center justify-center w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                <svg class="h-5 w-5 mr-2" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="11" height="11" fill="#F25022"/>
+                    <rect x="12" width="11" height="11" fill="#7FBA00"/>
+                    <rect y="12" width="11" height="11" fill="#00A4EF"/>
+                    <rect x="12" y="12" width="11" height="11" fill="#FFB900"/>
+                </svg>
+                Microsoft Azure AD
             </a>
-            
-            <a href="{{ route('sso.login', 'google') }}" class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>
+            @endif
+
+            @if($ssoGoogle)
+            <a href="{{ route('sso.login', 'google') }}" class="flex items-center justify-center w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
                 Google Workspace
             </a>
+            @endif
 
-            <a href="{{ route('sso.login', 'zoho') }}" class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM9 17H7v-4H5v-2h2V7h2v4h2v2H9v4zm6 0h-2V7h2v10zm4 0h-2v-4h-2v-2h2V7h2v4h2v2h-2v4z"/></svg>
+            @if($ssoZoho)
+            <a href="{{ route('sso.login', 'zoho') }}" class="flex items-center justify-center w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" fill="#C8202B"/>
+                    <path d="M7 16.5l3-5.5h2l-3 5.5H7zm4.5-5.5h2l3 5.5h-2l-3-5.5z" fill="white"/>
+                </svg>
                 Zoho Workspace
             </a>
+            @endif
         </div>
+        @endif
     </form>
 </x-guest-layout>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register SSO event listeners for community Socialite providers
+        Event::listen(
+            \SocialiteProviders\Manager\SocialiteWasBorn::class,
+            [\SocialiteProviders\MicrosoftAzure\MicrosoftAzureExtendSocialite::class, 'handle']
+        );
+        Event::listen(
+            \SocialiteProviders\Manager\SocialiteWasBorn::class,
+            [\SocialiteProviders\Zoho\ZohoExtendSocialite::class, 'handle']
+        );
     }
 
     /**
