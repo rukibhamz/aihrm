@@ -15,12 +15,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register SSO event listeners for community Socialite providers
         Event::listen(
-            \SocialiteProviders\Manager\SocialiteWasBorn::class,
-            [\SocialiteProviders\MicrosoftAzure\MicrosoftAzureExtendSocialite::class, 'handle']
+            \SocialiteProviders\Manager\SocialiteWasCalled::class,
+            \SocialiteProviders\Azure\AzureExtendSocialite::class . '@handle'
         );
         Event::listen(
-            \SocialiteProviders\Manager\SocialiteWasBorn::class,
-            [\SocialiteProviders\Zoho\ZohoExtendSocialite::class, 'handle']
+            \SocialiteProviders\Manager\SocialiteWasCalled::class,
+            \SocialiteProviders\Zoho\ZohoExtendSocialite::class . '@handle'
         );
     }
 
