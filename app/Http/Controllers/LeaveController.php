@@ -40,7 +40,8 @@ class LeaveController extends Controller
             if ($departmentId) {
                 $q->where('department_id', $departmentId);
             }
-        })->where('id', '!=', Auth::id())->where('status', 'active')->get();
+            $q->where('status', 'active');
+        })->where('id', '!=', Auth::id())->get();
 
         return view('leaves.create', compact('leaveTypes', 'users'));
     }
@@ -161,7 +162,8 @@ class LeaveController extends Controller
             if ($departmentId) {
                 $q->where('department_id', $departmentId);
             }
-        })->where('id', '!=', Auth::id())->where('status', 'active')->get();
+            $q->where('status', 'active');
+        })->where('id', '!=', Auth::id())->get();
         
         return view('leaves.edit', compact('leaf', 'leaveTypes', 'users'));
     }
