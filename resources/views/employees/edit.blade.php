@@ -108,6 +108,17 @@
                         </select>
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Employment Status *</label>
+                        <select name="employment_status_id" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            <option value="">Select Status</option>
+                            @foreach($employmentStatuses as $status)
+                                <option value="{{ $status->id }}" {{ old('employment_status_id', $employee->employment_status_id) == $status->id ? 'selected' : '' }}>
+                                    {{ $status->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Direct Manager</label>
                         <select name="manager_id" 
                             class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">

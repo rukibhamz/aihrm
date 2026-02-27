@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center bg-gradient-to-r from-blue-600 to-indigo-700 p-8 rounded-2xl text-white shadow-lg">
+    <div class="mb-8 flex justify-between items-center px-2">
         <div>
-            <h1 class="text-3xl font-bold tracking-tight">Job Postings</h1>
-            <p class="mt-2 text-blue-100 text-lg">Manage open positions and recruitment.</p>
+            <h1 class="text-2xl font-bold tracking-tight text-neutral-900">Job Postings</h1>
+            <p class="mt-1 text-sm text-neutral-500">Manage open positions and recruitment.</p>
         </div>
         <div>
-            <a href="{{ route('admin.jobs.create') }}" class="btn-primary bg-white text-blue-600 hover:bg-gray-50 border-0 flex items-center justify-center gap-2">
+            <a href="{{ route('admin.jobs.create') }}" class="btn-primary flex items-center justify-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>

@@ -28,6 +28,11 @@ class Employee extends Model implements AuditableContract
         return $this->belongsTo(Department::class);
     }
 
+    public function employmentStatus()
+    {
+        return $this->belongsTo(EmploymentStatus::class);
+    }
+
     public function designation()
     {
         return $this->belongsTo(Designation::class);

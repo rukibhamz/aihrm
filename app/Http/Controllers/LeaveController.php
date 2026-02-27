@@ -27,8 +27,21 @@ class LeaveController extends Controller
 
     public function create()
     {
-        $leaveTypes = LeaveType::all();
-        $users = User::where('id', '!=', Auth::id())->get(); // Exclude self
+        $employee = Auth::user()->employee;
+        $statusId = $employee ? $employee->employment_status_id : null;
+        $departmentId = $employee ? $employee->department_id : null;
+
+        $leaveTypes = LeaveType::whereDoesntHave('employmentStatuses')
+            ->orWhereHas('employmentStatuses', function($q) use ($statusId) {
+                $q->where('employment_status_id', $statusId);
+            })->get();
+
+        $users = User::whereHas('employee', function($q) use ($departmentId) {
+            if ($departmentId) {
+                $q->where('department_id', $departmentId);
+            }
+        })->where('id', '!=', Auth::id())->where('status', 'active')->get();
+
         return view('leaves.create', compact('leaveTypes', 'users'));
     }
 
@@ -65,12 +78,14 @@ class LeaveController extends Controller
             ->first();
 
         if (!$balance) {
+            $allowedDays = $leaveType->getDaysAllowedForUser(Auth::user());
+            
             // Create default balance if not exists (for MVP)
             $balance = \App\Models\LeaveBalance::create([
                 'user_id' => Auth::id(),
                 'leave_type_id' => $validated['leave_type_id'],
                 'year' => date('Y'),
-                'total_days' => 20, // Default allowance
+                'total_days' => $allowedDays,
                 'used_days' => 0,
             ]);
         }
@@ -133,8 +148,20 @@ class LeaveController extends Controller
                 ->with('error', 'Only pending leave requests can be edited.');
         }
 
-        $leaveTypes = LeaveType::all();
-        $users = User::where('id', '!=', Auth::id())->get();
+        $employee = Auth::user()->employee;
+        $statusId = $employee ? $employee->employment_status_id : null;
+        $departmentId = $employee ? $employee->department_id : null;
+
+        $leaveTypes = LeaveType::whereDoesntHave('employmentStatuses')
+            ->orWhereHas('employmentStatuses', function($q) use ($statusId) {
+                $q->where('employment_status_id', $statusId);
+            })->get();
+
+        $users = User::whereHas('employee', function($q) use ($departmentId) {
+            if ($departmentId) {
+                $q->where('department_id', $departmentId);
+            }
+        })->where('id', '!=', Auth::id())->where('status', 'active')->get();
         
         return view('leaves.edit', compact('leaf', 'leaveTypes', 'users'));
     }

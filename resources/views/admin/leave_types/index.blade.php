@@ -78,6 +78,33 @@
                                         <input type="checkbox" id="edit-paid-{{ $type->id }}" name="is_paid" value="1" {{ $type->is_paid ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
                                         <label for="edit-paid-{{ $type->id }}" class="ml-2 block text-sm text-neutral-900">Is Paid Leave?</label>
                                     </div>
+                                    <div class="pt-2">
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1.5">Eligible Employment Statuses</label>
+                                        <div class="grid grid-cols-2 gap-2 mt-2">
+                                            @foreach($employmentStatuses as $status)
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" id="edit-status-{{ $type->id }}-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" {{ $type->employmentStatuses->contains('id', $status->id) ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                                                    <label for="edit-status-{{ $type->id }}-{{ $status->id }}" class="ml-2 block text-sm text-neutral-700">{{ $status->name }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <div class="pt-4 border-t border-neutral-100">
+                                        <label class="block text-sm font-medium text-neutral-700 mb-2">Grade-Level Days Override (Optional)</label>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            @foreach($gradeLevels as $grade)
+                                                @php
+                                                    $existingOverride = $type->grades->where('grade_level_id', $grade->id)->first();
+                                                @endphp
+                                                <div>
+                                                    <label for="edit-grade-{{ $type->id }}-{{ $grade->id }}" class="block text-xs text-neutral-600 mb-1">{{ $grade->name }}</label>
+                                                    <input type="number" id="edit-grade-{{ $type->id }}-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" value="{{ $existingOverride ? $existingOverride->days_allowed : '' }}" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    
                                     <div>
                                         <label for="edit-desc-{{ $type->id }}" class="block text-sm font-medium text-neutral-700 mb-1.5">Description</label>
                                         <textarea id="edit-desc-{{ $type->id }}" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">{{ $type->description }}</textarea>
@@ -127,6 +154,32 @@
                     <input type="checkbox" id="is_paid" name="is_paid" value="1" checked class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
                     <label for="is_paid" class="ml-2 block text-sm text-neutral-900">Is Paid Leave?</label>
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-neutral-700 mb-1.5">Eligible Employment Statuses</label>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        @foreach($employmentStatuses as $status)
+                            <div class="flex items-center">
+                                <input type="checkbox" id="create-status-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" checked class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                                <label for="create-status-{{ $status->id }}" class="ml-2 block text-sm text-neutral-700">{{ $status->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-1">If no statuses are selected, no one can apply for this leave type.</p>
+                </div>
+                
+                <div class="pt-4 border-t border-neutral-100">
+                    <label class="block text-sm font-medium text-neutral-700 mb-2">Grade-Level Days Override (Optional)</label>
+                    <p class="text-xs text-neutral-500 mb-3">Leave blank to use the default days allowed above.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        @foreach($gradeLevels as $grade)
+                            <div>
+                                <label for="create-grade-{{ $grade->id }}" class="block text-xs text-neutral-600 mb-1">{{ $grade->name }}</label>
+                                <input type="number" id="create-grade-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
                 <div>
                     <label for="description" class="block text-sm font-medium text-neutral-700 mb-1.5">Description</label>
                     <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"></textarea>

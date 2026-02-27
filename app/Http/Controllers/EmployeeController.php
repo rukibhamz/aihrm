@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Designation;
+use App\Models\EmploymentStatus;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -24,8 +25,9 @@ class EmployeeController extends Controller
         // Get all potential managers (anyone with Manager role or just all employees for flexibility)
         // For now, let's allow any employee to be a manager for simplicity
         $managers = Employee::with('user')->where('status', 'active')->get();
+        $employmentStatuses = EmploymentStatus::all();
         
-        return view('employees.create', compact('departments', 'designations', 'managers', 'roles'));
+        return view('employees.create', compact('departments', 'designations', 'managers', 'roles', 'employmentStatuses'));
     }
 
     public function store(Request $request)
@@ -45,6 +47,7 @@ class EmployeeController extends Controller
             'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'role' => 'required|exists:roles,name',
+            'employment_status_id' => 'required|exists:employment_statuses,id',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -76,6 +79,7 @@ class EmployeeController extends Controller
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
             'gender' => $validated['gender'],
+            'employment_status_id' => $validated['employment_status_id'],
             'join_date' => $validated['join_date'] ?? now(),
             'status' => 'active',
         ]);
@@ -170,8 +174,9 @@ class EmployeeController extends Controller
             ->where('status', 'active')
             ->where('id', '!=', $employee->id) // Prevent self-selection
             ->get();
+        $employmentStatuses = EmploymentStatus::all();
             
-        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers', 'roles'));
+        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers', 'roles', 'employmentStatuses'));
     }
 
     public function update(Request $request, Employee $employee)
@@ -189,6 +194,7 @@ class EmployeeController extends Controller
             'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'status' => 'required|in:active,inactive,terminated',
+            'employment_status_id' => 'required|exists:employment_statuses,id',
             'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
         ]);
@@ -214,6 +220,7 @@ class EmployeeController extends Controller
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
             'gender' => $validated['gender'],
+            'employment_status_id' => $validated['employment_status_id'],
             'join_date' => $validated['join_date'] ?? null,
             'status' => $validated['status'],
         ]);
