@@ -185,7 +185,22 @@ if (file_exists($envFile) && !str_contains(file_get_contents($envFile), 'APP_KEY
 }
 
 // Installation Logic
-if (isset($_GET['install_sys'])) {
+if (isset($_GET['repair_schema'])) {
+    echo "\n--- STARTING SCHEMA REPAIR ---\n";
+    try {
+        \Illuminate\Support\Facades\DB::table('migrations')->where('migration', 'like', '%employment_status%')->delete();
+        \Illuminate\Support\Facades\Schema::table('employees', function (\Illuminate\Database\Schema\Blueprint $table) {
+            $table->dropForeign(['employment_status_id']);
+        });
+        \Illuminate\Support\Facades\Schema::dropIfExists('leave_type_employment_status');
+        \Illuminate\Support\Facades\Schema::dropIfExists('employment_statuses');
+        echo "Orphaned schema dropped successfully.\n";
+    } catch (\Throwable $e) {
+        echo "Cleanup note: " . $e->getMessage() . "\n";
+    }
+    run_cmd($kernel, 'migrate', ['--force' => true]);
+    echo "--- SCHEMA REPAIR COMPLETE ---\n";
+} elseif (isset($_GET['install_sys'])) {
     echo "\n--- STARTING INSTALLATION ---\n";
     run_cmd($kernel, 'migrate:fresh', ['--force' => true]);
     run_cmd($kernel, 'db:seed', ['--force' => true]);
@@ -252,6 +267,9 @@ echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; m
         <a href='/public/' style='display:inline-block; margin-top:10px; padding:10px 20px; background:#166534; color:white; text-decoration:none; border-radius:5px;'>GO TO LOGIN</a>
         <br><br>
         <div style='border-top:1px solid #ccc; padding-top:10px; margin-top:10px;'>
+             <strong>Database Schema Stuck? (1146 error)</strong><br>
+             <a href='?repair_schema=1' style='color:#d97706; font-size:0.9em; font-weight:bold; display:inline-block; margin-bottom: 10px;'>🛠 Repair Orphaned Tables</a><br>
+
              <strong>Fresh Install Needed?</strong><br>
              <a href='?install_sys=1' onclick=\"return confirm('WARNING: This will WIPE the database. Continue?')\" style='color:#dc2626; font-size:0.9em;'>⚠ Run Full Installation (Wipe DB)</a>
         </div>
