@@ -13,7 +13,7 @@
 <body class="bg-[#f9fafb] flex flex-col min-h-screen">
     <!-- Navigation -->
     <nav class="bg-white border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +50,7 @@
 
         <!-- Progress Tracking -->
         <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-8">
-            <div class="flex justify-between items-center mb-2">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
                 <div>
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest block mb-1">STEP 1 OF 4</span>
                     <h2 class="font-bold text-gray-900">Personal Information</h2>
@@ -240,3 +240,4 @@
     </main>
 </body>
 </html>
+

@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-neutral-200">
         <div class="p-6 bg-white border-b border-neutral-200">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-neutral-900">Leave Requests Overview</h2>
                     <p class="text-sm text-neutral-500 mt-1">View all employee leave requests. Line managers handle approvals for their teams.</p>
@@ -85,3 +85,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -4,7 +4,7 @@
         <p class="mt-1 text-sm text-neutral-500">Confidential reports submitted securely</p>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">
             <thead class="bg-neutral-50">
                 <tr>

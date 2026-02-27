@@ -4,7 +4,7 @@
         <p class="mt-1 text-sm text-neutral-500">View and download your monthly salary slips</p>
     </div>
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">
             <thead class="bg-neutral-50">
                 <tr>

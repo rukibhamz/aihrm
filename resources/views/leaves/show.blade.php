@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
@@ -35,7 +35,7 @@
         </div>
 
         <div class="bg-white shadow-sm border border-neutral-200 rounded-xl overflow-hidden">
-            <div class="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex items-center justify-between">
+            <div class="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-lg font-bold text-neutral-900">Leave Request Details</h3>
                     <p class="text-sm text-neutral-500">Submitted on {{ $leaf->created_at->format('M d, Y') }}</p>
@@ -97,7 +97,7 @@
                         @if($leaf->reliefOfficer)
                         <div>
                             <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-1">Relief Officer</label>
-                            <div class="flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-100">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-3 bg-neutral-50 rounded-lg border border-neutral-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-xs font-bold border border-neutral-200">
                                         {{ substr($leaf->reliefOfficer->name, 0, 1) }}
@@ -147,3 +147,4 @@
         @endif
     </div>
 </x-app-layout>
+

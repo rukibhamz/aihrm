@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Payroll Management</h1>
             <p class="mt-1 text-sm text-neutral-500">History of monthly payrolls</p>
@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">
             <thead class="bg-neutral-50">
                 <tr>
@@ -66,3 +66,5 @@
         {{ $payrolls->links() }}
     </div>
 </x-app-layout>
+
+

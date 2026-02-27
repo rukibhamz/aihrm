@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 class="text-2xl font-bold text-neutral-900">Relief Officer Requests</h2>
             <p class="text-sm text-neutral-500">Manage leave requests where you've been assigned as a relief officer.</p>
         </div>

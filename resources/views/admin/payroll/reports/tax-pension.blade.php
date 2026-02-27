@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="font-semibold text-xl text-neutral-800 leading-tight">
                 {{ __('Tax & Pension Compliance') }} - {{ date('F Y', mktime(0, 0, 0, $validated['month'], 1, $validated['year'])) }}
             </h2>
@@ -21,7 +21,7 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <!-- Tax Card -->
-                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-hidden">
+                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-x-auto">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-red-50 blur-3xl rounded-full translate-x-12 -translate-y-12"></div>
                         <div class="relative z-10">
                             <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-6">
@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- Pension Card -->
-                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-hidden">
+                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-x-auto">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-green-50 blur-3xl rounded-full translate-x-12 -translate-y-12"></div>
                         <div class="relative z-10">
                             <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-6">
@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Compliance Table -->
-                <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-x-auto">
                     <div class="p-6 border-b border-gray-100 bg-gray-50/30">
                         <h3 class="font-bold text-gray-900">Compliance Log</h3>
                     </div>
@@ -89,3 +89,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -20,6 +20,9 @@ class SettingsController extends Controller
             // Working Days Configuration
             'working_days' => json_decode(Setting::get('working_days', '[1,2,3,4,5]'), true),
             
+            // Performance & Goals
+            'performance_cycle_frequency' => Setting::get('performance_cycle_frequency', 'annual'),
+            
             // SMTP Settings
             'smtp_host' => Setting::get('smtp_host', ''),
             'smtp_port' => Setting::get('smtp_port', '587'),
@@ -57,6 +60,9 @@ class SettingsController extends Controller
             // Working Days Validation
             'working_days' => 'required|array|min:1',
             'working_days.*' => 'integer|min:1|max:7',
+
+            // Performance Cycles
+            'performance_cycle_frequency' => 'required|in:monthly,quarterly,half_yearly,annual',
             
             // SMTP Validation
             'smtp_host' => 'nullable|string|max:255',
@@ -101,6 +107,9 @@ class SettingsController extends Controller
         
         // Save Working Days
         Setting::set('working_days', json_encode($validated['working_days']));
+        
+        // Save Performance Cycle Frequency
+        Setting::set('performance_cycle_frequency', $validated['performance_cycle_frequency']);
         
         // Save SMTP Settings
         Setting::set('smtp_host', $validated['smtp_host'] ?? '');

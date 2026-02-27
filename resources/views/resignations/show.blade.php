@@ -9,7 +9,7 @@
         @endif
 
         <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
-             <div class="p-6 border-b border-neutral-100 bg-neutral-50 flex justify-between items-center">
+             <div class="p-6 border-b border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 class="text-xl font-bold text-neutral-900">Resignation Status</h2>
                 <span class="px-3 py-1 text-sm font-bold rounded-full uppercase tracking-wide
                     {{ $resignation->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}

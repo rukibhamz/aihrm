@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Task Templates</h1>
             <p class="mt-1 text-sm text-neutral-500">Manage onboarding and offboarding checklists</p>
@@ -9,7 +9,7 @@
         </a>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">
             <thead class="bg-neutral-50">
                 <tr>
@@ -54,3 +54,4 @@
         {{ $tasks->links() }}
     </div>
 </x-app-layout>
+

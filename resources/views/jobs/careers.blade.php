@@ -45,7 +45,7 @@
 
     <!-- Navbar -->
     <nav class="bg-white border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@
 
             <!-- Main Content -->
             <div class="flex-1">
-                <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-200">
                     <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
                         {{ $jobs->total() }} open positions <span class="text-gray-400 font-normal text-sm">• {{ request('department') ?: 'Engineering' }}</span>
                     </h2>
@@ -339,3 +339,4 @@
     });
 </script>
 </html>
+

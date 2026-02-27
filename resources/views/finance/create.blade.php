@@ -42,7 +42,7 @@
                     @error('attachment') <p class="text-red-500 text-xs italic">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
                         Submit Request
                     </button>
@@ -54,3 +54,4 @@
         </div>
     </div>
 </x-app-layout>
+

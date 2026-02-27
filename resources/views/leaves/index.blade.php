@@ -13,7 +13,7 @@
                 </div>
             @endif
 
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Leave Requests</h2>
                     <p class="text-sm text-gray-500 mt-1">You can edit or cancel pending leave requests</p>
@@ -79,3 +79,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -7,9 +7,9 @@
                 </div>
             @endif
 
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Financial Requests</h2>
-                <a href="{{ route('finance.create') }}" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 flex-shrink-0">Financial Requests</h2>
+                <a href="{{ route('finance.create') }}" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out whitespace-nowrap">
                     New Request
                 </a>
             </div>

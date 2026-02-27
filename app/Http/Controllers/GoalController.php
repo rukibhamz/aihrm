@@ -26,6 +26,15 @@ class GoalController extends Controller
             'weight' => 'integer|min:1|max:10',
         ]);
 
+        $cycleFrequency = \App\Models\Setting::get('performance_cycle_frequency', 'annual');
+        $now = now();
+        $cycleName = match($cycleFrequency) {
+            'monthly' => $now->format('M Y'),
+            'quarterly' => 'Q' . ceil($now->month / 3) . ' ' . $now->year,
+            'half_yearly' => 'H' . ceil($now->month / 6) . ' ' . $now->year,
+            default => (string) $now->year,
+        };
+
         $goal = Goal::create([
             'user_id' => Auth::id(),
             'title' => $validated['title'],
@@ -36,6 +45,7 @@ class GoalController extends Controller
             'current_value' => 0,
             'unit' => $validated['unit'],
             'weight' => $validated['weight'] ?? 1,
+            'cycle_name' => $cycleName,
             'status' => 'not_started',
             'progress' => 0,
         ]);
@@ -47,6 +57,10 @@ class GoalController extends Controller
     {
         if ($goal->user_id !== Auth::id()) {
             abort(403);
+        }
+
+        if ($goal->status === 'completed') {
+            return back()->withErrors(['status' => 'This goal has been marked as completed and can no longer be updated.']);
         }
 
         $validated = $request->validate([

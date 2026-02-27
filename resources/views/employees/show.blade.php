@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Page Header -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Employee Profile</h1>
             <p class="mt-1 text-sm text-neutral-500 italic">Viewing details for {{ $employee->user->name ?? 'N/A' }}</p>
@@ -78,7 +78,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Personal Information -->
                 <div class="card p-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                         <h3 class="text-lg font-bold text-neutral-800">Personal Information</h3>
                         <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
@@ -104,7 +104,7 @@
 
                 <!-- Employment Information -->
                 <div class="card p-6">
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                         <h3 class="text-lg font-bold text-neutral-800">Employment Information</h3>
                         <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
@@ -132,7 +132,7 @@
         @if(auth()->user()->hasAnyRole(['Admin', 'HR']))
         <div id="content-attendance" class="tab-content hidden animate-in fade-in duration-300">
             <div class="card overflow-hidden">
-                <div class="p-4 border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
+                <div class="p-4 border-b border-neutral-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-neutral-50">
                     <h3 class="font-bold text-neutral-800 italic">Recent Attendance</h3>
                     <a href="{{ route('attendance.index') }}?user_id={{ $employee->user_id }}" class="text-xs font-semibold text-neutral-500 hover:text-black hover:underline transition">See all activity →</a>
                 </div>
@@ -216,7 +216,7 @@
         @if(auth()->user()->hasAnyRole(['Admin', 'Finance']))
         <div id="content-financials" class="tab-content hidden animate-in fade-in duration-300">
             <div class="card p-6">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
                     <h3 class="text-lg font-bold text-neutral-800">Current Salary Structure</h3>
                     <a href="{{ route('admin.salary.edit', $employee->user_id) }}" class="btn-secondary text-xs font-semibold px-4 py-2 italic flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
@@ -294,3 +294,4 @@
         }
     </script>
 </x-app-layout>
+

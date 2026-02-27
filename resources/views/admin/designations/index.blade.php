@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex items-center justify-between">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Designations</h1>
             <p class="mt-1 text-sm text-neutral-500">Manage job roles and designations</p>
@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="w-full text-left text-sm text-neutral-600">
             <thead class="bg-neutral-50 border-b border-neutral-200 font-medium text-neutral-900">
                 <tr>
@@ -152,3 +152,5 @@
         </form>
     </x-modal>
 </x-app-layout>
+
+

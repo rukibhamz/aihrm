@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Leave Calendar</h1>
             <p class="mt-1 text-sm text-neutral-500">Overview of approved leaves for {{ $date->format('F Y') }}</p>
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <div class="py-3">Sun</div>
             <div class="py-3">Mon</div>
@@ -82,3 +82,5 @@
         </div>
     </div>
 </x-app-layout>
+
+

@@ -14,8 +14,11 @@ class Goal extends Model
         'title',
         'description',
         'type', // text, metric
+        'cycle_name',
         'status',
         'progress',
+        'manager_score',
+        'manager_comment',
         'due_date',
         'target_value',
         'current_value',

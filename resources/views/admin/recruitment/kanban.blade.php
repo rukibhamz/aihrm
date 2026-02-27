@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="h-full flex flex-col">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
             <h2 class="text-2xl font-bold text-gray-800">Recruitment Board</h2>
             <p class="text-sm text-gray-500">Manage candidates through the hiring pipeline</p>
@@ -74,7 +74,7 @@
                         
                         <p class="text-xs text-gray-500 mb-3 line-clamp-1">{{ $app->jobPosting->title }}</p>
                         
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-50 text-xs text-gray-400">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 border-t border-gray-50 text-xs text-gray-400">
                             <span>{{ $app->created_at->format('M d') }}</span>
                             @if($app->resume_path)
                             <a href="{{ Storage::url($app->resume_path) }}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1" onclick="event.stopPropagation();">
@@ -158,3 +158,4 @@
     });
 </script>
 </x-app-layout>
+

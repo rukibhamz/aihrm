@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Performance Dashboard</h1>
             <p class="mt-1 text-sm text-neutral-500">Track your Key Performance Indicators (KPIs) and Objectives</p>
@@ -44,9 +44,16 @@
 
             <div class="p-6 flex flex-col h-full">
                 <div class="flex justify-between items-start mb-2">
-                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-neutral-100 text-neutral-600 uppercase tracking-wide">
-                        {{ $goal->type === 'metric' ? 'KPI Metric' : 'Objective' }}
-                    </span>
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-neutral-100 text-neutral-600 uppercase tracking-wide">
+                            {{ $goal->type === 'metric' ? 'KPI Metric' : 'Objective' }}
+                        </span>
+                        @if($goal->cycle_name)
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-semibold bg-blue-50 text-blue-700 tracking-wide">
+                                {{ $goal->cycle_name }}
+                            </span>
+                        @endif
+                    </div>
                     <div class="flex items-center gap-2">
                          @if($goal->traffic_light === 'green')
                             <span class="w-3 h-3 rounded-full bg-green-500 ring-2 ring-green-100"></span>
@@ -90,20 +97,41 @@
                     </div>
                 @endif
 
-                <div class="pt-4 border-t border-neutral-100 flex justify-between items-center mt-auto">
+                @if($goal->manager_score !== null || $goal->manager_comment)
+                    <div class="mt-4 p-3 bg-neutral-50 rounded-lg border border-neutral-100 text-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-bold text-neutral-900">Manager's Evaluation</span>
+                            @if($goal->manager_score !== null)
+                                <span class="px-2 py-0.5 bg-black text-white text-xs font-bold rounded">{{ $goal->manager_score }} / 5</span>
+                            @endif
+                        </div>
+                        @if($goal->manager_comment)
+                            <p class="text-neutral-600 italic">"{{ $goal->manager_comment }}"</p>
+                        @endif
+                    </div>
+                @endif
+                
+                <div class="pt-4 border-t border-neutral-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-auto">
                     <div class="flex flex-col">
                         <span class="text-[10px] uppercase font-bold text-neutral-400">Due Date</span>
                         <span class="text-xs font-medium text-neutral-600">{{ $goal->due_date ? $goal->due_date->format('M d, Y') : 'Ongoing' }}</span>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick='editGoal(@json($goal))' class="px-3 py-1.5 text-xs font-semibold bg-neutral-900 text-white rounded hover:bg-neutral-800 transition">Update</button>
-                        <form action="{{ route('performance.goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Delete this goal?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="p-1.5 text-neutral-400 hover:text-red-600 transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            </button>
-                        </form>
+                    <div class="flex gap-2 items-center">
+                        @if($goal->status === 'completed')
+                            <span class="text-xs font-bold text-green-600 uppercase tracking-wider px-2 flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                Locked
+                            </span>
+                        @else
+                            <button onclick='editGoal(@json($goal))' class="px-3 py-1.5 text-xs font-semibold bg-neutral-900 text-white rounded hover:bg-neutral-800 transition">Update</button>
+                            <form action="{{ route('performance.goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Delete this goal?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-1.5 text-neutral-400 hover:text-red-600 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -128,7 +156,7 @@
     <!-- Create Modal -->
     <dialog id="createGoalModal" class="p-0 rounded-xl shadow-2xl backdrop:bg-black/40 w-full max-w-2xl open:animate-fade-in-up">
         <div class="bg-white">
-            <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
+            <div class="px-6 py-4 border-b border-neutral-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h3 class="text-lg font-bold">New Performance Goal</h3>
                 <button onclick="document.getElementById('createGoalModal').close()" class="text-neutral-400 hover:text-black">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -221,7 +249,7 @@
     <!-- Update Modal -->
     <dialog id="updateGoalModal" class="p-0 rounded-xl shadow-2xl backdrop:bg-black/40 w-full max-w-md open:animate-fade-in-up">
         <div class="bg-white">
-             <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
+             <div class="px-6 py-4 border-b border-neutral-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-neutral-50">
                 <h3 class="text-lg font-bold">Update Progress</h3>
                 <button onclick="document.getElementById('updateGoalModal').close()" class="text-neutral-400 hover:text-black">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -278,7 +306,7 @@
 
     <script>
         function editGoal(goal) {
-            document.getElementById('updateGoalForm').action = `/performance/goals/${goal.id}`;
+            document.getElementById('updateGoalForm').action = `{{ url('/performance/goals') }}/${goal.id}`;
             document.getElementById('updateGoalTitle').textContent = goal.title;
             document.getElementById('goalStatus').value = goal.status;
             
@@ -305,3 +333,4 @@
         }
     </script>
 </x-app-layout>
+

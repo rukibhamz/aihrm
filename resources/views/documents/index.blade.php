@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
                 <h2 class="text-2xl font-bold text-neutral-800">
                     My Documents
@@ -48,7 +48,7 @@
                 <h3 class="font-bold text-gray-900 truncate mb-1" title="{{ $doc->title }}">{{ $doc->title }}</h3>
                 <p class="text-xs text-gray-500 mb-4">{{ $doc->created_at->format('M d, Y') }}</p>
 
-                <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-gray-100">
                     <span class="text-xs text-gray-400">
                         {{-- File size logic if stored in DB would go here --}}
                         File
@@ -75,7 +75,7 @@
     <!-- Upload Modal -->
     <div id="uploadModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-xl bg-white">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                 <h3 class="text-lg font-bold text-gray-900">Upload Document</h3>
                 <button onclick="document.getElementById('uploadModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -118,3 +118,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- Page Header -->
-    <div class="mb-8 flex items-center justify-between">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Add Employee</h1>
             <p class="mt-1 text-sm text-neutral-500">Create a new employee profile</p>
@@ -163,3 +163,4 @@
         </form>
     </div>
 </x-app-layout>
+

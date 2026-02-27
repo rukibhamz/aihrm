@@ -87,7 +87,7 @@
                         </div>
 
                         @if(isset($lesson))
-                        <div class="mt-12 pt-8 border-t border-neutral-100 flex items-center justify-between">
+                        <div class="mt-12 pt-8 border-t border-neutral-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             @php
                                 $prevLesson = $course->lessons->where('order', '<', $lesson->order)->last();
                                 $nextLesson = $course->lessons->where('order', '>', $lesson->order)->first();

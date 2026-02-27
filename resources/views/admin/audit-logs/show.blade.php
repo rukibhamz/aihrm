@@ -77,7 +77,7 @@
 
     <!-- Changes -->
     <div class="col-span-1 lg:col-span-2">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
                 <h3 class="font-bold text-gray-900">Modifications</h3>
                 <span class="text-xs text-gray-500">Old vs New Values</span>

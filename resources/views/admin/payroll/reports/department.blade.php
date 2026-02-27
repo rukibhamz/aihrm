@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="font-semibold text-xl text-neutral-800 leading-tight">
                 {{ __('Departmental Payroll') }} - {{ date('F Y', mktime(0, 0, 0, $validated['month'], 1, $validated['year'])) }}
             </h2>
@@ -21,7 +21,7 @@
             @else
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                      <!-- Table -->
-                     <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                     <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="bg-gray-50 text-gray-500 font-bold uppercase tracking-wider text-[10px]">
                                 <tr>
@@ -51,7 +51,7 @@
                                 $percentage = ($dept->total_net / $data->sum('total_net')) * 100;
                             @endphp
                             <div class="bg-white p-6 rounded-2xl border border-gray-100">
-                                <div class="flex justify-between items-center mb-2">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
                                     <span class="font-bold text-gray-900">{{ $dept->department }}</span>
                                     <span class="text-xs font-bold text-gray-400">{{ number_format($percentage, 1) }}% of Total</span>
                                 </div>
@@ -82,3 +82,4 @@
         </div>
     </div>
 </x-app-layout>
+

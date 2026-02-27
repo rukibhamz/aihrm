@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="font-semibold text-xl text-neutral-800 leading-tight">
                 {{ __('Payroll Summary') }} - {{ date('F Y', mktime(0, 0, 0, $validated['month'], 1, $validated['year'])) }}
             </h2>
@@ -43,7 +43,7 @@
                 </div>
 
                 <!-- Detailed Table -->
-                <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-hidden">
+                <div class="bg-white shadow-sm sm:rounded-2xl border border-gray-100 overflow-x-auto">
                     <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                         <h3 class="font-bold text-gray-900">Breakdown by Employee</h3>
                         <a href="{{ route('admin.payroll-reports.export', ['month' => $validated['month'], 'year' => $validated['year']]) }}" class="text-sm font-bold text-blue-600 hover:text-blue-700">Export CSV</a>
@@ -95,3 +95,4 @@
         </div>
     </div>
 </x-app-layout>
+

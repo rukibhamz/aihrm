@@ -63,7 +63,7 @@
                 <div class="space-y-3">
                     <p class="text-sm text-gray-600 mb-2">The following assets are currently assigned to this employee. Please ensure they are returned.</p>
                     @foreach($assets as $asset)
-                    <div class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-3 bg-white border border-gray-200 rounded-lg">
                         <div>
                             <div class="font-bold text-sm text-gray-900">{{ $asset->name }}</div>
                             <div class="text-xs text-gray-500">S/N: {{ $asset->serial_number ?? 'N/A' }}</div>
@@ -124,3 +124,4 @@
     </div>
 </div>
 </x-app-layout>
+

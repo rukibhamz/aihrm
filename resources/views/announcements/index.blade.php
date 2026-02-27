@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Announcements') }}
             </h2>
@@ -45,7 +45,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-gray-100">
                                 <div class="flex items-center text-sm text-gray-500">
                                     <span>By {{ $announcement->author?->name }}</span>
                                     <span class="mx-2">•</span>
@@ -76,3 +76,4 @@
         </div>
     </div>
 </x-app-layout>
+

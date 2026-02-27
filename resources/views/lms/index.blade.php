@@ -20,7 +20,7 @@
                 @endif
             </div>
             <div class="p-6">
-                <div class="flex items-center justify-between mb-2">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-2">
                     <h3 class="font-semibold text-lg text-neutral-900 group-hover:text-black">{{ $course->title }}</h3>
                     @if($course->userCompletion && $course->userCompletion->status === 'completed')
                         <span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest rounded">Completed</span>
@@ -43,3 +43,4 @@
         @endforelse
     </div>
 </x-app-layout>
+

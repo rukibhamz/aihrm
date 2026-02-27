@@ -57,7 +57,7 @@
                     <p class="text-xs text-gray-500 mt-1">The relief officer will be notified to accept your request.</p>
                 </div>
 
-                <div class="flex items-center justify-between mt-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
                     <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
                         Update Request
                     </button>
@@ -69,3 +69,4 @@
         </div>
     </div>
 </x-app-layout>
+

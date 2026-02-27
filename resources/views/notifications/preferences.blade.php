@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    <div class="card overflow-hidden max-w-3xl">
+    <div class="card overflow-x-auto max-w-3xl">
         <form action="{{ route('notifications.preferences.update') }}" method="POST">
             @csrf
             @method('PUT')

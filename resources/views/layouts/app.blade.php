@@ -272,7 +272,7 @@
             fetch("{{ route('notifications.poll') }}")
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data.id !== lastNotificationId) {
+                    if (data && data.id && data.id !== lastNotificationId) {
                         lastNotificationId = data.id;
                         // Dispatch event for x-toast component
                         window.dispatchEvent(new CustomEvent('notify', {

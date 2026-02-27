@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Report Preview</h1>
             <p class="mt-1 text-sm text-neutral-500">Previewing {{ count($data) }} records for {{ ucfirst($entity) }}</p>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -72,3 +72,5 @@
         </div>
     </div>
 </x-app-layout>
+
+

@@ -164,6 +164,8 @@ Route::middleware('auth')->group(function () {
 
     // Performance Management
     Route::resource('performance/goals', \App\Http\Controllers\GoalController::class, ['as' => 'performance']);
+    Route::get('performance/team-goals', [\App\Http\Controllers\TeamGoalController::class, 'index'])->name('performance.team-goals.index');
+    Route::put('performance/team-goals/{goal}/score', [\App\Http\Controllers\TeamGoalController::class, 'updateScore'])->name('performance.team-goals.score');
     Route::resource('performance/reviews', \App\Http\Controllers\PerformanceReviewController::class, ['as' => 'performance']);
 
     // Notifications

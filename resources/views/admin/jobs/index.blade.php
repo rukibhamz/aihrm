@@ -1,12 +1,12 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center px-2">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-2">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-neutral-900">Job Postings</h1>
             <p class="mt-1 text-sm text-neutral-500">Manage open positions and recruitment.</p>
         </div>
-        <div>
-            <a href="{{ route('admin.jobs.create') }}" class="btn-primary flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-full sm:w-auto">
+            <a href="{{ route('admin.jobs.create') }}" class="btn-primary flex items-center justify-center gap-2 whitespace-nowrap w-full sm:w-auto">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
                 Post New Job
@@ -24,12 +24,12 @@
     @endif
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">
             <h2 class="font-bold text-gray-900">All Job Postings</h2>
             
-            <div class="flex gap-2 text-sm text-gray-500">
-                <span class="px-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm">{{ $jobs->total() }} total</span>
-                <span class="px-3 py-1 bg-green-50 text-green-600 border border-green-100 rounded-full shadow-sm">
+            <div class="flex flex-wrap gap-2 text-sm text-gray-500">
+                <span class="px-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm whitespace-nowrap">{{ $jobs->total() }} total</span>
+                <span class="px-3 py-1 bg-green-50 text-green-600 border border-green-100 rounded-full shadow-sm whitespace-nowrap">
                     {{ $jobs->where('status', 'open')->count() }} open
                 </span>
             </div>

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
             <div class="flex items-center gap-3">
                 <h1 class="text-3xl font-bold tracking-tight text-neutral-900">
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Details Table -->
-    <div class="card overflow-hidden">
+    <div class="card overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">
             <thead class="bg-neutral-50">
                 <tr>
@@ -101,3 +101,5 @@
         </table>
     </div>
 </x-app-layout>
+
+
