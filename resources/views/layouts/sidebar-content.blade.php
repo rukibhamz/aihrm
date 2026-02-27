@@ -181,14 +181,6 @@
                 </svg>
             </button>
             <div x-show="activeMenu === 'admin'" x-cloak x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="space-y-1 mt-1">
-                <a href="{{ route('admin.ai.compliance') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.ai.compliance') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
-                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
-                    <span x-show="!sidebarCollapsed" x-cloak>Compliance Audit</span>
-                </a>
-                <a href="{{ route('admin.ai.performance') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.ai.performance') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
-                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
-                    <span x-show="!sidebarCollapsed" x-cloak>AI Performance</span>
-                </a>
                 <a href="{{ route('admin.assets.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.assets.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Asset Management</span>
