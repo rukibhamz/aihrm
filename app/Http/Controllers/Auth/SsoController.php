@@ -123,6 +123,12 @@ class SsoController extends Controller
                         'email_verified_at' => now(), // SSO-verified email
                     ]);
 
+                    // Automatically create an employee profile since the system depends on it
+                    \App\Models\Employee::create([
+                        'user_id' => $user->id,
+                        'status' => 'active',
+                    ]);
+
                     // Assign default Employee role
                     try {
                         $user->assignRole('Employee');

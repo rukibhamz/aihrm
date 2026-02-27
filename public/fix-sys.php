@@ -200,6 +200,22 @@ if (isset($_GET['repair_schema'])) {
     }
     run_cmd($kernel, 'migrate', ['--force' => true]);
     echo "--- SCHEMA REPAIR COMPLETE ---\n";
+} elseif (isset($_GET['fix_sso_employees'])) {
+    echo "\n--- FIXING ORPHANED SSO EMPLOYEES ---\n";
+    try {
+        $orphans = \App\Models\User::whereNotNull('provider')->whereDoesntHave('employee')->get();
+        $count = 0;
+        foreach ($orphans as $u) {
+            \App\Models\Employee::create([
+                'user_id' => $u->id,
+                'status' => 'active'
+            ]);
+            $count++;
+        }
+        echo "Successfully created Employee profiles for {$count} SSO users.\n";
+    } catch (\Throwable $e) {
+        echo "Error: " . $e->getMessage() . "\n";
+    }
 } elseif (isset($_GET['install_sys'])) {
     echo "\n--- STARTING INSTALLATION ---\n";
     run_cmd($kernel, 'migrate:fresh', ['--force' => true]);
@@ -269,6 +285,9 @@ echo "</pre><div class='status ok' style='text-align:center; font-weight:bold; m
         <div style='border-top:1px solid #ccc; padding-top:10px; margin-top:10px;'>
              <strong>Database Schema Stuck? (1146 error)</strong><br>
              <a href='?repair_schema=1' style='color:#d97706; font-size:0.9em; font-weight:bold; display:inline-block; margin-bottom: 10px;'>🛠 Repair Orphaned Tables</a><br>
+
+             <strong>SSO Users Missing From Employees List?</strong><br>
+             <a href='?fix_sso_employees=1' style='color:#059669; font-size:0.9em; font-weight:bold; display:inline-block; margin-bottom: 10px;'>👥 Restore Missing SSO Employees</a><br>
 
              <strong>Fresh Install Needed?</strong><br>
              <a href='?install_sys=1' onclick=\"return confirm('WARNING: This will WIPE the database. Continue?')\" style='color:#dc2626; font-size:0.9em;'>⚠ Run Full Installation (Wipe DB)</a>
