@@ -70,6 +70,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['auth'])->group(function () { 
          Route::get('my-payslips', [\App\Http\Controllers\Employee\PayslipController::class, 'index'])->name('my-payslips.index');
          Route::get('my-payslips/{payslip}/download', [\App\Http\Controllers\Employee\PayslipController::class, 'download'])->name('my-payslips.download');
+         
+         Route::get('my-bonuses', [\App\Http\Controllers\Employee\BonusController::class, 'index'])->name('my-bonuses.index');
+         Route::resource('my-advances', \App\Http\Controllers\Employee\SalaryAdvanceController::class)->only(['index', 'store']);
+         Route::resource('my-loans', \App\Http\Controllers\Employee\LoanController::class)->only(['index', 'store']);
     });
 
     // Admin Only Routes

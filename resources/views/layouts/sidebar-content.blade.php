@@ -79,6 +79,18 @@
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Claims</span>
                 </a>
+                <a href="{{ route('my-bonuses.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('my-bonuses.index') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>My Bonuses</span>
+                </a>
+                <a href="{{ route('my-advances.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('my-advances.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Salary Advances</span>
+                </a>
+                <a href="{{ route('my-loans.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('my-loans.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Loans</span>
+                </a>
             </div>
         </div>
 
@@ -222,6 +234,7 @@
         @endrole
 
         <!-- Finance & Payroll -->
+        @role('Admin|HR')
         <div class="space-y-1">
             <button @click="activeMenu = activeMenu === 'finance' ? null : 'finance'" 
                     :class="{ 'sidebar-nav-parent-active': activeMenu === 'finance', 'justify-center': sidebarCollapsed }"
@@ -261,5 +274,6 @@
                 </a>
             </div>
         </div>
+        @endrole
     </nav>
 </div>
