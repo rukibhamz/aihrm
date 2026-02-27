@@ -28,6 +28,24 @@ class SsoController extends Controller
     ];
 
     /**
+     * Inject provider configuration dynamically from settings
+     */
+    protected function injectProviderConfig(string $provider): void
+    {
+        $configKey = "services.{$provider}";
+        
+        config([
+            "{$configKey}.client_id" => Setting::get("{$provider}_client_id"),
+            "{$configKey}.client_secret" => Setting::get("{$provider}_client_secret"),
+            "{$configKey}.redirect" => url("/auth/{$provider}/callback"),
+        ]);
+
+        if ($provider === 'azure') {
+            config(["{$configKey}.tenant" => Setting::get('azure_tenant_id')]);
+        }
+    }
+
+    /**
      * Redirect to the SSO provider's login page
      */
     public function redirectToProvider(string $provider)
@@ -39,6 +57,8 @@ class SsoController extends Controller
         if (!$this->isProviderEnabled($provider)) {
             return redirect()->route('login')->withErrors(['email' => ucfirst($provider) . ' SSO is not enabled. Contact your administrator.']);
         }
+
+        $this->injectProviderConfig($provider);
 
         $driver = $this->driverMap[$provider] ?? $provider;
 
@@ -55,6 +75,8 @@ class SsoController extends Controller
         }
 
         try {
+            $this->injectProviderConfig($provider);
+            
             $driver = $this->driverMap[$provider] ?? $provider;
             $socialUser = Socialite::driver($driver)->user();
 
