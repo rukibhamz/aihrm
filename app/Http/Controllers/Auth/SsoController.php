@@ -102,16 +102,7 @@ class SsoController extends Controller
                         'provider_refresh_token' => $socialUser->refreshToken,
                     ]);
                 } else {
-                    // Check if new user registration via SSO is allowed
-                    $allowRegistration = Setting::get('sso_allow_registration', 'no');
-
-                    if ($allowRegistration !== 'yes') {
-                        return redirect()->route('login')->withErrors([
-                            'email' => 'No employee account found with this email. Only existing employees can log in via SSO. Contact your HR administrator.'
-                        ]);
-                    }
-
-                    // Create new user
+                    // Auto-create account for new SSO users
                     $user = User::create([
                         'name' => $socialUser->getName() ?? $socialUser->getEmail(),
                         'email' => $socialUser->getEmail(),
@@ -123,7 +114,7 @@ class SsoController extends Controller
                         'email_verified_at' => now(), // SSO-verified email
                     ]);
 
-                    // Automatically create an employee profile since the system depends on it
+                    // Automatically create an employee profile so the user is visible in the admin employee list
                     \App\Models\Employee::create([
                         'user_id' => $user->id,
                         'status' => 'active',
@@ -135,6 +126,8 @@ class SsoController extends Controller
                     } catch (\Exception $e) {
                         Log::warning('Could not assign default role to SSO user: ' . $e->getMessage());
                     }
+
+                    Log::info("New SSO account created for {$socialUser->getEmail()} via {$provider}");
                 }
             } else {
                 // Update existing tokens
