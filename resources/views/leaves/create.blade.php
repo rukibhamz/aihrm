@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
-                    <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+                    <button type="submit" class="btn-primary">
                         Submit Request
                     </button>
                     <a href="{{ route('leaves.index') }}" class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800">
