@@ -46,7 +46,7 @@
                     <button type="submit" class="btn-primary">
                         Submit Request
                     </button>
-                    <a href="{{ route('finance.index') }}" class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800">
+                    <a href="{{ route('finance.index') }}" class="btn-secondary text-center mt-3 sm:mt-0 sm:ml-3">
                         Cancel
                     </a>
                 </div>

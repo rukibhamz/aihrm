@@ -147,7 +147,7 @@
                             <button type="submit" class="btn-primary w-full sm:w-auto sm:ml-3">
                                 Submit Request
                             </button>
-                            <button type="button" @click="openModal = false" class="mt-3 w-full inline-flex justify-center rounded-md border border-neutral-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-neutral-700 hover:bg-neutral-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            <button type="button" @click="openModal = false" class="btn-secondary w-full sm:w-auto mt-3 sm:mt-0 sm:ml-3">
                                 Cancel
                             </button>
                         </div>
