@@ -19,6 +19,7 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        @can('view employees')
         <!-- Stat Card 1 -->
         <div class="card p-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
@@ -34,7 +35,9 @@
                 <a href="{{ route('employees.index') }}" class="text-sm font-medium hover:underline">View all →</a>
             </div>
         </div>
+        @endcan
 
+        @can('approve leave')
         <!-- Stat Card 2 -->
         <div class="card p-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
@@ -47,14 +50,12 @@
             <div class="text-sm font-medium text-neutral-500 mb-1">Pending Leaves</div>
             <div class="text-3xl font-bold tracking-tight">{{ $pending_leaves }}</div>
             <div class="mt-4">
-                @can('approve leave')
                 <a href="{{ route('leaves.approvals') }}" class="text-sm font-medium hover:underline">Review requests →</a>
-                @else
-                <a href="{{ route('leaves.index') }}" class="text-sm font-medium hover:underline">View all →</a>
-                @endcan
             </div>
         </div>
+        @endcan
 
+        @can('approve financial request')
         <!-- Stat Card 3 -->
         <div class="card p-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
@@ -67,12 +68,14 @@
             <div class="text-sm font-medium text-neutral-500 mb-1">Pending Finance</div>
             <div class="text-3xl font-bold tracking-tight">₦{{ number_format($pending_finance_amount, 0) }}</div>
             <div class="mt-4">
-                <a href="{{ route('finance.index') }}" class="text-sm font-medium hover:underline">View claims →</a>
+                <a href="{{ route('finance.approvals') }}" class="text-sm font-medium hover:underline">Review requests →</a>
             </div>
         </div>
+        @endcan
     </div>
 
     <!-- Recruitment & AI Insights Grid -->
+    @can('view employees')
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="card p-6">
             <div class="text-sm font-medium text-neutral-500 mb-1">Open Job Roles</div>
@@ -90,6 +93,7 @@
             <div class="mt-4 text-xs text-neutral-400">Talent quality metric</div>
         </div>
     </div>
+    @endcan
 
     <!-- Analytics Charts Section (Admin Only) -->
     @role('Admin')

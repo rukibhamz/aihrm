@@ -16,24 +16,47 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // General stats
-        $total_employees = Employee::count();
-        $pending_leaves = LeaveRequest::where('status', 'pending')->count();
-        $pending_finance_count = \App\Models\FinancialRequest::whereIn('status', ['pending', 'approved_manager'])->count();
-        $pending_finance_amount = \App\Models\FinancialRequest::whereIn('status', ['pending', 'approved_manager'])->sum('amount');
+        $user = Auth::user();
 
-        // Recruitment stats
-        $open_jobs = \App\Models\JobPosting::where('status', 'open')->count();
-        $new_applications = \App\Models\Application::where('created_at', '>=', now()->subDays(7))->count();
-        $avg_ai_score = \App\Models\Application::whereNotNull('ai_score')->avg('ai_score') ?? 0;
+        // Initialize variables with defaults for views that check them
+        $total_employees = 0;
+        $pending_leaves = 0;
+        $pending_finance_count = 0;
+        $pending_finance_amount = 0;
+        $open_jobs = 0;
+        $new_applications = 0;
+        $avg_ai_score = 0;
+        $employeeGrowthData = null;
+        $leaveTrendsData = null;
+        $payrollCostData = null;
 
-        // Generate chart data
-        $employeeGrowthData = $this->getEmployeeGrowthData();
-        $leaveTrendsData = $this->getLeaveTrendsData();
-        $payrollCostData = $this->getPayrollCostData();
+        // General stats (Only fetch for those with permission)
+        if ($user->can('view employees')) {
+            $total_employees = Employee::count();
+            
+            // Recruitment stats
+            $open_jobs = \App\Models\JobPosting::where('status', 'open')->count();
+            $new_applications = \App\Models\Application::where('created_at', '>=', now()->subDays(7))->count();
+            $avg_ai_score = \App\Models\Application::whereNotNull('ai_score')->avg('ai_score') ?? 0;
+        }
+
+        if ($user->can('approve leave')) {
+            $pending_leaves = LeaveRequest::where('status', 'pending')->count();
+        }
+
+        if ($user->can('approve financial request')) {
+            $pending_finance_count = \App\Models\FinancialRequest::whereIn('status', ['pending', 'approved_manager'])->count();
+            $pending_finance_amount = \App\Models\FinancialRequest::whereIn('status', ['pending', 'approved_manager'])->sum('amount');
+        }
+
+        if ($user->hasRole('Admin')) {
+            // Generate chart data only for Admin
+            $employeeGrowthData = $this->getEmployeeGrowthData();
+            $leaveTrendsData = $this->getLeaveTrendsData();
+            $payrollCostData = $this->getPayrollCostData();
+        }
 
         // Latest announcements for the current user
-        $user = Auth::user();
         $latestAnnouncements = Announcement::published()
             ->visibleTo($user)
             ->pinnedFirst()
