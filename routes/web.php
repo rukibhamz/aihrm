@@ -49,7 +49,9 @@ Route::middleware('auth')->group(function () {
         
         // ATS / Applications
         Route::get('admin/recruitment/kanban', [\App\Http\Controllers\Admin\ApplicationController::class, 'kanban'])->name('admin.applications.kanban');
+        Route::get('admin/applications/{application}', [\App\Http\Controllers\Admin\ApplicationController::class, 'show'])->name('admin.applications.show');
         Route::patch('admin/applications/{application}/status', [\App\Http\Controllers\Admin\ApplicationController::class, 'updateStatus'])->name('admin.applications.status');
+
 
         // Payroll & Salary
         Route::get('admin/salary', [\App\Http\Controllers\Admin\SalaryStructureController::class, 'index'])->name('admin.salary.index');

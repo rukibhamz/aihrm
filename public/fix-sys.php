@@ -194,7 +194,20 @@ if (isset($_GET['repair_schema'])) {
         });
         \Illuminate\Support\Facades\Schema::dropIfExists('leave_type_employment_status');
         \Illuminate\Support\Facades\Schema::dropIfExists('employment_statuses');
-        echo "Orphaned schema dropped successfully.\n";
+        
+        // Approval Engine Reset
+        \Illuminate\Support\Facades\Schema::dropIfExists('approval_logs');
+        \Illuminate\Support\Facades\Schema::dropIfExists('approval_requests');
+        \Illuminate\Support\Facades\Schema::dropIfExists('approval_chain_steps');
+        \Illuminate\Support\Facades\Schema::dropIfExists('approval_chains');
+        
+        \Illuminate\Support\Facades\DB::table('migrations')->where('migration', 'like', '%approval_chains%')->delete();
+        \Illuminate\Support\Facades\DB::table('migrations')->where('migration', 'like', '%approval_chain_steps%')->delete();
+        \Illuminate\Support\Facades\DB::table('migrations')->where('migration', 'like', '%approval_requests%')->delete();
+        \Illuminate\Support\Facades\DB::table('migrations')->where('migration', 'like', '%approval_logs%')->delete();
+        
+        echo "Orphaned schema and approval tables dropped successfully.\n";
+
     } catch (\Throwable $e) {
         echo "Cleanup note: " . $e->getMessage() . "\n";
     }

@@ -45,7 +45,14 @@ class ApplicationController extends Controller
         return view('admin.recruitment.kanban', compact('board', 'jobs', 'jobId'));
     }
 
+    public function show(Application $application)
+    {
+        $application->load('jobPosting');
+        return view('admin.recruitment.show', compact('application'));
+    }
+
     public function updateStatus(Request $request, Application $application)
+
     {
         $request->validate([
             'status' => 'required|in:applied,screening,interview,offer,hired,rejected',

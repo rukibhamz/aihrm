@@ -64,8 +64,11 @@
                          class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition cursor-move group relative">
                         
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-gray-900">{{ $app->candidate_name }}</h4>
+                            <a href="{{ route('admin.applications.show', $app) }}" class="hover:text-blue-600 transition">
+                                <h4 class="font-bold text-gray-900">{{ $app->candidate_name }}</h4>
+                            </a>
                             @if($app->ai_score)
+
                             <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-green-100 text-green-700 border border-green-200" title="AI Match Score">
                                 {{ $app->ai_score }}%
                             </span>
