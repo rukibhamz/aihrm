@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/payroll', [\App\Http\Controllers\Admin\PayrollController::class, 'store'])->name('admin.payroll.store');
         Route::get('admin/payroll/{payroll}', [\App\Http\Controllers\Admin\PayrollController::class, 'show'])->name('admin.payroll.show');
         Route::patch('admin/payroll/{payroll}/status', [\App\Http\Controllers\Admin\PayrollController::class, 'updateStatus'])->name('admin.payroll.status');
+        Route::delete('admin/payroll/{payroll}', [\App\Http\Controllers\Admin\PayrollController::class, 'destroy'])->name('admin.payroll.destroy');
+        Route::post('admin/payroll/{payroll}/regenerate', [\App\Http\Controllers\Admin\PayrollController::class, 'regenerate'])->name('admin.payroll.regenerate');
     });
 
     // Leave Management (All Authenticated Users)
@@ -85,6 +87,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('admin/departments', \App\Http\Controllers\DepartmentController::class, ['as' => 'admin']);
         Route::resource('admin/designations', \App\Http\Controllers\DesignationController::class, ['as' => 'admin']);
         Route::resource('admin/grade-levels', \App\Http\Controllers\GradeLevelController::class, ['as' => 'admin']);
+        Route::resource('admin/tax-brackets', \App\Http\Controllers\TaxBracketController::class, ['as' => 'admin']);
         
         // Enterprise Payroll - Bonuses, Loans, Advances
         Route::resource('admin/bonuses', \App\Http\Controllers\Admin\BonusController::class, ['as' => 'admin']);

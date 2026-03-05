@@ -15,6 +15,19 @@
         <div class="flex gap-3">
             <a href="{{ route('admin.payroll.index') }}" class="btn-secondary">Back</a>
             @if($payroll->status !== 'paid')
+            <form action="{{ route('admin.payroll.regenerate', $payroll) }}" method="POST" onsubmit="return confirm('This will delete the current payslips and re-generate them with the latest data. Continue?');" class="inline">
+                @csrf
+                <button type="submit" class="btn-secondary">
+                    ↻ Regenerate
+                </button>
+            </form>
+            <form action="{{ route('admin.payroll.destroy', $payroll) }}" method="POST" onsubmit="return confirm('Are you sure you want to DELETE this entire payroll batch? This cannot be undone.');" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-secondary text-red-600 border-red-300 hover:bg-red-50">
+                    Delete
+                </button>
+            </form>
             <form action="{{ route('admin.payroll.status', $payroll) }}" method="POST" onsubmit="return confirm('Are you sure you want to mark this payroll as PAID? This cannot be undone.');">
                 @csrf
                 @method('PATCH')

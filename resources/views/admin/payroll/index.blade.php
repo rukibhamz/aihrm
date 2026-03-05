@@ -49,6 +49,13 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="{{ route('admin.payroll.show', $payroll) }}" class="text-blue-600 hover:text-blue-900">View Details</a>
+                        @if($payroll->status !== 'paid')
+                        <form action="{{ route('admin.payroll.destroy', $payroll) }}" method="POST" class="inline ml-3" onsubmit="return confirm('Delete this payroll batch?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-800">Delete</button>
+                        </form>
+                        @endif
                     </td>
                 </tr>
                 @empty

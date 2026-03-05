@@ -46,36 +46,120 @@ class PayrollController extends Controller
                 'created_by' => auth()->id(),
             ]);
 
-            // Get all active employees with salary structure
-            $users = User::role('Employee')->with('salaryStructure')->whereHas('salaryStructure')->get();
+            // Fetch tax brackets once for all employees
+            $taxBrackets = \App\Models\TaxBracket::orderBy('min_salary')->get();
+
+            // Determine total days in the payroll month
+            $totalDaysInMonth = cal_days_in_month(CAL_GREGORIAN, $request->month, $request->year);
+            $periodStart = \Carbon\Carbon::create($request->year, $request->month, 1);
+            $periodEnd = $periodStart->copy()->endOfMonth();
+
+            // Get all active employees with salary structure and employee profile
+            $users = User::role('Employee')->with(['salaryStructure', 'employee'])->whereHas('salaryStructure')->get();
 
             foreach ($users as $user) {
                 $structure = $user->salaryStructure;
+                $employee = $user->employee;
 
-                // Calculate Net
-                $gross = $structure->gross_salary;
-                $deductions = $structure->pension_employee + $structure->tax_paye;
-                $net = $gross - $deductions;
+                // ── Step 1: Calculate Proration Fraction ──
+                $daysWorked = $totalDaysInMonth;
+
+                // 1a. Hire date proration (mid-month joiner)
+                if ($employee && $employee->join_date) {
+                    $joinDate = \Carbon\Carbon::parse($employee->join_date);
+                    if ($joinDate->year == $request->year && $joinDate->month == $request->month) {
+                        $daysWorked = $totalDaysInMonth - $joinDate->day + 1;
+                    } elseif ($joinDate->greaterThan($periodEnd)) {
+                        $daysWorked = 0; // Hasn't joined yet
+                    }
+                }
+
+                // 1b. Unpaid leave proration
+                $unpaidLeaveDays = \App\Models\LeaveRequest::where('user_id', $user->id)
+                    ->where('status', 'approved')
+                    ->whereHas('leaveType', fn($q) => $q->where('is_paid', false))
+                    ->where(function ($q) use ($periodStart, $periodEnd) {
+                        $q->whereBetween('start_date', [$periodStart, $periodEnd])
+                          ->orWhereBetween('end_date', [$periodStart, $periodEnd]);
+                    })
+                    ->sum('days');
+
+                $daysWorked = max(0, $daysWorked - $unpaidLeaveDays);
+                $prorationFraction = $totalDaysInMonth > 0 ? $daysWorked / $totalDaysInMonth : 0;
+
+                // ── Step 2: Calculate Prorated Earnings ──
+                $basic = round($structure->base_salary * $prorationFraction, 2);
+                $housingAllowance = round($structure->housing_allowance * $prorationFraction, 2);
+                $transportAllowance = round($structure->transport_allowance * $prorationFraction, 2);
+                $otherAllowances = round($structure->other_allowances * $prorationFraction, 2);
+
+                $earningsBreakdown = [
+                    'Basic Salary' => $basic,
+                    'Housing Allowance' => $housingAllowance,
+                    'Transport Allowance' => $transportAllowance,
+                    'Other Allowances' => $otherAllowances,
+                ];
+
+                // Dynamic Earnings (Bonuses are not prorated - they are flat awards)
+                $bonusAmount = \App\Models\Bonus::forPeriod($user->id, $request->month, $request->year);
+                if ($bonusAmount > 0) {
+                    $earningsBreakdown['Bonus'] = $bonusAmount;
+                }
+                
+                $gross = $basic + $housingAllowance + $transportAllowance + $otherAllowances + $bonusAmount;
+
+                // ── Step 3: Calculate Deductions ──
+                // Pension (prorated with salary)
+                $pension = round($structure->pension_employee * $prorationFraction, 2);
+
+                // PAYE Tax - Dynamic from Tax Brackets or fallback to fixed
+                $taxableIncome = $gross - $pension; // Pension is typically tax-exempt
+                $payeTax = $this->calculatePAYE($taxableIncome, $taxBrackets, $structure->tax_paye, $prorationFraction);
+
+                $deductionsBreakdown = [
+                    'Pension' => $pension,
+                    'PAYE Tax' => $payeTax,
+                ];
+                $totalDeductions = $pension + $payeTax;
+
+                $metaInfo = [
+                    'proration_fraction' => round($prorationFraction, 4),
+                    'days_worked' => $daysWorked,
+                    'total_days_in_month' => $totalDaysInMonth,
+                    'unpaid_leave_days' => $unpaidLeaveDays,
+                ];
+
+                // Dynamic Deductions (Loans & Advances are not prorated)
+                $advance = \App\Models\SalaryAdvance::getPendingAdvance($user->id, $request->month, $request->year);
+                if ($advance) {
+                    $deductionsBreakdown['Salary Advance'] = $advance->amount;
+                    $totalDeductions += $advance->amount;
+                    $metaInfo['advance_id'] = $advance->id;
+                }
+
+                $loan = \App\Models\LoanDeduction::getActiveDeduction($user->id);
+                if ($loan) {
+                    $loanDeductionAmount = min($loan->monthly_deduction, $loan->remaining_balance);
+                    $deductionsBreakdown['Loan Deduction'] = $loanDeductionAmount;
+                    $totalDeductions += $loanDeductionAmount;
+                    $metaInfo['loan_id'] = $loan->id;
+                }
+
+                $net = $gross - $totalDeductions;
+                if ($net < 0) $net = 0;
 
                 $breakdown = [
-                    'earnings' => [
-                        'Basic Salary' => $structure->base_salary,
-                        'Housing Allowance' => $structure->housing_allowance,
-                        'Transport Allowance' => $structure->transport_allowance,
-                        'Other Allowances' => $structure->other_allowances,
-                    ],
-                    'deductions' => [
-                        'Pension' => $structure->pension_employee,
-                        'PAYE Tax' => $structure->tax_paye,
-                    ]
+                    'earnings' => $earningsBreakdown,
+                    'deductions' => $deductionsBreakdown,
+                    'meta' => $metaInfo
                 ];
 
                 Payslip::create([
                     'payroll_id' => $payroll->id,
                     'user_id' => $user->id,
-                    'basic_salary' => $structure->base_salary,
-                    'total_allowances' => $gross - $structure->base_salary,
-                    'total_deductions' => $deductions,
+                    'basic_salary' => $basic,
+                    'total_allowances' => $gross - $basic,
+                    'total_deductions' => $totalDeductions,
                     'net_salary' => $net,
                     'breakdown' => json_encode($breakdown),
                     'status' => 'pending',
@@ -93,6 +177,33 @@ class PayrollController extends Controller
         }
     }
 
+    /**
+     * Calculate PAYE tax using progressive tax brackets.
+     * Falls back to the fixed amount from SalaryStructure if no brackets are configured.
+     */
+    private function calculatePAYE(float $taxableIncome, $taxBrackets, float $fixedFallback, float $prorationFraction): float
+    {
+        if ($taxBrackets->isEmpty()) {
+            return round($fixedFallback * $prorationFraction, 2);
+        }
+
+        $tax = 0;
+        foreach ($taxBrackets as $bracket) {
+            if ($taxableIncome <= $bracket->min_salary) {
+                break;
+            }
+
+            $upperLimit = $bracket->max_salary ?? PHP_FLOAT_MAX;
+            $taxableInBand = min($taxableIncome, $upperLimit) - $bracket->min_salary;
+
+            if ($taxableInBand > 0) {
+                $tax += ($taxableInBand * $bracket->rate_percentage / 100) + $bracket->fixed_amount_addition;
+            }
+        }
+
+        return round($tax, 2);
+    }
+
     public function show(Payroll $payroll)
     {
         $payroll->load('payslips.user.employee.department');
@@ -102,11 +213,87 @@ class PayrollController extends Controller
     public function updateStatus(Request $request, Payroll $payroll)
     {
         if ($request->action === 'mark_paid') {
-            $payroll->update(['status' => 'paid', 'payment_date' => now()]);
-            $payroll->payslips()->update(['status' => 'paid']);
-            return back()->with('success', 'Payroll marked as PAID.');
+            DB::beginTransaction();
+            try {
+                $payroll->update(['status' => 'paid', 'payment_date' => now()]);
+                $payroll->payslips()->update(['status' => 'paid']);
+
+                foreach ($payroll->payslips as $payslip) {
+                    $breakdown = json_decode($payslip->breakdown, true);
+                    if (isset($breakdown['meta'])) {
+                        $meta = $breakdown['meta'];
+                        
+                        if (isset($meta['advance_id'])) {
+                            $advance = \App\Models\SalaryAdvance::find($meta['advance_id']);
+                            if ($advance) {
+                                $advance->markAsDeducted();
+                            }
+                        }
+
+                        if (isset($meta['loan_id'])) {
+                            $loan = \App\Models\LoanDeduction::find($meta['loan_id']);
+                            if ($loan) {
+                                $loan->processDeduction();
+                            }
+                        }
+                    }
+                }
+
+                DB::commit();
+                return back()->with('success', 'Payroll marked as PAID and dynamic deductions processed.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return back()->with('error', 'Failed to process payroll payments: ' . $e->getMessage());
+            }
         }
         
         return back();
+    }
+
+    public function destroy(Payroll $payroll)
+    {
+        if ($payroll->status === 'paid') {
+            return back()->with('error', 'Cannot delete a payroll that has already been paid.');
+        }
+
+        DB::beginTransaction();
+        try {
+            $payroll->payslips()->delete();
+            $payroll->delete();
+            DB::commit();
+
+            return redirect()->route('admin.payroll.index')->with('success', 'Payroll deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to delete payroll: ' . $e->getMessage());
+        }
+    }
+
+    public function regenerate(Payroll $payroll)
+    {
+        if ($payroll->status === 'paid') {
+            return back()->with('error', 'Cannot regenerate a payroll that has already been paid.');
+        }
+
+        // Delete old payslips, then re-run generation
+        DB::beginTransaction();
+        try {
+            $month = $payroll->month;
+            $year = $payroll->year;
+
+            $payroll->payslips()->delete();
+            $payroll->delete();
+
+            DB::commit();
+
+            // Simulate a new store request for the same period
+            $request = new \Illuminate\Http\Request();
+            $request->merge(['month' => $month, 'year' => $year]);
+
+            return $this->store($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to regenerate payroll: ' . $e->getMessage());
+        }
     }
 }
