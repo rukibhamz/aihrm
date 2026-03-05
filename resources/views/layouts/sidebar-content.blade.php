@@ -33,6 +33,17 @@
             <span x-show="!sidebarCollapsed" x-cloak>Dashboard</span>
         </a>
 
+        <!-- Pending Approvals -->
+        <a href="{{ route('approvals.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('approvals.*') ? 'sidebar-nav-link-active' : 'text-neutral-300 hover:bg-neutral-800 hover:text-white sidebar-nav-link-hover' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+            <svg class="flex-shrink-0 h-6 w-6 {{ request()->routeIs('approvals.*') ? '' : 'text-neutral-400 group-hover:text-white' }}" :class="sidebarCollapsed ? '' : 'mr-3'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span x-show="!sidebarCollapsed" x-cloak>Pending Approvals</span>
+            <span class="ml-auto inline-block py-0.5 px-2 text-xs font-medium rounded-full bg-neutral-900 text-white" x-show="!sidebarCollapsed">
+                {{ \App\Models\ApprovalRequest::where('status', 'pending')->count() }}
+            </span>
+        </a>
+
         <!-- Self-Service -->
         <div class="space-y-1">
             <button @click="activeMenu = activeMenu === 'workspace' ? null : 'workspace'" 
@@ -263,6 +274,10 @@
                 <a href="{{ route('admin.bonuses.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.bonuses.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Bonuses</span>
+                </a>
+                <a href="{{ route('admin.penalties.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.penalties.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Penalties</span>
                 </a>
                 <a href="{{ route('admin.loans.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.loans.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>

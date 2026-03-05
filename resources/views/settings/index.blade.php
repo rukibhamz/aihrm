@@ -333,6 +333,16 @@
             </div>
             
             <div class="card p-6">
+                <h3 class="font-semibold mb-3">Approval Workflows</h3>
+                <p class="text-sm text-neutral-600 mb-4">
+                    Configure multi-level approval chains for leaves, loans, and other requests.
+                </p>
+                <a href="{{ route('admin.approval-chains.index') }}" class="w-full btn-secondary text-sm inline-block text-center">
+                    Manage Workflows
+                </a>
+            </div>
+
+            <div class="card p-6">
                 <h3 class="font-semibold mb-3">About Settings</h3>
                 <p class="text-sm text-neutral-600">
                     Configure your company information here. This will be displayed throughout the system and in communications.

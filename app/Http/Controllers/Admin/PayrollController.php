@@ -145,6 +145,13 @@ class PayrollController extends Controller
                     $metaInfo['loan_id'] = $loan->id;
                 }
 
+                // Penalties
+                $penaltyAmount = \App\Models\Penalty::forPeriod($user->id, $request->month, $request->year);
+                if ($penaltyAmount > 0) {
+                    $deductionsBreakdown['Penalties'] = $penaltyAmount;
+                    $totalDeductions += $penaltyAmount;
+                }
+
                 $net = $gross - $totalDeductions;
                 if ($net < 0) $net = 0;
 

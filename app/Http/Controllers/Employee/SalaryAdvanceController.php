@@ -45,11 +45,17 @@ class SalaryAdvanceController extends Controller
             return back()->with('error', 'You already have a pending advance request for this month.');
         }
 
-        SalaryAdvance::create([
-            ...$validated,
+        $advance = SalaryAdvance::create([
+            'amount' => $validated['amount'],
+            'deduction_month' => $validated['deduction_month'],
+            'deduction_year' => $validated['deduction_year'],
+            'reason' => $validated['reason'],
             'user_id' => Auth::id(),
             'status' => 'pending',
         ]);
+
+        $advance->submitForApproval();
+
 
         return redirect()->route('my-advances.index')->with('success', 'Salary advance request submitted successfully.');
     }

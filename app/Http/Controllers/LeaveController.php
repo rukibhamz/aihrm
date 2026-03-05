@@ -108,6 +108,10 @@ class LeaveController extends Controller
             'relief_officer_status' => $request->relief_officer_id ? 'pending' : 'none',
             'status' => 'pending',
         ]);
+
+        // Submit for Central Approval
+        $leaveRequest->submitForApproval();
+
         
         // Notify Relief Officer
         if ($leaveRequest->relief_officer_id) {

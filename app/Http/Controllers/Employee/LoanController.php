@@ -41,12 +41,18 @@ class LoanController extends Controller
             return back()->with('error', 'You already have an active loan. Please complete it before requesting another.');
         }
 
-        LoanDeduction::create([
-            ...$validated,
+        $loan = LoanDeduction::create([
+            'loan_amount' => $validated['loan_amount'],
+            'monthly_deduction' => $validated['monthly_deduction'],
+            'start_date' => $validated['start_date'],
+            'description' => $validated['description'],
             'user_id' => Auth::id(),
             'remaining_balance' => $validated['loan_amount'],
             'status' => 'pending',
         ]);
+
+        $loan->submitForApproval();
+
 
         return redirect()->route('my-loans.index')->with('success', 'Loan request submitted successfully.');
     }

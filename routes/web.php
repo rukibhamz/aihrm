@@ -23,21 +23,23 @@ Route::middleware('auth')->group(function () {
 
 
 
-    // Financial Approvals
-    Route::middleware('permission:approve financial request')->group(function () {
-        Route::get('finance/approvals', [\App\Http\Controllers\FinancialApprovalController::class, 'index'])->name('finance.approvals');
-        Route::patch('finance/{financialRequest}/approve-manager', [\App\Http\Controllers\FinancialApprovalController::class, 'approveManager'])->name('finance.approve.manager');
-        Route::patch('finance/{financialRequest}/approve-finance', [\App\Http\Controllers\FinancialApprovalController::class, 'approveFinance'])->name('finance.approve.finance');
-        Route::patch('finance/{financialRequest}/reject', [\App\Http\Controllers\FinancialApprovalController::class, 'reject'])->name('finance.reject');
-    });
-    Route::middleware('permission:mark as paid')->group(function () {
-        Route::patch('finance/{financialRequest}/mark-paid', [\App\Http\Controllers\FinancialApprovalController::class, 'markPaid'])->name('finance.mark-paid');
-    });
-    Route::middleware('permission:approve leave request')->group(function () {
-        Route::get('leaves/approvals', [\App\Http\Controllers\LeaveApprovalController::class, 'index'])->name('leaves.approvals');
-        Route::patch('leaves/{leaveRequest}/approve', [\App\Http\Controllers\LeaveApprovalController::class, 'approve'])->name('leaves.approve');
-        Route::patch('leaves/{leaveRequest}/reject', [\App\Http\Controllers\LeaveApprovalController::class, 'reject'])->name('leaves.reject');
-    });
+    // Unified Approval Inbox
+    Route::get('approvals', [\App\Http\Controllers\ApprovalInboxController::class, 'index'])->name('approvals.index');
+    Route::get('approvals/{request}', [\App\Http\Controllers\ApprovalInboxController::class, 'show'])->name('approvals.show');
+    Route::post('approvals/{request}/act', [\App\Http\Controllers\ApprovalInboxController::class, 'act'])->name('approvals.act');
+
+    // Financial Approvals (Old - keeping for now until fully transitioned)
+    // Simplified Approvals (Old - transitioning)
+    Route::get('finance/approvals', [\App\Http\Controllers\FinancialApprovalController::class, 'index'])->name('finance.approvals');
+    Route::patch('finance/{financialRequest}/approve-manager', [\App\Http\Controllers\FinancialApprovalController::class, 'approveManager'])->name('finance.approve.manager');
+    Route::patch('finance/{financialRequest}/approve-finance', [\App\Http\Controllers\FinancialApprovalController::class, 'approveFinance'])->name('finance.approve.finance');
+    Route::patch('finance/{financialRequest}/reject', [\App\Http\Controllers\FinancialApprovalController::class, 'reject'])->name('finance.reject');
+
+    Route::patch('finance/{financialRequest}/mark-paid', [\App\Http\Controllers\FinancialApprovalController::class, 'markPaid'])->name('finance.mark-paid');
+
+    Route::get('leaves/approvals', [\App\Http\Controllers\LeaveApprovalController::class, 'index'])->name('leaves.approvals');
+    Route::patch('leaves/{leaveRequest}/approve', [\App\Http\Controllers\LeaveApprovalController::class, 'approve'])->name('leaves.approve');
+    Route::patch('leaves/{leaveRequest}/reject', [\App\Http\Controllers\LeaveApprovalController::class, 'reject'])->name('leaves.reject');
 
     // Job Postings & Recruitment (Admin View)
     Route::middleware('permission:view employees')->group(function () {
@@ -91,6 +93,7 @@ Route::middleware('auth')->group(function () {
         
         // Enterprise Payroll - Bonuses, Loans, Advances
         Route::resource('admin/bonuses', \App\Http\Controllers\Admin\BonusController::class, ['as' => 'admin']);
+        Route::resource('admin/penalties', \App\Http\Controllers\Admin\PenaltyController::class, ['as' => 'admin']);
         Route::resource('admin/loans', \App\Http\Controllers\Admin\LoanDeductionController::class, ['as' => 'admin']);
         Route::resource('admin/advances', \App\Http\Controllers\Admin\SalaryAdvanceController::class, ['as' => 'admin']);
         
@@ -147,6 +150,11 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('admin/leave-types', \App\Http\Controllers\Admin\LeaveTypeController::class, ['as' => 'admin']);
         Route::resource('admin/leave-balances', \App\Http\Controllers\Admin\LeaveBalanceController::class, ['as' => 'admin'])->only(['index', 'update']);
+
+        // Approval Workflows
+        Route::resource('admin/approval-chains', \App\Http\Controllers\Admin\ApprovalChainController::class, ['as' => 'admin']);
+        Route::post('admin/approval-chains/{chain}/steps', [\App\Http\Controllers\Admin\ApprovalChainController::class, 'storeStep'])->name('admin.approval-chains.steps.store');
+        Route::delete('admin/approval-steps/{step}', [\App\Http\Controllers\Admin\ApprovalChainController::class, 'destroyStep'])->name('admin.approval-chains.steps.destroy');
     });
     
     // Attendance and other SS
