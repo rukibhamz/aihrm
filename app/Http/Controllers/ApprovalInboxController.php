@@ -71,22 +71,48 @@ class ApprovalInboxController extends Controller
             $approvalRequest->update(['status' => 'rejected', 'completed_at' => now()]);
             // Update the source model
             $approvalRequest->approvable->update(['status' => 'rejected']);
+
+            // Notify Requester
+            $requester = $approvalRequest->approvable->user;
+            $requester->notify(new \App\Notifications\GeneralStatusChanged(
+                "Request Rejected",
+                "Your request for " . class_basename($approvalRequest->approvable_type) . " has been rejected.",
+                'danger'
+            ));
         } else {
             // Check if there are more steps
             $nextStep = $approvalRequest->chain->steps()
                 ->where('step_order', '>', $approvalRequest->current_step_order)
+                ->orderBy('step_order', 'asc')
                 ->first();
 
             if ($nextStep) {
                 $approvalRequest->increment('current_step_order');
+                
+                // Notify Next Approvers (Implementation logic for finding next approver would go here)
+                // For now, we notify the requester about the progress
+                $approvalRequest->approvable->user->notify(new \App\Notifications\GeneralStatusChanged(
+                    "Request Progressing",
+                    "Your request has been approved at Step " . ($approvalRequest->current_step_order - 1) . " and moved to the next stage.",
+                    'info'
+                ));
             } else {
                 // Final Step Approved
                 $approvalRequest->update(['status' => 'approved', 'completed_at' => now()]);
                 
                 // Update the source model
                 $approvalRequest->approvable->update(['status' => 'approved']);
+
+                // Notify Requester
+                $requester = $approvalRequest->approvable->user;
+                $requester->notify(new \App\Notifications\GeneralStatusChanged(
+                    "Request Approved",
+                    "Congratulations! Your request for " . class_basename($approvalRequest->approvable_type) . " has been fully approved.",
+                    'success'
+                ));
             }
         }
+
 
         return redirect()->route('approvals.index')->with('success', 'Action recorded successfully.');
     }

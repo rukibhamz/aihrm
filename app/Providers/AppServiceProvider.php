@@ -45,5 +45,33 @@ class AppServiceProvider extends ServiceProvider
         
         // Prefetch DNS for external resources
         Vite::prefetch(concurrency: 3);
+
+        // Load Mail Configuration from Settings
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                $mailConfig = [
+                    'transport' => 'smtp',
+                    'host' => \App\Models\Setting::get('smtp_host'),
+                    'port' => \App\Models\Setting::get('smtp_port', 587),
+                    'encryption' => \App\Models\Setting::get('smtp_encryption', 'tls'),
+                    'username' => \App\Models\Setting::get('smtp_username'),
+                    'password' => \App\Models\Setting::get('smtp_password'),
+                    'from' => [
+                        'address' => \App\Models\Setting::get('smtp_from_address'),
+                        'name' => \App\Models\Setting::get('smtp_from_name', 'AIHRM'),
+                    ],
+                ];
+
+                if ($mailConfig['host']) {
+                    config(['mail.mailers.smtp' => array_merge(config('mail.mailers.smtp', []), $mailConfig)]);
+                    config(['mail.default' => 'smtp']);
+                    config(['mail.from.address' => $mailConfig['from']['address']]);
+                    config(['mail.from.name' => $mailConfig['from']['name']]);
+                }
+            }
+        } catch (\Exception $e) {
+            // Failsafe for migration
+        }
     }
+
 }

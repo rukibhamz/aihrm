@@ -44,10 +44,16 @@ trait HasApprovals
 
 
         // Create the approval request record starting at step 1
-        return $this->approvalRequests()->create([
+        $request = $this->approvalRequests()->create([
             'approval_chain_id' => $chain->id,
             'current_step_order' => 1,
             'status' => 'pending'
         ]);
+
+        // Logic to notify initial approvers would go here.
+        // For now, we'll mark this for a future refinement where we resolve the approver ID to a User.
+        
+        return $request;
+
     }
 }
