@@ -264,8 +264,16 @@
         let lastAnnouncementCount = {{ $unreadAnnouncementCount ?? 0 }};
         
         function pollNotifications() {
-            fetch("{{ route('notifications.poll') }}")
-                .then(response => response.json())
+            fetch("{{ route('notifications.poll') }}", {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    if (response.status === 401) return null; // Session expired
+                    return response.json();
+                })
                 .then(data => {
                     if (data && data.id && data.id !== lastNotificationId) {
                         lastNotificationId = data.id;
@@ -283,8 +291,16 @@
 
         // Announcement polling
         function pollAnnouncements() {
-            fetch("{{ route('announcements.unreadCount') }}")
-                .then(response => response.json())
+            fetch("{{ route('announcements.unreadCount') }}", {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    if (response.status === 401) return null; // Session expired
+                    return response.json();
+                })
                 .then(data => {
                     if (data.count > lastAnnouncementCount) {
                         // New announcements!
