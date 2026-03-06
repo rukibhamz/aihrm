@@ -12,16 +12,15 @@ class ApprovalInboxController extends Controller
 {
     public function index()
     {
-        // For AIHRM, we'll implement a query that finds requests where:
-        // 1. The request status is 'pending'
-        // 2. The Current Step order matches a step in the chain where:
-        //    - Type is 'line_manager' AND User's manager is Auth::user()
-        //    - Type is 'role' AND Auth::user() has that role
-        //    - Type is 'specific_user' AND Auth::user()->id is approver_id
-        
+        if (!\Illuminate\Support\Facades\Schema::hasTable('approval_requests')) {
+            $pendingRequests = collect();
+            return view('admin.approvals.index', compact('pendingRequests'))->with('error', 'The Approval system is not fully initialized. Please run the repair tool.');
+        }
+
         $pendingRequests = ApprovalRequest::with(['approvable', 'chain.steps'])
             ->where('status', 'pending')
             ->get()
+
             ->filter(function($request) {
                 $step = $request->currentStep();
                 if (!$step) return false;

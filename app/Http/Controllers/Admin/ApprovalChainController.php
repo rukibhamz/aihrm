@@ -14,9 +14,15 @@ class ApprovalChainController extends Controller
 {
     public function index()
     {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('approval_chains')) {
+            $chains = collect();
+            return view('admin.approval-chains.index', compact('chains'))->with('error', 'The Approval system is not fully initialized. Please run the repair tool.');
+        }
+
         $chains = ApprovalChain::withCount('steps')->get();
         return view('admin.approval-chains.index', compact('chains'));
     }
+
 
     public function create()
     {

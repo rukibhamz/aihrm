@@ -29,14 +29,19 @@ trait HasApprovals
     public function submitForApproval()
     {
         // Find if a chain exists for this model type
+        if (!\Illuminate\Support\Facades\Schema::hasTable('approval_chains')) {
+            return false;
+        }
+
         $chain = ApprovalChain::where('module_type', static::class)->first();
 
         // If no chain exists, we just instantly return true (auto-approve)
         // or throw an exception depending on business rules.
         // For AIHRM, if no chain exists, it implies no approval required.
-        if (!$chain) {
+        if (!$chain || !\Illuminate\Support\Facades\Schema::hasTable('approval_requests')) {
             return false;
         }
+
 
         // Create the approval request record starting at step 1
         return $this->approvalRequests()->create([
