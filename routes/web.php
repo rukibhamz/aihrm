@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('admin/payroll/{payroll}/status', [\App\Http\Controllers\Admin\PayrollController::class, 'updateStatus'])->name('admin.payroll.status');
         Route::delete('admin/payroll/{payroll}', [\App\Http\Controllers\Admin\PayrollController::class, 'destroy'])->name('admin.payroll.destroy');
         Route::post('admin/payroll/{payroll}/regenerate', [\App\Http\Controllers\Admin\PayrollController::class, 'regenerate'])->name('admin.payroll.regenerate');
+        
+        Route::get('admin/payroll/{payroll}/export-bank', [\App\Http\Controllers\Admin\BankDisbursementController::class, 'download'])->name('admin.payroll.export-bank');
     });
 
     // Leave Management (All Authenticated Users)
@@ -93,11 +95,14 @@ Route::middleware('auth')->group(function () {
         Route::resource('admin/grade-levels', \App\Http\Controllers\GradeLevelController::class, ['as' => 'admin']);
         Route::resource('admin/tax-brackets', \App\Http\Controllers\TaxBracketController::class, ['as' => 'admin']);
         
-        // Enterprise Payroll - Bonuses, Loans, Advances
+        // Enterprise Payroll - Bonuses, Loans, Advances, Tax Reliefs
         Route::resource('admin/bonuses', \App\Http\Controllers\Admin\BonusController::class, ['as' => 'admin']);
         Route::resource('admin/penalties', \App\Http\Controllers\Admin\PenaltyController::class, ['as' => 'admin']);
         Route::resource('admin/loans', \App\Http\Controllers\Admin\LoanDeductionController::class, ['as' => 'admin']);
         Route::resource('admin/advances', \App\Http\Controllers\Admin\SalaryAdvanceController::class, ['as' => 'admin']);
+        Route::resource('admin/tax-reliefs', \App\Http\Controllers\Admin\TaxReliefController::class, ['as' => 'admin']);
+        Route::resource('admin/overtime-policies', \App\Http\Controllers\Admin\OvertimePolicyController::class, ['as' => 'admin']);
+
         
         // Payroll Reports
         Route::get('admin/payroll-reports', [\App\Http\Controllers\Admin\PayrollReportController::class, 'index'])->name('admin.payroll-reports.index');
@@ -120,7 +125,10 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/export', [\App\Http\Controllers\Admin\ExportController::class, 'export'])->name('admin.export');
 
         // Onboarding Admin
-        Route::resource('admin/onboarding', \App\Http\Controllers\OnboardingController::class, ['as' => 'admin']);
+    Route::resource('admin/onboarding', \App\Http\Controllers\Admin\OnboardingTaskController::class, ['as' => 'admin']);
+    
+    // Performance Admin
+    Route::resource('admin/performance/objectives', \App\Http\Controllers\Admin\CompanyObjectiveController::class, ['as' => 'admin.performance']);
 
         // LMS Admin
         Route::resource('admin/courses', \App\Http\Controllers\Admin\CourseController::class, ['as' => 'admin']);
@@ -135,6 +143,8 @@ Route::middleware('auth')->group(function () {
         // Resignation & Offboarding Admin
         Route::resource('admin/resignations', \App\Http\Controllers\Admin\ResignationController::class, ['as' => 'admin'])->except(['destroy']);
         Route::get('admin/resignations/{resignation}/assets', [\App\Http\Controllers\Admin\ResignationController::class, 'assetsCheck'])->name('admin.resignations.assets');
+        Route::put('admin/resignations/{resignation}/offboarding/{task}', [\App\Http\Controllers\Admin\ResignationController::class, 'updateOffboardingTask'])->name('admin.resignations.offboarding.update');
+        Route::resource('admin/offboarding', \App\Http\Controllers\Admin\OffboardingTaskController::class, ['as' => 'admin']);
 
         // Document Management Admin
         Route::resource('admin/documents', \App\Http\Controllers\Admin\DocumentController::class, ['as' => 'admin']);
@@ -180,6 +190,12 @@ Route::middleware('auth')->group(function () {
     Route::get('performance/team-goals', [\App\Http\Controllers\TeamGoalController::class, 'index'])->name('performance.team-goals.index');
     Route::put('performance/team-goals/{goal}/score', [\App\Http\Controllers\TeamGoalController::class, 'updateScore'])->name('performance.team-goals.score');
     Route::resource('performance/reviews', \App\Http\Controllers\PerformanceReviewController::class, ['as' => 'performance']);
+
+    // Peer Feedback (360 Reviews)
+    Route::get('performance/peer-feedback', [\App\Http\Controllers\Employee\PeerFeedbackController::class, 'index'])->name('employee.peer-feedback.index');
+    Route::post('performance/peer-feedback', [\App\Http\Controllers\Employee\PeerFeedbackController::class, 'store'])->name('employee.peer-feedback.store');
+    Route::get('performance/peer-feedback/{peerFeedbackRequest}', [\App\Http\Controllers\Employee\PeerFeedbackController::class, 'show'])->name('employee.peer-feedback.show');
+    Route::post('performance/peer-feedback/{peerFeedbackRequest}/submit', [\App\Http\Controllers\Employee\PeerFeedbackController::class, 'submit'])->name('employee.peer-feedback.submit');
 
     // Notifications
     Route::get('notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');

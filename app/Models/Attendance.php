@@ -15,6 +15,7 @@ class Attendance extends Model
         'clock_out',
         'status',
         'notes',
+        'overtime_hours',
     ];
 
     protected $casts = [

@@ -10,8 +10,9 @@ class GoalController extends Controller
 {
     public function index()
     {
-        $goals = Goal::where('user_id', Auth::id())->latest()->paginate(10);
-        return view('performance.goals.index', compact('goals'));
+        $goals = Goal::with('companyObjective')->where('user_id', Auth::id())->latest()->paginate(10);
+        $companyObjectives = \App\Models\CompanyObjective::whereIn('status', ['active', 'draft'])->orderBy('start_date', 'desc')->get();
+        return view('performance.goals.index', compact('goals', 'companyObjectives'));
     }
 
     public function store(Request $request)
@@ -20,6 +21,7 @@ class GoalController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
+            'company_objective_id' => 'nullable|exists:company_objectives,id',
             'type' => 'required|in:text,metric',
             'target_value' => 'nullable|required_if:type,metric|numeric|min:0',
             'unit' => 'nullable|string|max:20',
@@ -37,6 +39,7 @@ class GoalController extends Controller
 
         $goal = Goal::create([
             'user_id' => Auth::id(),
+            'company_objective_id' => $validated['company_objective_id'] ?? null,
             'title' => $validated['title'],
             'description' => $validated['description'],
             'due_date' => $validated['due_date'],

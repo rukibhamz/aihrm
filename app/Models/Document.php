@@ -16,6 +16,7 @@ class Document extends Model implements Auditable
         'type',
         'file_path',
         'expiry_date',
+        'expiry_notified',
         'status',
     ];
 

@@ -11,6 +11,7 @@ class Goal extends Model
 
     protected $fillable = [
         'user_id',
+        'company_objective_id',
         'title',
         'description',
         'type', // text, metric
@@ -37,6 +38,11 @@ class Goal extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function companyObjective()
+    {
+        return $this->belongsTo(CompanyObjective::class, 'company_objective_id');
     }
 
     /**

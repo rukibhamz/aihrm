@@ -81,4 +81,19 @@ class User extends Authenticatable implements AuditableContract
     {
         return $this->hasMany(Payslip::class);
     }
+
+    public function taxReliefs()
+    {
+        return $this->belongsToMany(TaxRelief::class, 'employee_tax_reliefs')->withPivot('is_active')->withTimestamps();
+    }
+
+    public function feedbackRequestsReceived()
+    {
+        return $this->hasMany(PeerFeedbackRequest::class, 'target_user_id');
+    }
+
+    public function feedbackRequestsSent()
+    {
+        return $this->hasMany(PeerFeedbackRequest::class, 'requester_id');
+    }
 }

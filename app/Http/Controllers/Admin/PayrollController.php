@@ -106,14 +106,40 @@ class PayrollController extends Controller
                     $earningsBreakdown['Bonus'] = $bonusAmount;
                 }
                 
-                $gross = $basic + $housingAllowance + $transportAllowance + $otherAllowances + $bonusAmount;
+                // Get Overtime
+                $overtimeHours = \App\Models\Attendance::where('user_id', $user->id)
+                    ->whereMonth('date', $request->month)
+                    ->whereYear('date', $request->year)
+                    ->sum('overtime_hours');
+
+                $overtimeEarnings = 0;
+                if ($overtimeHours > 0) {
+                   $policy = \App\Models\OvertimePolicy::where('is_active', true)->first();
+                   $hourlyRate = ($structure->base_salary / $totalDaysInMonth) / ($policy ? $policy->standard_daily_hours : 8);
+                   $overtimeEarnings = round($overtimeHours * $hourlyRate * ($policy ? $policy->weekday_multiplier : 1.5), 2);
+                   $earningsBreakdown['Overtime'] = $overtimeEarnings;
+                   $metaInfo['overtime_hours'] = $overtimeHours;
+                }
+
+                $gross = $basic + $housingAllowance + $transportAllowance + $otherAllowances + $bonusAmount + $overtimeEarnings;
 
                 // ── Step 3: Calculate Deductions ──
                 // Pension (prorated with salary)
                 $pension = round($structure->pension_employee * $prorationFraction, 2);
 
+                // Tax Reliefs
+                $taxReliefs = $user->taxReliefs()->wherePivot('is_active', true)->get();
+                $totalTaxRelief = 0;
+                foreach ($taxReliefs as $relief) {
+                    if ($relief->type === 'fixed_amount') {
+                        $totalTaxRelief += $relief->amount;
+                    } elseif ($relief->type === 'percentage_of_gross') {
+                        $totalTaxRelief += ($gross * ($relief->amount / 100));
+                    }
+                }
+
                 // PAYE Tax - Dynamic from Tax Brackets or fallback to fixed
-                $taxableIncome = $gross - $pension; // Pension is typically tax-exempt
+                $taxableIncome = max(0, $gross - $pension - $totalTaxRelief); // Pension and Reliefs are tax-exempt
                 $payeTax = $this->calculatePAYE($taxableIncome, $taxBrackets, $structure->tax_paye, $prorationFraction);
 
                 $deductionsBreakdown = [

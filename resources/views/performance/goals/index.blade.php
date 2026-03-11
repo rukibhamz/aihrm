@@ -53,6 +53,12 @@
                                 {{ $goal->cycle_name }}
                             </span>
                         @endif
+                        @if($goal->companyObjective)
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-semibold bg-indigo-50 text-indigo-700 tracking-wide" title="Aligned to: {{ $goal->companyObjective->title }}">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                                Aligned
+                            </span>
+                        @endif
                     </div>
                     <div class="flex items-center gap-2">
                          @if($goal->traffic_light === 'green')
@@ -195,6 +201,17 @@
                             <label class="block text-xs font-bold text-neutral-600 mb-1">Unit</label>
                             <input type="text" name="unit" placeholder="%, USD, Users" class="w-full px-3 py-2 bg-white border border-neutral-200 rounded-md focus:ring-black focus:border-black text-sm">
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-1">Align with Company Objective (Optional)</label>
+                        <select name="company_objective_id" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                            <option value="">-- No Alignment (Individual Goal) --</option>
+                            @foreach($companyObjectives as $obj)
+                                <option value="{{ $obj->id }}">{{ $obj->title }} ({{ $obj->start_date->format('M Y') }} - {{ $obj->end_date->format('M Y') }})</option>
+                            @endforeach
+                        </select>
+                        <p class="text-xs text-neutral-500 mt-1">Linking this KPI will automatically contribute to the high-level company OKR's progress.</p>
                     </div>
 
                     <div>

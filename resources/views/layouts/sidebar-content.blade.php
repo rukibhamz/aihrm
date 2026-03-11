@@ -4,11 +4,11 @@
         $activeMenu = 'workspace';
     } elseif (request()->routeIs('employees.*') || request()->routeIs('admin.applications.*') || request()->routeIs('admin.departments.*') || request()->routeIs('admin.designations.*') || request()->routeIs('admin.grade-levels.*') || request()->routeIs('jobs.*')) {
         $activeMenu = 'people';
-    } elseif (request()->routeIs('performance.goals.*') || request()->routeIs('performance.team-goals.*') || request()->routeIs('performance.reviews.*') || request()->routeIs('lms.*')) {
+    } elseif (request()->routeIs('performance.goals.*') || request()->routeIs('performance.team-goals.*') || request()->routeIs('performance.reviews.*') || request()->routeIs('employee.peer-feedback.*') || request()->routeIs('admin.performance.objectives.*') || request()->routeIs('lms.*')) {
         $activeMenu = 'performance';
-    } elseif (request()->routeIs('admin.ai.*') || request()->routeIs('admin.assets.*') || request()->routeIs('admin.resignations.*') || request()->routeIs('admin.documents.*') || request()->routeIs('admin.audit-logs.*') || request()->routeIs('settings.*') || request()->routeIs('admin.leaves.*') || request()->routeIs('admin.attendance.*')) {
+    } elseif (request()->routeIs('admin.ai.*') || request()->routeIs('admin.assets.*') || request()->routeIs('admin.resignations.*') || request()->routeIs('admin.offboarding.*') || request()->routeIs('admin.documents.*') || request()->routeIs('admin.audit-logs.*') || request()->routeIs('settings.*') || request()->routeIs('admin.leaves.*') || request()->routeIs('admin.attendance.*')) {
         $activeMenu = 'admin';
-    } elseif (request()->routeIs('admin.salary.*') || request()->routeIs('admin.payroll.*') || request()->routeIs('admin.bonuses.*') || request()->routeIs('admin.loans.*') || request()->routeIs('admin.advances.*') || request()->routeIs('admin.payroll-reports.*')) {
+    } elseif (request()->routeIs('admin.salary.*') || request()->routeIs('admin.payroll.*') || request()->routeIs('admin.bonuses.*') || request()->routeIs('admin.loans.*') || request()->routeIs('admin.advances.*') || request()->routeIs('admin.payroll-reports.*') || request()->routeIs('admin.tax-reliefs.*') || request()->routeIs('admin.overtime-policies.*')) {
         $activeMenu = 'finance';
     }
 @endphp
@@ -169,7 +169,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </button>
-            <div x-show="activeMenu === 'performance'" x-cloak x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" class="space-y-1 mt-1">
+            <div x-show="activeMenu === 'performance'" class="space-y-1 mt-1" x-cloak>
+                <div class="px-3 py-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2" x-show="!sidebarCollapsed" x-cloak>Performance & Goals</div>
+                
+                @role('Admin|HR')
+                <a href="{{ route('admin.performance.objectives.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.performance.objectives.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Company OKRs</span>
+                </a>
+                @endrole
+
                 <a href="{{ route('performance.goals.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('performance.goals.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Goals</span>
@@ -183,6 +192,10 @@
                 <a href="{{ route('performance.reviews.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('performance.reviews.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Reviews</span>
+                </a>
+                <a href="{{ route('employee.peer-feedback.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('employee.peer-feedback.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>360 Feedback</span>
                 </a>
                 <a href="{{ route('lms.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('lms.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
@@ -227,9 +240,14 @@
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Gatekeeper Scanner</span>
                 </a>
-                <a href="{{ route('admin.resignations.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.resignations.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                <a href="{{ route('admin.resignations.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.resignations.*') && !request()->routeIs('admin.resignations.history') && !request()->routeIs('admin.offboarding.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Resignations</span>
+                </a>
+                
+                <a href="{{ route('admin.offboarding.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md pl-11 {{ request()->routeIs('admin.offboarding.*') ? 'sidebar-sub-link-active' : 'sidebar-nav-link-hover text-neutral-400 hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center !pl-2 pr-2' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'hidden'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-xs">Offboarding Tasks</span>
                 </a>
                 <a href="{{ route('admin.documents.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.documents.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg></div>
@@ -269,6 +287,14 @@
                 <a href="{{ route('admin.tax-brackets.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.tax-brackets.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
                     <span x-show="!sidebarCollapsed" x-cloak>Tax Brackets</span>
+                </a>
+                <a href="{{ route('admin.tax-reliefs.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.tax-reliefs.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Tax Reliefs</span>
+                </a>
+                <a href="{{ route('admin.overtime-policies.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.overtime-policies.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
+                    <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                    <span x-show="!sidebarCollapsed" x-cloak>Overtime Policies</span>
                 </a>
                 <a href="{{ route('admin.payroll.index') }}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.payroll.*') ? 'sidebar-sub-link-active' : 'text-neutral-400 hover:text-white sidebar-nav-link-hover hover:bg-neutral-800' }}" :class="sidebarCollapsed ? 'justify-center' : ''">
                     <div class="w-6 flex justify-center" :class="sidebarCollapsed ? '' : 'mr-3'"><svg class="h-4 w-4 opacity-75 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>

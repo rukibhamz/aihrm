@@ -39,7 +39,20 @@ class ResignationController extends Controller
             'exit_interview_notes' => 'nullable|string',
         ]);
 
+        $oldStatus = $resignation->status;
         $resignation->update($validated);
+
+        // Generate offboarding tasks if approved and didn't have them before
+        if ($resignation->status === 'approved' && $oldStatus !== 'approved' && $resignation->offboardingTasks()->count() === 0) {
+            $activeTasks = \App\Models\OffboardingTask::where('is_active', true)->get();
+            foreach ($activeTasks as $task) {
+                \App\Models\EmployeeOffboardingTask::create([
+                    'resignation_id' => $resignation->id,
+                    'offboarding_task_id' => $task->id,
+                    'is_completed' => false,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.resignations.show', $resignation)->with('success', 'Resignation status updated.');
     }
@@ -50,5 +63,26 @@ class ResignationController extends Controller
         // Keeping this method if we need a specific JSON endpoint or print view later.
         $assets = Asset::where('user_id', $resignation->user_id)->get();
         return view('admin.resignations.assets', compact('resignation', 'assets'));
+    }
+
+    public function updateOffboardingTask(Request $request, Resignation $resignation, \App\Models\EmployeeOffboardingTask $task)
+    {
+        if ($task->resignation_id !== $resignation->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'is_completed' => 'required|boolean',
+            'comments' => 'nullable|string',
+        ]);
+
+        $task->update([
+            'is_completed' => $validated['is_completed'],
+            'comments' => $validated['comments'] ?? $task->comments,
+            'completed_by' => $validated['is_completed'] ? auth()->id() : null,
+            'completed_at' => $validated['is_completed'] ? now() : null,
+        ]);
+
+        return back()->with('success', 'Offboarding task status updated.');
     }
 }

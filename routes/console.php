@@ -12,4 +12,4 @@ Artisan::command('inspire', function () {
 Schedule::command('attendance:send-reminders')->dailyAt('19:00');
 Schedule::command('performance:send-reminders')->dailyAt('09:00');
 Schedule::command('leave:carry-forward')->yearlyOn(1, 1, '00:00');
-Schedule::command('documents:check-expiry')->dailyAt('08:00');
+Schedule::command('hr:document-expiry-alerts')->dailyAt('08:00');
