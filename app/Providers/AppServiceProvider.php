@@ -72,6 +72,36 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             // Failsafe for migration
         }
+
+        // Auto-run pending migrations on deployment
+        $this->autoMigrate();
+    }
+
+    /**
+     * Automatically run pending migrations once per deployment.
+     * Uses a hash of migration files to detect new migrations.
+     */
+    protected function autoMigrate(): void
+    {
+        try {
+            $migrationsPath = database_path('migrations');
+            $hashFile = storage_path('framework/migration_hash.txt');
+
+            // Build a hash from all migration filenames
+            $files = glob($migrationsPath . '/*.php');
+            $currentHash = md5(implode('|', array_map('basename', $files)));
+
+            // Check if we already ran for this set of migrations
+            $storedHash = file_exists($hashFile) ? file_get_contents($hashFile) : '';
+
+            if ($currentHash !== $storedHash) {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+                file_put_contents($hashFile, $currentHash);
+            }
+        } catch (\Exception $e) {
+            // Silently fail — DB might not be reachable yet
+            \Illuminate\Support\Facades\Log::warning('Auto-migration failed: ' . $e->getMessage());
+        }
     }
 
 }
