@@ -73,10 +73,94 @@
                 </select>
             </div>
 
+            <!-- Custom Application Questions Builder -->
+            <div class="border-t border-neutral-200 pt-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700">Custom Application Questions</label>
+                        <p class="text-xs text-neutral-500 mt-1">Add extra questions to the application form for this role</p>
+                    </div>
+                    <button type="button" onclick="addQuestion()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition flex items-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg hover:bg-indigo-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                        Add Question
+                    </button>
+                </div>
+                <div id="questionsContainer" class="space-y-3"></div>
+                <input type="hidden" name="custom_questions" id="customQuestionsInput">
+            </div>
+
             <div class="flex gap-3 pt-6 border-t border-neutral-200">
                 <button type="submit" class="btn-primary">Update Job Posting</button>
                 <a href="{{ route('jobs.show', $job) }}" class="btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
+
+<script>
+    let questions = @json($job->custom_questions ?? []);
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+        questions.forEach((q, i) => {
+            const div = document.createElement('div');
+            div.className = 'p-4 bg-neutral-50 border border-neutral-200 rounded-lg space-y-3';
+            div.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Question ${i + 1}</span>
+                    <button type="button" onclick="removeQuestion(${i})" class="text-neutral-400 hover:text-red-600 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="col-span-2">
+                        <input type="text" value="${q.label || ''}" onchange="updateQuestion(${i}, 'label', this.value)"
+                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black"
+                            placeholder="Question text, e.g. 'Are you willing to relocate?'">
+                    </div>
+                    <div>
+                        <select onchange="updateQuestion(${i}, 'type', this.value)"
+                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black">
+                            <option value="text" ${q.type === 'text' ? 'selected' : ''}>Short Text</option>
+                            <option value="textarea" ${q.type === 'textarea' ? 'selected' : ''}>Long Text</option>
+                            <option value="select" ${q.type === 'select' ? 'selected' : ''}>Dropdown</option>
+                            <option value="checkbox" ${q.type === 'checkbox' ? 'selected' : ''}>Checkbox (Yes/No)</option>
+                        </select>
+                    </div>
+                </div>
+                ${q.type === 'select' ? `
+                <div>
+                    <input type="text" value="${(q.options || []).join(', ')}" onchange="updateQuestion(${i}, 'options', this.value.split(',').map(s => s.trim()).filter(s => s))"
+                        class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black"
+                        placeholder="Options (comma separated, e.g. Yes, No, Maybe)">
+                </div>` : ''}
+                <label class="flex items-center gap-2 text-sm text-neutral-600">
+                    <input type="checkbox" ${q.required ? 'checked' : ''} onchange="updateQuestion(${i}, 'required', this.checked)"
+                        class="rounded border-neutral-300 text-black focus:ring-black">
+                    Required field
+                </label>
+            `;
+            container.appendChild(div);
+        });
+        document.getElementById('customQuestionsInput').value = JSON.stringify(questions);
+    }
+
+    function addQuestion() {
+        questions.push({ label: '', type: 'text', required: false });
+        renderQuestions();
+    }
+
+    function removeQuestion(index) {
+        questions.splice(index, 1);
+        renderQuestions();
+    }
+
+    function updateQuestion(index, field, value) {
+        questions[index][field] = value;
+        renderQuestions();
+    }
+
+    // Initialize
+    renderQuestions();
+</script>
 </x-app-layout>

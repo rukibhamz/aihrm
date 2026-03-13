@@ -96,4 +96,14 @@ class User extends Authenticatable implements AuditableContract
     {
         return $this->hasMany(PeerFeedbackRequest::class, 'requester_id');
     }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function officeLocation()
+    {
+        return $this->belongsTo(OfficeLocation::class);
+    }
 }

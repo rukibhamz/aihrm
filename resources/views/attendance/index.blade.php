@@ -18,17 +18,52 @@
                 @endphp
 
                 @if(!$todayAttendance)
-                    <form action="{{ route('attendance.clockIn') }}" method="POST">
+                    <form id="clockInForm" action="{{ route('attendance.clockIn') }}" method="POST">
                         @csrf
-                        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold text-base hover:bg-blue-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        
+                        <button type="button" onclick="submitAttendance()" id="clockInBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold text-base hover:bg-blue-700 transition-all shadow-md hover:shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
                             <span class="flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg id="syncIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                Clock In
+                                <span id="btnText">Clock In</span>
                             </span>
                         </button>
                     </form>
+
+                    <script>
+                        function submitAttendance() {
+                            const btn = document.getElementById('clockInBtn');
+                            const btnText = document.getElementById('btnText');
+                            const icon = document.getElementById('syncIcon');
+                            
+                            btn.disabled = true;
+                            btnText.innerText = 'Locating...';
+                            icon.classList.add('animate-spin');
+
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(
+                                    (position) => {
+                                        document.getElementById('latitude').value = position.coords.latitude;
+                                        document.getElementById('longitude').value = position.coords.longitude;
+                                        document.getElementById('clockInForm').submit();
+                                    },
+                                    (error) => {
+                                        alert('Location error: ' + error.message + '. Please enable GPS to clock in.');
+                                        btn.disabled = false;
+                                        btnText.innerText = 'Clock In';
+                                        icon.classList.remove('animate-spin');
+                                    },
+                                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                                );
+                            } else {
+                                alert('Geolocation is not supported by this browser.');
+                                document.getElementById('clockInForm').submit(); // Fallback to non-geofenced
+                            }
+                        }
+                    </script>
                 @elseif(!$todayAttendance->clock_out)
                     <div class="bg-blue-50 px-5 py-2 rounded-lg border border-blue-100">
                         <div class="text-sm text-blue-600 font-medium mb-1">Clocked in at:</div>

@@ -47,8 +47,9 @@ class ApplicationController extends Controller
 
     public function show(Application $application)
     {
-        $application->load('jobPosting');
-        return view('admin.recruitment.show', compact('application'));
+        $application->load('jobPosting', 'interviews.interviewer', 'interviews.scorecard');
+        $interviewers = \App\Models\User::role(['Admin', 'Manager', 'HR'])->get();
+        return view('admin.recruitment.show', compact('application', 'interviewers'));
     }
 
     public function updateStatus(Request $request, Application $application)

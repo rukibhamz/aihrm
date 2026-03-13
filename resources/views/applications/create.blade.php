@@ -212,6 +212,48 @@
                 </div>
             </div>
 
+            <!-- 5. Custom Questions -->
+            @if($job->custom_questions && count($job->custom_questions) > 0)
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-1">5. Additional Questions</h3>
+                <p class="text-sm text-gray-500 mb-6 pb-6 border-b border-gray-50">Please answer the following questions required for this role.</p>
+                
+                <div class="space-y-6">
+                    @foreach($job->custom_questions as $index => $q)
+                    <div class="space-y-2">
+                        <label class="block text-xs font-semibold text-gray-700">{{ $q['label'] ?? 'Question' }} @if(isset($q['required']) && $q['required']) <span class="text-red-500">*</span> @endif</label>
+                        
+                        @if(isset($q['type']) && $q['type'] === 'textarea')
+                            <textarea name="custom_answers[{{ $index }}]" rows="3" 
+                                {{ isset($q['required']) && $q['required'] ? 'required' : '' }}
+                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition text-sm" 
+                                placeholder="Your answer..."></textarea>
+                        @elseif(isset($q['type']) && $q['type'] === 'select')
+                            <select name="custom_answers[{{ $index }}]" {{ isset($q['required']) && $q['required'] ? 'required' : '' }}
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition text-sm bg-white">
+                                <option value="">Select an option</option>
+                                @foreach($q['options'] ?? [] as $opt)
+                                    <option value="{{ $opt }}">{{ $opt }}</option>
+                                @endforeach
+                            </select>
+                        @elseif(isset($q['type']) && $q['type'] === 'checkbox')
+                            <label class="flex items-center gap-2">
+                                <input type="hidden" name="custom_answers[{{ $index }}]" value="No">
+                                <input type="checkbox" name="custom_answers[{{ $index }}]" value="Yes" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Yes</span>
+                            </label>
+                        @else
+                            <input type="text" name="custom_answers[{{ $index }}]" 
+                                {{ isset($q['required']) && $q['required'] ? 'required' : '' }}
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition text-sm" 
+                                placeholder="Your answer...">
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             <!-- Submission Area -->
             <div class="space-y-6 pt-4 pb-12">
                 <label class="flex items-start gap-3 cursor-pointer">

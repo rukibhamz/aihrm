@@ -16,6 +16,9 @@ class Attendance extends Model
         'status',
         'notes',
         'overtime_hours',
+        'latitude',
+        'longitude',
+        'location_verified',
     ];
 
     protected $casts = [

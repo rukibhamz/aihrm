@@ -29,12 +29,14 @@ class Application extends Model
         'resume_path',
         'ai_score',
         'status',
-        'notes', // Added for internal HR comments
+        'notes',
+        'custom_answers',
     ];
 
     protected $casts = [
         'ai_score' => 'integer',
         'status' => 'string',
+        'custom_answers' => 'array',
     ];
 
     const STATUS_APPLIED = 'applied';
@@ -52,6 +54,11 @@ class Application extends Model
     public function resumeAnalysis(): HasOne
     {
         return $this->hasOne(ResumeAnalysis::class);
+    }
+
+    public function interviews()
+    {
+        return $this->hasMany(Interview::class);
     }
 
     public function routeNotificationForMail($notification)

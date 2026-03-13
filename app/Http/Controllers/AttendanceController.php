@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Shift;
+use App\Models\OfficeLocation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,25 +50,39 @@ class AttendanceController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
-        // Office coordinates (configurable via settings)
-        $officeLatitude = 6.5244; // Example: Lagos, Nigeria
-        $officeLongitude = 3.3792;
-        $maxDistance = 0.5; // 500 meters radius
-
+        // Office coordinates: Assigned to user, or default
+        $location = $user->officeLocation ?: OfficeLocation::where('is_default', true)->first();
+        
         $locationVerified = false;
-        if ($request->latitude && $request->longitude) {
+        if ($location && $request->latitude && $request->longitude) {
             $distance = $this->calculateDistance(
                 $request->latitude,
                 $request->longitude,
-                $officeLatitude,
-                $officeLongitude
+                $location->latitude,
+                $location->longitude
             );
-            $locationVerified = $distance <= $maxDistance;
+            $locationVerified = ($distance * 1000) <= $location->radius_meters;
+        } elseif (!$location) {
+            // If no location is defined in system, consider it verified (or handle differently)
+            $locationVerified = true; 
         }
 
-        // Determine status (Late if after 9:00 AM)
+        // Determine status based on Shift
+        $shift = $user->shift ?: Shift::where('is_default', true)->first();
         $now = Carbon::now();
-        $status = $now->format('H:i') > '09:00' ? 'late' : 'present';
+        $status = 'present';
+
+        if ($shift) {
+            $startTime = Carbon::createFromFormat('H:i:s', $shift->start_time);
+            $threshold = $startTime->addMinutes($shift->grace_period_minutes);
+            
+            if ($now->format('H:i:s') > $threshold->format('H:i:s')) {
+                $status = 'late';
+            }
+        } else {
+            // Fallback to legacy 9:00 AM if no shifts exist
+            $status = $now->format('H:i') > '09:00' ? 'late' : 'present';
+        }
 
         Attendance::create([
             'user_id' => $user->id,
@@ -79,8 +95,8 @@ class AttendanceController extends Controller
         ]);
 
         $message = 'Clocked in successfully at ' . $now->format('H:i');
-        if (!$locationVerified && $request->latitude) {
-            $message .= ' (Location not verified - outside office radius)';
+        if (!$locationVerified && $location && $request->latitude) {
+            $message .= ' (Outside ' . $location->name . ' radius)';
         }
 
         return back()->with('success', $message);
@@ -184,8 +200,21 @@ class AttendanceController extends Controller
             return response()->json(['success' => true, 'message' => 'Clocked OUT successful for ' . \App\Models\User::find($userId)->name, 'type' => 'out']);
         } else {
             // Clock In
+            $targetUser = \App\Models\User::find($userId);
+            $shift = $targetUser->shift ?: Shift::where('is_default', true)->first();
+            
             $now = Carbon::now();
-            $status = $now->format('H:i') > '09:00' ? 'late' : 'present';
+            $status = 'present';
+
+            if ($shift) {
+                $startTime = Carbon::createFromFormat('H:i:s', $shift->start_time);
+                $threshold = $startTime->addMinutes($shift->grace_period_minutes);
+                if ($now->format('H:i:s') > $threshold->format('H:i:s')) {
+                    $status = 'late';
+                }
+            } else {
+                $status = $now->format('H:i') > '09:00' ? 'late' : 'present';
+            }
             
             Attendance::create([
                 'user_id' => $userId,
@@ -195,7 +224,7 @@ class AttendanceController extends Controller
                 'location_verified' => true, // Verified by gatekeeper scan
             ]);
             
-            return response()->json(['success' => true, 'message' => 'Clocked IN successful for ' . \App\Models\User::find($userId)->name, 'type' => 'in']);
+            return response()->json(['success' => true, 'message' => 'Clocked IN successful for ' . $targetUser->name, 'type' => 'in']);
         }
     }
 }

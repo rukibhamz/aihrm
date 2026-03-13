@@ -51,6 +51,21 @@ class ApplicationController extends Controller
             'resume' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB max
         ]);
 
+        // Validate custom questions if they exist
+        $customValidationRules = [];
+        if ($job->custom_questions) {
+            foreach ($job->custom_questions as $index => $q) {
+                if (isset($q['required']) && $q['required']) {
+                    $customValidationRules["custom_answers.{$index}"] = 'required';
+                }
+            }
+        }
+        if (!empty($customValidationRules)) {
+            $request->validate($customValidationRules, [
+                'custom_answers.*.required' => 'Please answer all required custom questions.'
+            ]);
+        }
+
         // Store resume
         $resumePath = $request->file('resume')->store('resumes', 'public');
 
@@ -71,6 +86,7 @@ class ApplicationController extends Controller
             'portfolio_url' => $validated['portfolio_url'] ?? null,
             'resume_path' => $resumePath,
             'status' => 'pending',
+            'custom_answers' => $request->input('custom_answers', []),
         ]);
 
         return redirect()->route('applications.success')

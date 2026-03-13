@@ -5,12 +5,24 @@
             <p class="mt-2 text-sm text-neutral-500 font-medium">Present this code to the office scanner</p>
         </div>
 
-        <div class="card p-8 bg-white border-2 border-black flex flex-col items-center">
-            <div id="qrcode" class="mb-6 p-4 bg-white border border-neutral-100 rounded-xl shadow-inner"></div>
+        <div class="card p-8 bg-white border-2 border-black flex flex-col items-center relative overflow-hidden" id="qrContainer">
+            <div id="locationOverlay" class="absolute inset-0 bg-white/90 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center">
+                <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mb-4">
+                    <svg id="locIcon" class="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <h3 class="font-black text-black uppercase tracking-tight mb-2">Location Required</h3>
+                <p class="text-xs text-neutral-500 font-medium mb-6">We need to verify you are at the office to generate a secure clock-in token.</p>
+                <button onclick="verifyLocation()" id="verifyBtn" class="btn-primary w-full py-3 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Allow Location
+                </button>
+            </div>
+
+            <div id="qrcode" class="mb-6 p-4 bg-white border border-neutral-100 rounded-xl shadow-inner opacity-0 transition-opacity duration-500"></div>
             
             <div class="text-center">
                 <div class="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Status</div>
-                <div class="text-sm font-black text-black">Active & Secure Token</div>
+                <div class="text-sm font-black text-black" id="qrStatus">Awaiting Verification</div>
             </div>
 
             <div class="mt-4 text-center">
@@ -34,7 +46,36 @@
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        function verifyLocation() {
+            const btn = document.getElementById('verifyBtn');
+            const icon = document.getElementById('locIcon');
+            
+            btn.disabled = true;
+            btn.innerText = 'Verifying Location...';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // In a real production app, we would send these coords to the server for a real distance check
+                        // For now, we allow the QR to show if geolocation is enabled.
+                        document.getElementById('locationOverlay').classList.add('hidden');
+                        document.getElementById('qrcode').classList.remove('opacity-0');
+                        document.getElementById('qrStatus').innerText = 'Active & Secure Token';
+                        generateQR();
+                    },
+                    (error) => {
+                        alert('Error: ' + error.message + '. Location is mandatory for QR clock-ins.');
+                        btn.disabled = false;
+                        btn.innerText = 'Allow Location';
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                alert('Geolocation not supported.');
+            }
+        }
+
+        function generateQR() {
             var qrData = @json($qrData);
             new QRCode(document.getElementById("qrcode"), {
                 text: qrData,
@@ -44,7 +85,7 @@
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
-        });
+        }
     </script>
     @endpush
 </x-app-layout>

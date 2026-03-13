@@ -146,6 +146,15 @@ Route::middleware('auth')->group(function () {
         Route::put('admin/resignations/{resignation}/offboarding/{task}', [\App\Http\Controllers\Admin\ResignationController::class, 'updateOffboardingTask'])->name('admin.resignations.offboarding.update');
         Route::resource('admin/offboarding', \App\Http\Controllers\Admin\OffboardingTaskController::class, ['as' => 'admin']);
 
+        // Interview Scheduling
+        Route::post('admin/applications/{application}/interviews', [\App\Http\Controllers\Admin\InterviewController::class, 'store'])->name('admin.interviews.store');
+        Route::put('admin/interviews/{interview}', [\App\Http\Controllers\Admin\InterviewController::class, 'update'])->name('admin.interviews.update');
+        Route::post('admin/interviews/{interview}/scorecard', [\App\Http\Controllers\Admin\InterviewController::class, 'submitScorecard'])->name('admin.interviews.submitScorecard');
+        Route::delete('admin/interviews/{interview}', [\App\Http\Controllers\Admin\InterviewController::class, 'destroy'])->name('admin.interviews.destroy');
+
+        // Time & Attendance
+        Route::resource('admin/shifts', \App\Http\Controllers\Admin\ShiftController::class, ['as' => 'admin']);
+        Route::resource('admin/locations', \App\Http\Controllers\Admin\OfficeLocationController::class, ['as' => 'admin']);
         // Document Management Admin
         Route::resource('admin/documents', \App\Http\Controllers\Admin\DocumentController::class, ['as' => 'admin']);
         Route::get('admin/documents/{document}/download', [\App\Http\Controllers\Admin\DocumentController::class, 'download'])->name('admin.documents.download');

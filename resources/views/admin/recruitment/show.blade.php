@@ -103,6 +103,169 @@
 
         <!-- Right Column: Content -->
         <div class="lg:col-span-2 space-y-6">
+            <!-- Interview Timeline -->
+            <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
+                <div class="bg-neutral-50 px-6 py-4 border-b border-neutral-200 flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-neutral-900 uppercase tracking-widest flex items-center gap-2">
+                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Interview Schedule
+                    </h2>
+                    <button onclick="document.getElementById('scheduleInterviewModal').showModal()" class="btn-primary text-xs px-3 py-1.5">+ Schedule Interview</button>
+                </div>
+                <div class="p-6">
+                    @if($application->interviews->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($application->interviews->sortBy('scheduled_at') as $interview)
+                            <div class="relative border border-neutral-200 rounded-lg p-5 {{ $interview->status === 'completed' ? 'bg-green-50/50' : ($interview->status === 'cancelled' ? 'bg-neutral-50 opacity-60' : 'bg-white') }}">
+                                <div class="flex flex-col sm:flex-row justify-between items-start gap-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider
+                                                {{ $interview->status === 'completed' ? 'bg-green-100 text-green-800' : '' }}
+                                                {{ $interview->status === 'scheduled' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                {{ $interview->status === 'cancelled' ? 'bg-neutral-200 text-neutral-600' : '' }}
+                                                {{ $interview->status === 'no_show' ? 'bg-red-100 text-red-800' : '' }}">
+                                                {{ $interview->status }}
+                                            </span>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700">
+                                                Round {{ $interview->round }} — {{ ucfirst(str_replace('_', ' ', $interview->type)) }}
+                                            </span>
+                                        </div>
+                                        <h4 class="font-bold text-neutral-900">{{ $interview->scheduled_at->format('l, M d, Y \\a\\t h:i A') }}</h4>
+                                        <p class="text-sm text-neutral-500 mt-1">
+                                            Interviewer: <span class="font-medium text-neutral-700">{{ $interview->interviewer->name }}</span>
+                                        </p>
+                                        @if($interview->location_or_link)
+                                            <p class="text-sm text-neutral-500 mt-1">
+                                                📍 @if(filter_var($interview->location_or_link, FILTER_VALIDATE_URL))
+                                                    <a href="{{ $interview->location_or_link }}" target="_blank" class="text-blue-600 hover:underline">{{ $interview->location_or_link }}</a>
+                                                @else
+                                                    {{ $interview->location_or_link }}
+                                                @endif
+                                            </p>
+                                        @endif
+                                        @if($interview->notes)
+                                            <p class="text-sm text-neutral-500 mt-2 italic">"{{ $interview->notes }}"</p>
+                                        @endif
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        @if($interview->status === 'scheduled')
+                                        <form action="{{ route('admin.interviews.update', $interview) }}" method="POST" class="inline">
+                                            @csrf @method('PUT')
+                                            <input type="hidden" name="status" value="completed">
+                                            <button type="submit" class="text-xs px-3 py-1.5 font-semibold bg-green-600 text-white rounded hover:bg-green-700 transition">Mark Done</button>
+                                        </form>
+                                        <form action="{{ route('admin.interviews.update', $interview) }}" method="POST" class="inline">
+                                            @csrf @method('PUT')
+                                            <input type="hidden" name="status" value="cancelled">
+                                            <button type="submit" class="text-xs px-3 py-1.5 font-semibold bg-neutral-200 text-neutral-700 rounded hover:bg-neutral-300 transition">Cancel</button>
+                                        </form>
+                                        @endif
+                                        <form action="{{ route('admin.interviews.destroy', $interview) }}" method="POST" onsubmit="return confirm('Delete this interview?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="p-1.5 text-neutral-400 hover:text-red-600 transition">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Scorecard Section -->
+                                @if($interview->scorecard)
+                                    <div class="mt-4 pt-4 border-t border-neutral-100">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <span class="text-xs font-bold uppercase tracking-widest text-neutral-400">Scorecard</span>
+                                            <span class="text-sm font-bold {{ $interview->scorecard->total_score >= 70 ? 'text-green-600' : ($interview->scorecard->total_score >= 50 ? 'text-yellow-600' : 'text-red-600') }}">
+                                                {{ $interview->scorecard->total_score }}/100
+                                            </span>
+                                        </div>
+                                        <div class="grid grid-cols-5 gap-3 mb-3">
+                                            @foreach($interview->scorecard->criteria_scores as $criteria => $score)
+                                            <div class="text-center">
+                                                <div class="text-lg font-black {{ $score >= 4 ? 'text-green-600' : ($score >= 3 ? 'text-yellow-600' : 'text-red-600') }}">{{ $score }}/5</div>
+                                                <div class="text-[10px] font-medium text-neutral-500 uppercase tracking-wide">{{ str_replace('_', ' ', $criteria) }}</div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xs font-bold px-2 py-1 rounded-full
+                                                {{ $interview->scorecard->recommendation === 'strong_hire' ? 'bg-green-100 text-green-800' : '' }}
+                                                {{ $interview->scorecard->recommendation === 'hire' ? 'bg-emerald-100 text-emerald-800' : '' }}
+                                                {{ $interview->scorecard->recommendation === 'no_hire' ? 'bg-orange-100 text-orange-800' : '' }}
+                                                {{ $interview->scorecard->recommendation === 'strong_no_hire' ? 'bg-red-100 text-red-800' : '' }}">
+                                                {{ ucfirst(str_replace('_', ' ', $interview->scorecard->recommendation)) }}
+                                            </span>
+                                        </div>
+                                        @if($interview->scorecard->strengths)
+                                            <p class="text-sm text-neutral-600 mt-2"><strong>Strengths:</strong> {{ $interview->scorecard->strengths }}</p>
+                                        @endif
+                                        @if($interview->scorecard->weaknesses)
+                                            <p class="text-sm text-neutral-600 mt-1"><strong>Areas for Improvement:</strong> {{ $interview->scorecard->weaknesses }}</p>
+                                        @endif
+                                    </div>
+                                @elseif($interview->status === 'completed')
+                                    <!-- Scorecard Form for completed interviews -->
+                                    <div class="mt-4 pt-4 border-t border-neutral-200">
+                                        <button onclick="document.getElementById('scorecardForm{{ $interview->id }}').classList.toggle('hidden')" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                                            Submit Scorecard
+                                        </button>
+                                        <form id="scorecardForm{{ $interview->id }}" action="{{ route('admin.interviews.scorecard', $interview) }}" method="POST" class="hidden mt-4 space-y-4 p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
+                                            @csrf
+                                            <div class="grid grid-cols-5 gap-3">
+                                                @foreach(['communication', 'technical_skills', 'problem_solving', 'cultural_fit', 'leadership'] as $criteria)
+                                                <div>
+                                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">{{ str_replace('_', ' ', $criteria) }}</label>
+                                                    <select name="{{ $criteria }}" required class="w-full px-2 py-1.5 text-sm border border-neutral-200 rounded focus:ring-indigo-500 focus:border-indigo-500">
+                                                        <option value="">-</option>
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            <option value="{{ $i }}">{{ $i }}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-neutral-600 mb-1">Recommendation</label>
+                                                <select name="recommendation" required class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                                    <option value="">Select...</option>
+                                                    <option value="strong_hire">👍👍 Strong Hire</option>
+                                                    <option value="hire">👍 Hire</option>
+                                                    <option value="no_hire">👎 No Hire</option>
+                                                    <option value="strong_no_hire">👎👎 Strong No Hire</option>
+                                                </select>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-xs font-bold text-neutral-600 mb-1">Strengths</label>
+                                                    <textarea name="strengths" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Key strengths observed..."></textarea>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-bold text-neutral-600 mb-1">Areas for Improvement</label>
+                                                    <textarea name="weaknesses" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Areas needing development..."></textarea>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-neutral-600 mb-1">Additional Comments</label>
+                                                <textarea name="comments" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn-primary text-sm">Submit Scorecard</button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-8 text-neutral-500">
+                            <svg class="w-10 h-10 mx-auto text-neutral-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <p class="font-medium">No interviews scheduled yet</p>
+                            <p class="text-sm mt-1">Click "Schedule Interview" to set up the first round.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             {{-- Resume Preview --}}
             <div class="bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden">
                 <div class="bg-neutral-50 px-6 py-4 border-b border-neutral-200 flex justify-between items-center">
@@ -141,4 +304,66 @@
             @endif
         </div>
     </div>
+
+    <!-- Schedule Interview Modal -->
+    <dialog id="scheduleInterviewModal" class="p-0 rounded-xl shadow-2xl backdrop:bg-black/40 w-full max-w-lg open:animate-fade-in-up">
+        <div class="bg-white">
+            <div class="px-6 py-4 border-b border-neutral-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold">Schedule Interview</h3>
+                <button onclick="document.getElementById('scheduleInterviewModal').close()" class="text-neutral-400 hover:text-black">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('admin.interviews.store', $application) }}" class="p-6 space-y-4">
+                @csrf
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Interviewer *</label>
+                        <select name="interviewer_id" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                            <option value="">Select interviewer...</option>
+                            @foreach($interviewers as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Round *</label>
+                        <select name="round" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                            @for($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}" {{ $application->interviews->count() + 1 == $i ? 'selected' : '' }}>Round {{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Date & Time *</label>
+                        <input type="datetime-local" name="scheduled_at" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Interview Type *</label>
+                        <select name="type" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                            <option value="video">Video Call</option>
+                            <option value="phone">Phone Screen</option>
+                            <option value="in_person">In Person</option>
+                            <option value="technical">Technical</option>
+                            <option value="panel">Panel Interview</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-neutral-700 mb-1">Location / Meeting Link</label>
+                    <input type="text" name="location_or_link" placeholder="e.g. https://meet.google.com/... or Room 3B" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-neutral-700 mb-1">Notes for Interviewer</label>
+                    <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm" placeholder="Any preparation notes..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-neutral-100">
+                    <button type="button" onclick="document.getElementById('scheduleInterviewModal').close()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Schedule Interview</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 </x-app-layout>

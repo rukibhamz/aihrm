@@ -22,11 +22,13 @@ class JobPosting extends Model
         'reporting_to',
         'status',
         'created_by',
+        'custom_questions',
     ];
 
     protected $casts = [
         'status' => 'string',
         'application_deadline' => 'date',
+        'custom_questions' => 'array',
     ];
 
     public function creator(): BelongsTo
