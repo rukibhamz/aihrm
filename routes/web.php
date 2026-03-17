@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('employees/{employee}/reset-password', [\App\Http\Controllers\EmployeeController::class, 'resetPassword'])->name('employees.reset-password');
         Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
         Route::resource('admin/jobs', \App\Http\Controllers\JobPostingController::class)->names('admin.jobs');
+        Route::get('admin/jobs/{job}/applicants', [\App\Http\Controllers\JobPostingController::class, 'applicants'])->name('admin.jobs.applicants');
         
         // ATS / Applications
         Route::get('admin/recruitment/kanban', [\App\Http\Controllers\Admin\ApplicationController::class, 'kanban'])->name('admin.applications.kanban');

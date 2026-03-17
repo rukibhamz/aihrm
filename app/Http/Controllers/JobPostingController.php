@@ -157,4 +157,38 @@ class JobPostingController extends Controller
         $job->delete();
         return redirect()->route('jobs.index')->with('success', 'Job posting deleted successfully.');
     }
+
+    public function applicants(Request $request, JobPosting $job)
+    {
+        $query = $job->applications()->with('resumeAnalysis');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('candidate_name', 'like', "%{$search}%")
+                  ->orWhere('candidate_email', 'like', "%{$search}%")
+                  ->orWhere('current_city', 'like', "%{$search}%")
+                  ->orWhere('current_job_title', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('sort')) {
+            $sort = $request->sort;
+            $direction = $request->input('direction', 'desc');
+            
+            if ($sort === 'ai_score') {
+                $query->orderBy('ai_score', $direction);
+            } elseif ($sort === 'experience') {
+                $query->orderBy('years_of_experience', $direction);
+            } else {
+                $query->latest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $applications = $query->paginate(20)->withQueryString();
+
+        return view('admin.jobs.applicants', compact('job', 'applications'));
+    }
 }

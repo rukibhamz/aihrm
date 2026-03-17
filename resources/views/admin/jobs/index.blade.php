@@ -50,7 +50,7 @@
                     @forelse($jobs as $job)
                         <tr class="hover:bg-gray-50/80 transition duration-150">
                             <td class="px-6 py-4">
-                                <div class="font-semibold text-gray-900">{{ $job->title }}</div>
+                                <a href="{{ route('admin.jobs.applicants', $job) }}" class="font-semibold text-gray-900 hover:text-blue-600 transition">{{ $job->title }}</a>
                                 <div class="text-sm text-gray-500 flex items-center gap-1 mt-1">
                                     <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                     {{ $job->department ?? 'General' }}

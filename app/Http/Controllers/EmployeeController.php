@@ -47,7 +47,7 @@ class EmployeeController extends Controller
             'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'role' => 'required|exists:roles,name',
-            'employment_status_id' => 'required|exists:employment_statuses,id',
+            'employment_status_id' => 'nullable|exists:employment_statuses,id',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -194,7 +194,7 @@ class EmployeeController extends Controller
             'gender' => 'required|in:male,female',
             'join_date' => 'nullable|date',
             'status' => 'required|in:active,inactive,terminated',
-            'employment_status_id' => 'required|exists:employment_statuses,id',
+            'employment_status_id' => 'nullable|exists:employment_statuses,id',
             'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
         ]);
