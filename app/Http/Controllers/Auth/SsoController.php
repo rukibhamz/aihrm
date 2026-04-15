@@ -78,6 +78,7 @@ class SsoController extends Controller
             $this->injectProviderConfig($provider);
             
             $driver = $this->driverMap[$provider] ?? $provider;
+            /** @var \Laravel\Socialite\Two\User $socialUser */
             $socialUser = Socialite::driver($driver)->user();
 
             if (empty($socialUser->getEmail())) {
