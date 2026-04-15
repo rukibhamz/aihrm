@@ -18,6 +18,6 @@ class EmploymentStatus extends Model
 
     public function leaveTypes()
     {
-        return $this->belongsToMany(LeaveType::class);
+        return $this->belongsToMany(LeaveType::class, 'leave_type_employment_status');
     }
 }
