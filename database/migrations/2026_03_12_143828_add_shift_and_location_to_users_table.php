@@ -11,10 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('shift_id')->nullable()->constrained('shifts')->nullOnDelete();
-            $table->foreignId('office_location_id')->nullable()->constrained('office_locations')->nullOnDelete();
+            if (!Schema::hasColumn('users', 'shift_id')) {
+                $table->foreignId('shift_id')->nullable()->constrained('shifts')->nullOnDelete();
+            }
+            if (!Schema::hasColumn('users', 'office_location_id')) {
+                $table->foreignId('office_location_id')->nullable()->constrained('office_locations')->nullOnDelete();
+            }
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
