@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('applications', function (Blueprint $table) {
-            $table->json('custom_answers')->nullable()->after('notes');
+            // Ensure prerequisite 'notes' column exists to avoid 1054 error
+            if (!Schema::hasColumn('applications', 'notes')) {
+                $table->text('notes')->nullable()->after('status');
+            }
+
+            if (!Schema::hasColumn('applications', 'custom_answers')) {
+                $table->json('custom_answers')->nullable()->after('notes');
+            }
         });
     }
 

@@ -11,19 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 1. Fix missing 'notes' in applications table
-        if (Schema::hasTable('applications')) {
-            Schema::table('applications', function (Blueprint $table) {
-                if (!Schema::hasColumn('applications', 'notes')) {
-                    // Try to place it after status if status exists
-                    if (Schema::hasColumn('applications', 'status')) {
-                        $table->text('notes')->nullable()->after('status');
-                    } else {
-                        $table->text('notes')->nullable();
-                    }
-                }
-            });
-        }
+        // notes is now handled by the patched 2026_03_12_124535 migration
 
         // 2. Ensure users table has required columns and foreign keys
         if (Schema::hasTable('users')) {
