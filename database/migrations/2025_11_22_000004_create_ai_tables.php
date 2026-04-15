@@ -47,9 +47,10 @@ return new class extends Migration
                 $table->string('candidate_name');
                 $table->string('candidate_email');
                 $table->string('candidate_phone')->nullable();
-                $table->string('resume_path');
-                $table->integer('ai_score')->nullable(); // 0-100
-                $table->enum('status', ['pending', 'screening', 'shortlisted', 'rejected', 'hired'])->default('pending');
+                $table->string('resume_path')->nullable(); // Path to PDF
+                $table->integer('ai_score')->nullable(); // 0-100 match score
+                $table->string('status')->default('applied'); // applied, screening, shortlisted, rejected, hired
+                $table->text('notes')->nullable(); // Internal HR comments
                 $table->timestamps();
 
                 $table->index('ai_score');
