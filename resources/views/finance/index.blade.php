@@ -43,7 +43,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $request->created_at->format('M d, Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('finance.show', $request) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                <a href="{{ route('finance.show', $request) }}" class="text-primary hover:text-indigo-900">View</a>
                             </td>
                         </tr>
                         @empty
@@ -61,3 +61,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -86,12 +86,12 @@
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Document Title</label>
-                    <input type="text" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="e.g. Passport Copy">
+                    <input type="text" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="e.g. Passport Copy">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Document Type</label>
-                    <select name="type" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                    <select name="type" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                         <option value="id_proof">ID Proof</option>
                         <option value="certificate">Certificate</option>
                         <option value="tax_form">Tax Form</option>
@@ -118,4 +118,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

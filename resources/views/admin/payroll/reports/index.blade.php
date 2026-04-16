@@ -24,12 +24,12 @@
                         
                         <form action="{{ route('admin.payroll-reports.summary') }}" method="GET" class="space-y-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(1, 12) as $m)
                                         <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
                                     @endforeach
                                 </select>
-                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(2024, 2030) as $y)
                                         <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                     @endforeach
@@ -51,12 +51,12 @@
                         
                         <form action="{{ route('admin.payroll-reports.department') }}" method="GET" class="space-y-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(1, 12) as $m)
                                         <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
                                     @endforeach
                                 </select>
-                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(2024, 2030) as $y)
                                         <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                     @endforeach
@@ -78,12 +78,12 @@
                         
                         <form action="{{ route('admin.payroll-reports.tax-pension') }}" method="GET" class="space-y-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(1, 12) as $m)
                                         <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
                                     @endforeach
                                 </select>
-                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(2024, 2030) as $y)
                                         <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                     @endforeach
@@ -105,7 +105,7 @@
                         
                         <form action="{{ route('admin.payroll-reports.ytd') }}" method="GET" class="space-y-4">
                             <div class="grid grid-cols-1 gap-4">
-                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(2024, 2030) as $y)
                                         <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                     @endforeach
@@ -127,18 +127,18 @@
                         
                         <form action="{{ route('admin.payroll-reports.export') }}" method="GET" class="space-y-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="month" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(1, 12) as $m)
                                         <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $m, 1)) }}</option>
                                     @endforeach
                                 </select>
-                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-black focus:border-black">
+                                <select name="year" required class="rounded-xl border-gray-200 text-sm focus:ring-primary focus:border-primary">
                                     @foreach(range(2024, 2030) as $y)
                                         <option value="{{ $y }}" {{ date('Y') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <button type="submit" class="w-full bg-neutral-900 hover:bg-black text-white py-3 rounded-xl font-bold transition">Download CSV</button>
+                            <button type="submit" class="w-full bg-primary hover:bg-black text-white py-3 rounded-xl font-bold transition">Download CSV</button>
                         </form>
                     </div>
                 </div>
@@ -146,3 +146,4 @@
         </div>
     </div>
 </x-app-layout>
+

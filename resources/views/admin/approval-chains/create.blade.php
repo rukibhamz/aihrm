@@ -13,13 +13,13 @@
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Chain Name *</label>
                     <input type="text" name="name" required placeholder="e.g. Standard Leave Approval"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Module Type *</label>
-                    <select name="module_type" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                    <select name="module_type" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                         <option value="">Select a module...</option>
                         @foreach($modules as $value => $label)
                             <option value="{{ $value }}">{{ $label }}</option>
@@ -32,7 +32,7 @@
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Description</label>
                     <textarea name="description" rows="3" placeholder="Explain the purpose of this chain..."
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"></textarea>
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"></textarea>
                 </div>
 
                 <div class="pt-4">
@@ -42,3 +42,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -41,7 +41,7 @@
                     <div class="flex items-center mb-6 pb-6 border-b border-gray-200">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                <span class="text-indigo-600 font-semibold text-sm">
+                                <span class="text-primary font-semibold text-sm">
                                     {{ strtoupper(substr($announcement->author?->name ?? 'A', 0, 1)) }}
                                 </span>
                             </div>
@@ -75,3 +75,4 @@
         </div>
     </div>
 </x-app-layout>
+

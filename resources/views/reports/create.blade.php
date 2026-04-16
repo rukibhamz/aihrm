@@ -19,17 +19,17 @@
             
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Subject *</label>
-                <input type="text" name="subject" required placeholder="e.g., Safety Violation at Warehouse" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                <input type="text" name="subject" required placeholder="e.g., Safety Violation at Warehouse" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Description *</label>
-                <textarea name="description" rows="6" required placeholder="Please provide as much detail as possible..." class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"></textarea>
+                <textarea name="description" rows="6" required placeholder="Please provide as much detail as possible..." class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"></textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Attachment (Optional)</label>
-                <input type="file" name="attachment" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                <input type="file" name="attachment" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                 <p class="mt-1 text-xs text-neutral-500">Images or documents supporting your report.</p>
             </div>
 
@@ -46,3 +46,4 @@
         <a href="{{ route('login') }}" class="text-sm text-neutral-500 hover:text-black">Back to Login</a>
     </div>
 </x-guest-layout>
+

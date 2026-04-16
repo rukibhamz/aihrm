@@ -11,10 +11,10 @@
             <!-- Filters -->
             <form method="GET" action="{{ route('admin.leaves.index') }}" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Employee..." class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-black focus:border-black">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Employee..." class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
                 </div>
                 <div>
-                    <select name="status" class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-black focus:border-black">
+                    <select name="status" class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
                         <option value="">All Statuses</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
@@ -22,7 +22,7 @@
                     </select>
                 </div>
                 <div>
-                    <select name="leave_type_id" class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-black focus:border-black">
+                    <select name="leave_type_id" class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
                         <option value="">All Leave Types</option>
                         @foreach($leaveTypes as $type)
                             <option value="{{ $type->id }}" {{ request('leave_type_id') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
@@ -85,4 +85,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

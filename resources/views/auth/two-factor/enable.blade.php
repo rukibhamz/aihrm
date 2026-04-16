@@ -36,7 +36,7 @@
                     pattern="[0-9]{6}"
                     required
                     autofocus
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black text-center text-2xl tracking-widest font-mono"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-center text-2xl tracking-widest font-mono"
                     placeholder="000000"
                 >
                 @error('code')
@@ -66,3 +66,4 @@
         </div>
     </div>
 </x-guest-layout>
+

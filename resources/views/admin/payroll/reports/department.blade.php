@@ -68,7 +68,7 @@
                 </div>
 
                 <!-- Footer Summary Card -->
-                <div class="bg-neutral-900 text-white p-10 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="bg-primary text-white p-10 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center gap-8">
                     <div>
                         <h3 class="text-2xl font-black mb-1">Company Total Payout</h3>
                         <p class="text-neutral-400 font-medium">Summed across all active departments mentioned above.</p>
@@ -82,4 +82,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

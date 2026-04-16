@@ -22,7 +22,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Month</label>
-                    <select name="month" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black">
+                    <select name="month" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                         @for($m=1; $m<=12; $m++)
                             <option value="{{ $m }}" {{ date('n') == $m ? 'selected' : '' }}>
                                 {{ date('F', mktime(0, 0, 0, $m, 10)) }}
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Year</label>
-                    <select name="year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black">
+                    <select name="year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
                         <option value="2026" selected>2026</option>
@@ -48,4 +48,5 @@
         </form>
     </div>
 </x-app-layout>
+
 

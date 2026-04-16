@@ -28,7 +28,7 @@
                 <div class="card p-6 border-l-4 border-black relative group">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-neutral-900 text-white rounded-full flex items-center justify-center font-bold">
+                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">
                                 {{ $step->step_order }}
                             </div>
                             <div>
@@ -196,3 +196,4 @@
         toggleApproverSource(document.getElementById('approver_type').value);
     </script>
 </x-app-layout>
+

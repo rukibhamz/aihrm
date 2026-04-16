@@ -13,7 +13,7 @@
         </div>
         <div class="flex gap-3">
              <form method="GET" action="{{ route('admin.applications.kanban') }}">
-                <select name="job_posting_id" onchange="this.form.submit()" class="text-sm border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <select name="job_posting_id" onchange="this.form.submit()" class="text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                     <option value="">All Jobs</option>
                     @foreach($jobs as $job)
                         <option value="{{ $job->id }}" {{ $jobId == $job->id ? 'selected' : '' }}>
@@ -161,4 +161,5 @@
     });
 </script>
 </x-app-layout>
+
 

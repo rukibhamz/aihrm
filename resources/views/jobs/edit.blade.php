@@ -30,7 +30,7 @@
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Job Title *</label>
                 <input type="text" name="title" required value="{{ old('title', $job->title) }}" 
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="e.g., Senior Software Engineer">
             </div>
 
@@ -38,13 +38,13 @@
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Department</label>
                     <input type="text" name="department" value="{{ old('department', $job->department) }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., Engineering">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Location</label>
                     <input type="text" name="location" value="{{ old('location', $job->location) }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., Lagos, Nigeria">
                 </div>
             </div>
@@ -52,21 +52,21 @@
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Job Description *</label>
                 <textarea name="description" required rows="6"
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="Describe the role, responsibilities...">{{ old('description', $job->description) }}</textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Requirements *</label>
                 <textarea name="requirements" required rows="6"
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="List required skills, experience, education...">{{ old('requirements', $job->requirements) }}</textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Status *</label>
                 <select name="status" required
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     <option value="draft" {{ $job->status === 'draft' ? 'selected' : '' }}>Draft (not visible to candidates)</option>
                     <option value="open" {{ $job->status === 'open' ? 'selected' : '' }}>Open (accepting applications)</option>
                     <option value="closed" {{ $job->status === 'closed' ? 'selected' : '' }}>Closed (not accepting applications)</option>
@@ -80,7 +80,7 @@
                         <label class="block text-sm font-medium text-neutral-700">Custom Application Questions</label>
                         <p class="text-xs text-neutral-500 mt-1">Add extra questions to the application form for this role</p>
                     </div>
-                    <button type="button" onclick="addQuestion()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition flex items-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg hover:bg-indigo-50">
+                    <button type="button" onclick="addQuestion()" class="text-xs font-semibold text-primary hover:text-indigo-800 transition flex items-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg hover:bg-indigo-50">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                         Add Question
                     </button>
@@ -115,12 +115,12 @@
                 <div class="grid grid-cols-3 gap-3">
                     <div class="col-span-2">
                         <input type="text" value="${q.label || ''}" onchange="updateQuestion(${i}, 'label', this.value)"
-                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black"
+                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary"
                             placeholder="Question text, e.g. 'Are you willing to relocate?'">
                     </div>
                     <div>
                         <select onchange="updateQuestion(${i}, 'type', this.value)"
-                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black">
+                            class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary">
                             <option value="text" ${q.type === 'text' ? 'selected' : ''}>Short Text</option>
                             <option value="textarea" ${q.type === 'textarea' ? 'selected' : ''}>Long Text</option>
                             <option value="select" ${q.type === 'select' ? 'selected' : ''}>Dropdown</option>
@@ -131,12 +131,12 @@
                 ${q.type === 'select' ? `
                 <div>
                     <input type="text" value="${(q.options || []).join(', ')}" onchange="updateQuestion(${i}, 'options', this.value.split(',').map(s => s.trim()).filter(s => s))"
-                        class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-black focus:border-black"
+                        class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary"
                         placeholder="Options (comma separated, e.g. Yes, No, Maybe)">
                 </div>` : ''}
                 <label class="flex items-center gap-2 text-sm text-neutral-600">
                     <input type="checkbox" ${q.required ? 'checked' : ''} onchange="updateQuestion(${i}, 'required', this.checked)"
-                        class="rounded border-neutral-300 text-black focus:ring-black">
+                        class="rounded border-neutral-300 text-black focus:ring-primary">
                     Required field
                 </label>
             `;
@@ -164,3 +164,5 @@
     renderQuestions();
 </script>
 </x-app-layout>
+
+

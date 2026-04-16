@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     
-                    <div class="bg-indigo-600 p-8 rounded-[2.5rem] text-white flex flex-col justify-center">
+                    <div class="bg-primary p-8 rounded-[2.5rem] text-white flex flex-col justify-center">
                         <h3 class="text-2xl font-black mb-4">Financial Year {{ $validated['year'] }}</h3>
                         <p class="text-indigo-100 mb-8 font-medium italic">"Consistent growth and optimized payroll spending lead to organizational success."</p>
                         <div class="flex items-center gap-4">
@@ -123,4 +123,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

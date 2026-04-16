@@ -46,14 +46,14 @@
                             </td>
                             <td class="px-6 py-4">
                                 @if($shift->is_default)
-                                    <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-wider rounded border border-indigo-100">Default</span>
+                                    <span class="px-2 py-0.5 bg-indigo-50 text-primary text-[10px] font-bold uppercase tracking-wider rounded border border-indigo-100">Default</span>
                                 @else
                                     <span class="text-neutral-300 text-[10px] uppercase font-bold tracking-wider">No</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-3">
-                                    <a href="{{ route('admin.shifts.edit', $shift) }}" class="text-neutral-400 hover:text-indigo-600 transition">
+                                    <a href="{{ route('admin.shifts.edit', $shift) }}" class="text-neutral-400 hover:text-primary transition">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </a>
                                     <form action="{{ route('admin.shifts.destroy', $shift) }}" method="POST" class="inline" onsubmit="return confirm('Delete this shift?')">
@@ -76,3 +76,4 @@
         </div>
     </div>
 </x-app-layout>
+

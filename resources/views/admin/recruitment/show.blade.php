@@ -90,7 +90,7 @@
                     <p class="text-xs text-neutral-400">Move candidate to the next stage in the recruitment process.</p>
                     <div class="space-y-2">
                         @foreach(['applied', 'screening', 'interview', 'offer', 'hired', 'rejected'] as $status)
-                        <label class="flex items-center gap-3 p-3 rounded-lg border border-neutral-800 hover:bg-neutral-900 cursor-pointer transition {{ $application->status === $status ? 'bg-neutral-900 border-neutral-700' : '' }}">
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-neutral-800 hover:bg-primary cursor-pointer transition {{ $application->status === $status ? 'bg-primary border-neutral-700' : '' }}">
                             <input type="radio" name="status" value="{{ $status }}" {{ $application->status === $status ? 'checked' : '' }} class="text-white focus:ring-offset-black">
                             <span class="text-sm font-medium capitalize">{{ $status }}</span>
                         </label>
@@ -206,7 +206,7 @@
                                 @elseif($interview->status === 'completed')
                                     <!-- Scorecard Form for completed interviews -->
                                     <div class="mt-4 pt-4 border-t border-neutral-200">
-                                        <button onclick="document.getElementById('scorecardForm{{ $interview->id }}').classList.toggle('hidden')" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition flex items-center gap-1">
+                                        <button onclick="document.getElementById('scorecardForm{{ $interview->id }}').classList.toggle('hidden')" class="text-sm font-semibold text-primary hover:text-indigo-800 transition flex items-center gap-1">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                                             Submit Scorecard
                                         </button>
@@ -216,7 +216,7 @@
                                                 @foreach(['communication', 'technical_skills', 'problem_solving', 'cultural_fit', 'leadership'] as $criteria)
                                                 <div>
                                                     <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">{{ str_replace('_', ' ', $criteria) }}</label>
-                                                    <select name="{{ $criteria }}" required class="w-full px-2 py-1.5 text-sm border border-neutral-200 rounded focus:ring-indigo-500 focus:border-indigo-500">
+                                                    <select name="{{ $criteria }}" required class="w-full px-2 py-1.5 text-sm border border-neutral-200 rounded focus:ring-primary focus:border-primary">
                                                         <option value="">-</option>
                                                         @for($i = 1; $i <= 5; $i++)
                                                             <option value="{{ $i }}">{{ $i }}</option>
@@ -227,7 +227,7 @@
                                             </div>
                                             <div>
                                                 <label class="block text-xs font-bold text-neutral-600 mb-1">Recommendation</label>
-                                                <select name="recommendation" required class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                                <select name="recommendation" required class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary">
                                                     <option value="">Select...</option>
                                                     <option value="strong_hire">👍👍 Strong Hire</option>
                                                     <option value="hire">👍 Hire</option>
@@ -238,16 +238,16 @@
                                             <div class="grid grid-cols-2 gap-4">
                                                 <div>
                                                     <label class="block text-xs font-bold text-neutral-600 mb-1">Strengths</label>
-                                                    <textarea name="strengths" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Key strengths observed..."></textarea>
+                                                    <textarea name="strengths" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary" placeholder="Key strengths observed..."></textarea>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-bold text-neutral-600 mb-1">Areas for Improvement</label>
-                                                    <textarea name="weaknesses" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Areas needing development..."></textarea>
+                                                    <textarea name="weaknesses" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary" placeholder="Areas needing development..."></textarea>
                                                 </div>
                                             </div>
                                             <div>
                                                 <label class="block text-xs font-bold text-neutral-600 mb-1">Additional Comments</label>
-                                                <textarea name="comments" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                                <textarea name="comments" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary"></textarea>
                                             </div>
                                             <button type="submit" class="btn-primary text-sm">Submit Scorecard</button>
                                         </form>
@@ -319,7 +319,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Interviewer *</label>
-                        <select name="interviewer_id" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                        <select name="interviewer_id" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                             <option value="">Select interviewer...</option>
                             @foreach($interviewers as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
@@ -328,7 +328,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Round *</label>
-                        <select name="round" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                        <select name="round" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                             @for($i = 1; $i <= 5; $i++)
                                 <option value="{{ $i }}" {{ $application->interviews->count() + 1 == $i ? 'selected' : '' }}>Round {{ $i }}</option>
                             @endfor
@@ -338,11 +338,11 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Date & Time *</label>
-                        <input type="datetime-local" name="scheduled_at" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                        <input type="datetime-local" name="scheduled_at" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Interview Type *</label>
-                        <select name="type" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                        <select name="type" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                             <option value="video">Video Call</option>
                             <option value="phone">Phone Screen</option>
                             <option value="in_person">In Person</option>
@@ -353,11 +353,11 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-neutral-700 mb-1">Location / Meeting Link</label>
-                    <input type="text" name="location_or_link" placeholder="e.g. https://meet.google.com/... or Room 3B" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm">
+                    <input type="text" name="location_or_link" placeholder="e.g. https://meet.google.com/... or Room 3B" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-neutral-700 mb-1">Notes for Interviewer</label>
-                    <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-sm" placeholder="Any preparation notes..."></textarea>
+                    <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" placeholder="Any preparation notes..."></textarea>
                 </div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-neutral-100">
                     <button type="button" onclick="document.getElementById('scheduleInterviewModal').close()" class="btn-secondary">Cancel</button>
@@ -367,3 +367,5 @@
         </div>
     </dialog>
 </x-app-layout>
+
+

@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Manage Announcements') }}
             </h2>
-            <a href="{{ route('admin.announcements.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <a href="{{ route('admin.announcements.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150">
                 {{ __('Create Announcement') }}
             </a>
         </div>
@@ -89,7 +89,7 @@
                                                 <button type="submit" class="text-green-600 hover:text-green-900 mr-4">Publish</button>
                                             </form>
                                         @endif
-                                        <a href="{{ route('admin.announcements.edit', $announcement) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</a>
+                                        <a href="{{ route('admin.announcements.edit', $announcement) }}" class="text-primary hover:text-indigo-900 mr-4">Edit</a>
                                         <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" class="inline-block">
                                             @csrf
                                             @method('DELETE')
@@ -114,4 +114,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

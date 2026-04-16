@@ -25,7 +25,7 @@
             </div>
 
             <!-- Approval Form -->
-            <div class="card p-8 bg-neutral-900 text-white shadow-xl">
+            <div class="card p-8 bg-primary text-white shadow-xl">
                 <h3 class="text-xl font-bold mb-4">Your Decision</h3>
                 <form action="{{ route('approvals.act', $request) }}" method="POST" class="space-y-4">
                     @csrf
@@ -85,3 +85,4 @@
         </div>
     </div>
 </x-app-layout>
+

@@ -99,7 +99,7 @@
                      class="fixed inset-0 transition-opacity" 
                      aria-hidden="true" 
                      @click="openModal = false">
-                    <div class="absolute inset-0 bg-neutral-900 opacity-50"></div>
+                    <div class="absolute inset-0 bg-primary opacity-50"></div>
                 </div>
 
                 <div x-show="openModal" 
@@ -157,3 +157,4 @@
         </div>
     </div>
 </x-app-layout>
+

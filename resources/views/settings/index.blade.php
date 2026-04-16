@@ -69,25 +69,25 @@
                                 <div class="md:col-span-2">
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Company Name *</label>
                                     <input type="text" name="company_name" required value="{{ old('company_name', $settings['company_name']) }}"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Public Email</label>
                                     <input type="email" name="company_email" value="{{ old('company_email', $settings['company_email']) }}"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Phone Number</label>
                                     <input type="text" name="company_phone" value="{{ old('company_phone', $settings['company_phone']) }}"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Physical Address</label>
                                     <textarea name="company_address" rows="3"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">{{ old('company_address', $settings['company_address']) }}</textarea>
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">{{ old('company_address', $settings['company_address']) }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                     <label class="flex flex-col items-center gap-2 p-3 border border-neutral-100 rounded-xl cursor-pointer hover:bg-neutral-50 hover:border-neutral-200 transition group">
                                         <input type="checkbox" name="working_days[]" value="{{ $num }}" 
                                             {{ in_array($num, old('working_days', $settings['working_days'])) ? 'checked' : '' }}
-                                            class="w-4 h-4 text-black border-neutral-300 rounded focus:ring-black">
+                                            class="w-4 h-4 text-black border-neutral-300 rounded focus:ring-primary">
                                         <span class="text-[10px] font-bold text-neutral-500 uppercase tracking-tighter group-hover:text-black transition">{{ $name }}</span>
                                     </label>
                                 @endforeach
@@ -125,7 +125,7 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Cycle Frequency</label>
-                                    <select name="performance_cycle_frequency" class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                    <select name="performance_cycle_frequency" class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                         <option value="monthly" {{ old('performance_cycle_frequency', $settings['performance_cycle_frequency']) == 'monthly' ? 'selected' : '' }}>Monthly</option>
                                         <option value="quarterly" {{ old('performance_cycle_frequency', $settings['performance_cycle_frequency']) == 'quarterly' ? 'selected' : '' }}>Quarterly</option>
                                         <option value="half_yearly" {{ old('performance_cycle_frequency', $settings['performance_cycle_frequency']) == 'half_yearly' ? 'selected' : '' }}>Half-Yearly</option>
@@ -192,6 +192,19 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-4">Secondary Brand Color</label>
+                                <div class="flex items-center gap-4">
+                                    <input type="color" name="secondary_color" value="{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}"
+                                        class="w-16 h-16 border-0 rounded-2xl cursor-pointer p-0 overflow-hidden shadow-sm">
+                                    <div class="flex-1">
+                                        <input type="text" value="{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}" 
+                                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono bg-neutral-50" readonly>
+                                        <p class="mt-2 text-[10px] text-neutral-400 italic">This color will be used for the sidebar and major backgrounds.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,31 +225,31 @@
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Host</label>
                                     <input type="text" name="smtp_host" value="{{ old('smtp_host', $settings['smtp_host']) }}"
                                         placeholder="smtp.mailtrap.io"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Port</label>
                                     <input type="number" name="smtp_port" value="{{ old('smtp_port', $settings['smtp_port']) }}"
                                         placeholder="587"
-                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Username</label>
                                 <input type="text" name="smtp_username" value="{{ old('smtp_username', $settings['smtp_username']) }}"
-                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Password</label>
                                 <input type="password" name="smtp_password" value="{{ old('smtp_password', $settings['smtp_password']) }}"
-                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Security</label>
-                                <select name="smtp_encryption" class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                <select name="smtp_encryption" class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                     <option value="tls" {{ old('smtp_encryption', $settings['smtp_encryption']) == 'tls' ? 'selected' : '' }}>STARTTLS</option>
                                     <option value="ssl" {{ old('smtp_encryption', $settings['smtp_encryption']) == 'ssl' ? 'selected' : '' }}>SSL/TLS</option>
                                     <option value="none" {{ old('smtp_encryption', $settings['smtp_encryption']) == 'none' ? 'selected' : '' }}>None</option>
@@ -246,13 +259,13 @@
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Sender Name</label>
                                 <input type="text" name="smtp_from_name" value="{{ old('smtp_from_name', $settings['smtp_from_name']) }}"
-                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                             </div>
 
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Sender Email Address</label>
                                 <input type="email" name="smtp_from_address" value="{{ old('smtp_from_address', $settings['smtp_from_address']) }}"
-                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition text-sm font-medium">
+                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                             </div>
                         </div>
                     </div>
@@ -266,7 +279,7 @@
                                 <div>
                                     <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-tighter mb-1.5">Recipient Address</label>
                                     <input type="email" x-model="testEmail" placeholder="you@domain.com"
-                                        class="w-full px-4 py-2.5 bg-neutral-900 border border-neutral-800 rounded-lg text-xs focus:ring-1 focus:ring-white focus:border-transparent text-white">
+                                        class="w-full px-4 py-2.5 bg-primary border border-neutral-800 rounded-lg text-xs focus:ring-1 focus:ring-white focus:border-transparent text-white">
                                 </div>
                                 <button type="button" 
                                         @click="if(testEmail) { $el.closest('form').action = '{{ route('settings.test-email') }}'; $el.closest('form').submit(); }"
@@ -290,7 +303,7 @@
                                     Microsoft Entra ID
                                 </h3>
                                 <div class="flex items-center gap-2">
-                                    <select name="sso_azure_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-black">
+                                    <select name="sso_azure_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-primary">
                                         <option value="no" {{ ($settings['sso_azure_enabled'] ?? 'no') === 'no' ? 'selected' : '' }}>Disabled</option>
                                         <option value="yes" {{ ($settings['sso_azure_enabled'] ?? 'no') === 'yes' ? 'selected' : '' }}>Enabled</option>
                                     </select>
@@ -320,7 +333,7 @@
                                     Zoho Workspace
                                 </h3>
                                 <div class="flex items-center gap-2">
-                                    <select name="sso_zoho_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-black">
+                                    <select name="sso_zoho_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-primary">
                                         <option value="no" {{ ($settings['sso_zoho_enabled'] ?? 'no') === 'no' ? 'selected' : '' }}>Disabled</option>
                                         <option value="yes" {{ ($settings['sso_zoho_enabled'] ?? 'no') === 'yes' ? 'selected' : '' }}>Enabled</option>
                                     </select>
@@ -347,7 +360,7 @@
                                     Google Workspace
                                 </h3>
                                 <div class="flex items-center gap-2">
-                                    <select name="sso_google_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-black">
+                                    <select name="sso_google_enabled" class="text-xs font-bold border border-neutral-200 rounded-lg px-3 py-1.5 bg-neutral-50 transition focus:ring-1 focus:ring-primary">
                                         <option value="no" {{ ($settings['sso_google_enabled'] ?? 'no') === 'no' ? 'selected' : '' }}>Disabled</option>
                                         <option value="yes" {{ ($settings['sso_google_enabled'] ?? 'no') === 'yes' ? 'selected' : '' }}>Enabled</option>
                                     </select>
@@ -391,7 +404,7 @@
                             Core Workflows
                         </h3>
                         <p class="text-sm text-neutral-600 mb-6 leading-relaxed italic">Manage multi-stage approval levels for critical system actions like leave requests and financial disbursements.</p>
-                        <a href="{{ route('admin.approval-chains.index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white rounded-xl text-xs font-bold hover:bg-black transition shadow-lg shadow-neutral-200 uppercase tracking-widest">
+                        <a href="{{ route('admin.approval-chains.index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl text-xs font-bold hover:bg-black transition shadow-lg shadow-neutral-200 uppercase tracking-widest">
                             Configuration Master
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -427,7 +440,7 @@
             <!-- Floating Save Bar -->
             <div class="fixed bottom-8 right-8 z-40">
                 <button type="submit" @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
-                    class="flex items-center gap-3 px-8 py-4 bg-neutral-900 text-white rounded-full shadow-2xl hover:bg-black hover:scale-105 active:scale-95 transition-all focus:outline-none">
+                    class="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full shadow-2xl hover:bg-black hover:scale-105 active:scale-95 transition-all focus:outline-none">
                     <span class="font-bold text-sm uppercase tracking-widest pl-2">Sync Configurations</span>
                     <div class="w-8 h-8 bg-neutral-800 rounded-full flex items-center justify-center">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
@@ -445,3 +458,4 @@
         [x-cloak] { display: none !important; }
     </style>
 </x-app-layout>
+

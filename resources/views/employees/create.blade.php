@@ -41,39 +41,39 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">First Name *</label>
-                        <input type="text" name="first_name" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="text" name="first_name" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Last Name *</label>
-                        <input type="text" name="last_name" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="text" name="last_name" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Email *</label>
-                        <input type="email" name="email" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="email" name="email" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     
                     <!-- Password Section -->
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Password <span class="text-gray-400 font-normal">(Optional)</span></label>
-                        <input type="password" name="password" placeholder="Auto-generated if blank" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="password" name="password" placeholder="Auto-generated if blank" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                         <p class="text-xs text-gray-500 mt-1">Leave blank to auto-generate.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Confirm Password</label>
-                        <input type="password" name="password_confirmation" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="password" name="password_confirmation" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Phone</label>
-                        <input type="text" name="phone" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="text" name="phone" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Date of Birth</label>
-                        <input type="date" name="dob" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="date" name="dob" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Gender *</label>
-                        <select name="gender" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="gender" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Gender</option>
                             <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
                             <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
@@ -88,7 +88,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Department *</label>
-                        <select name="department_id" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="department_id" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Department</option>
                             @foreach(\App\Models\Department::all() as $dept)
                                 <option value="{{ $dept->id }}">{{ $dept->name }}</option>
@@ -98,11 +98,11 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Role *</label>
                         <input type="text" name="designation" required placeholder="e.g. Senior Software Engineer"
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">System Role *</label>
-                        <select name="role" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="role" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             @foreach($roles as $role)
                                 <option value="{{ $role->name }}" {{ $role->name == 'Employee' ? 'selected' : '' }}>{{ $role->name }}</option>
                             @endforeach
@@ -110,7 +110,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Grade Level</label>
-                        <select name="grade_level_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="grade_level_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Grade Level</option>
                             @foreach(\App\Models\GradeLevel::all() as $level)
                                 <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -119,7 +119,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Employment Status</label>
-                        <select name="employment_status_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="employment_status_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Status</option>
                             @foreach($employmentStatuses as $status)
                                 <option value="{{ $status->id }}">{{ $status->name }}</option>
@@ -128,7 +128,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Direct Manager</label>
-                        <select name="manager_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="manager_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">No Manager (Top Level)</option>
                             @foreach($managers as $manager)
                                 <option value="{{ $manager->user_id }}">{{ $manager->user->name }} ({{ $manager->designation->title ?? 'N/A' }})</option>
@@ -137,11 +137,11 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Join Date</label>
-                        <input type="date" name="join_date" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="date" name="join_date" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Profile Photo</label>
-                        <input type="file" name="photo" accept="image/*" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <input type="file" name="photo" accept="image/*" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                 <h3 class="text-lg font-semibold mb-4">Address</h3>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Full Address</label>
-                    <textarea name="address" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"></textarea>
+                    <textarea name="address" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"></textarea>
                 </div>
             </div>
 
@@ -163,4 +163,5 @@
         </form>
     </div>
 </x-app-layout>
+
 

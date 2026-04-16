@@ -25,7 +25,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="base_salary" value="{{ old('base_salary', $structure->base_salary) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="base_salary" value="{{ old('base_salary', $structure->base_salary) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                     <div>
@@ -34,7 +34,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="housing_allowance" value="{{ old('housing_allowance', $structure->housing_allowance) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="housing_allowance" value="{{ old('housing_allowance', $structure->housing_allowance) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                     <div>
@@ -43,7 +43,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="transport_allowance" value="{{ old('transport_allowance', $structure->transport_allowance) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="transport_allowance" value="{{ old('transport_allowance', $structure->transport_allowance) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                     <div>
@@ -52,7 +52,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="other_allowances" value="{{ old('other_allowances', $structure->other_allowances) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="other_allowances" value="{{ old('other_allowances', $structure->other_allowances) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="pension_employee" value="{{ old('pension_employee', $structure->pension_employee) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="pension_employee" value="{{ old('pension_employee', $structure->pension_employee) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                     <div>
@@ -82,7 +82,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₦</span>
                             </div>
-                            <input type="number" name="tax_paye" value="{{ old('tax_paye', $structure->tax_paye) }}" class="focus:ring-black focus:border-black block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
+                            <input type="number" name="tax_paye" value="{{ old('tax_paye', $structure->tax_paye) }}" class="focus:ring-primary focus:border-primary block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md py-2.5">
                         </div>
                     </div>
                 </div>
@@ -94,4 +94,5 @@
         </form>
     </div>
 </x-app-layout>
+
 

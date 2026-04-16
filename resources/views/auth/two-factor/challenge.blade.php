@@ -21,7 +21,7 @@
                     pattern="[0-9]{6}"
                     x-bind:required="!useRecovery"
                     autofocus
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black text-center text-2xl tracking-widest font-mono"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-center text-2xl tracking-widest font-mono"
                     placeholder="000000"
                 >
             </div>
@@ -37,7 +37,7 @@
                     name="code" 
                     maxlength="10"
                     x-bind:required="useRecovery"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black text-center text-lg tracking-wider font-mono uppercase"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-center text-lg tracking-wider font-mono uppercase"
                     placeholder="XXXX-XXXX"
                 >
                 <input type="hidden" name="recovery" x-bind:value="useRecovery ? '1' : '0'">
@@ -54,7 +54,7 @@
                 <button 
                     type="button" 
                     @click="useRecovery = !useRecovery"
-                    class="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                    class="text-sm text-primary hover:text-indigo-800 font-medium"
                 >
                     <span x-show="!useRecovery">Use a recovery code instead</span>
                     <span x-show="useRecovery" x-cloak>Use authentication code</span>
@@ -79,3 +79,5 @@
         [x-cloak] { display: none !important; }
     </style>
 </x-guest-layout>
+
+

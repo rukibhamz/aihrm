@@ -53,7 +53,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center gap-3">
-                                    <a href="{{ route('leaves.show', $leave) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                    <a href="{{ route('leaves.show', $leave) }}" class="text-primary hover:text-indigo-900">View</a>
                                     @if($leave->status === 'pending')
                                         <a href="{{ route('leaves.edit', $leave) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
                                         <form method="POST" action="{{ route('leaves.destroy', $leave) }}" class="inline" onsubmit="return confirm('Are you sure you want to cancel this leave request?');">
@@ -79,4 +79,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

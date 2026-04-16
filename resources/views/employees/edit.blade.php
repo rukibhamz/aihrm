@@ -37,36 +37,36 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">First Name *</label>
                         <input type="text" name="first_name" required value="{{ old('first_name', explode(' ', $employee->user->name)[0]) }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Last Name *</label>
                         <input type="text" name="last_name" required value="{{ old('last_name', explode(' ', $employee->user->name)[1] ?? '') }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Email Address *</label>
                         <input type="email" name="email" required value="{{ old('email', $employee->user->email) }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Phone Number</label>
                         <input type="tel" name="phone" value="{{ old('phone', $employee->phone) }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Address</label>
                         <textarea name="address" rows="3" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">{{ old('address', $employee->address) }}</textarea>
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">{{ old('address', $employee->address) }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Date of Birth</label>
                         <input type="date" name="dob" value="{{ old('dob', $employee->dob ? $employee->dob->format('Y-m-d') : '') }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Gender *</label>
-                        <select name="gender" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="gender" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Gender</option>
                             <option value="male" {{ old('gender', $employee->gender) == 'male' ? 'selected' : '' }}>Male</option>
                             <option value="female" {{ old('gender', $employee->gender) == 'female' ? 'selected' : '' }}>Female</option>
@@ -82,7 +82,7 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Department *</label>
                         <select name="department_id" required 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Department</option>
                             @foreach($departments as $dept)
                                 <option value="{{ $dept->id }}" {{ old('department_id', $employee->department_id) == $dept->id ? 'selected' : '' }}>
@@ -95,11 +95,11 @@
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Role *</label>
                         <input type="text" name="designation" required value="{{ old('designation', $employee->designation->title ?? '') }}" 
                             placeholder="e.g. Sales Manager"
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">System Role *</label>
-                        <select name="role" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="role" required class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             @foreach($roles as $role)
                                 <option value="{{ $role->name }}" {{ old('role', $employee->user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
                                     {{ $role->name }}
@@ -109,7 +109,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Employment Status</label>
-                        <select name="employment_status_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="employment_status_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Status</option>
                             @foreach($employmentStatuses as $status)
                                 <option value="{{ $status->id }}" {{ old('employment_status_id', $employee->employment_status_id) == $status->id ? 'selected' : '' }}>
@@ -121,7 +121,7 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Direct Manager</label>
                         <select name="manager_id" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">No Manager (Top Level)</option>
                             @foreach($managers as $manager)
                                 <option value="{{ $manager->user_id }}" {{ old('manager_id', $employee->manager_id) == $manager->user_id ? 'selected' : '' }}>
@@ -133,12 +133,12 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Joining Date</label>
                         <input type="date" name="join_date" value="{{ old('join_date', $employee->join_date ? $employee->join_date->format('Y-m-d') : '') }}" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Status</label>
                         <select name="status" required 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="active" {{ old('status', $employee->status) == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ old('status', $employee->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
                             <option value="terminated" {{ old('status', $employee->status) == 'terminated' ? 'selected' : '' }}>Terminated</option>
@@ -157,7 +157,7 @@
                             <img src="{{ $employee->user->profile_photo_url }}" alt="Current Photo" class="w-12 h-12 rounded-full object-cover border border-neutral-200">
                         @endif
                         <input type="file" name="photo" accept="image/*" 
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     </div>
                     <p class="mt-1 text-xs text-neutral-500">Leave blank to keep current photo</p>
                 </div>
@@ -170,3 +170,4 @@
         </form>
     </div>
 </x-app-layout>
+

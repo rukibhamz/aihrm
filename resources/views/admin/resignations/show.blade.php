@@ -163,7 +163,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                         <option value="pending" {{ $resignation->status === 'pending' ? 'selected' : '' }}>Pending Review</option>
                         <option value="approved" {{ $resignation->status === 'approved' ? 'selected' : '' }}>Approved (Exit Process Started)</option>
                         <option value="completed" {{ $resignation->status === 'completed' ? 'selected' : '' }}>Completed (Offboarded)</option>
@@ -173,12 +173,12 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">HR Comments / Internal Notes</label>
-                    <textarea name="hr_comments" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">{{ $resignation->hr_comments }}</textarea>
+                    <textarea name="hr_comments" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">{{ $resignation->hr_comments }}</textarea>
                 </div>
                 
                 <div>
                      <label class="block text-sm font-medium text-gray-700 mb-1">Exit Interview Notes</label>
-                    <textarea name="exit_interview_notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="Summary of exit interview...">{{ $resignation->exit_interview_notes }}</textarea>
+                    <textarea name="exit_interview_notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Summary of exit interview...">{{ $resignation->exit_interview_notes }}</textarea>
                 </div>
 
                 <button type="submit" class="btn-primary w-full justify-center">Update Status</button>
@@ -194,4 +194,5 @@
     </div>
 </div>
 </x-app-layout>
+
 

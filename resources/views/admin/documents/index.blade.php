@@ -122,7 +122,7 @@
             
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Assign to Employee</label>
-                <select name="user_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <select name="user_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                     <option value="">Select Employee...</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
@@ -133,11 +133,11 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Document Title</label>
-                    <input type="text" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="e.g. Contract 2026">
+                    <input type="text" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="e.g. Contract 2026">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                    <select name="type" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                    <select name="type" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                         <option value="contract">Employment Contract</option>
                         <option value="offer_letter">Offer Letter</option>
                         <option value="nda">NDA</option>
@@ -150,7 +150,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date (Optional)</label>
-                <input type="date" name="expiry_date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <input type="date" name="expiry_date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <p class="text-xs text-gray-500 mt-1">Leave blank if not applicable.</p>
             </div>
 
@@ -172,4 +172,5 @@
     </div>
 </div>
 </x-app-layout>
+
 

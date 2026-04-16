@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('employees', \App\Http\Controllers\EmployeeController::class);
         Route::resource('admin/jobs', \App\Http\Controllers\JobPostingController::class)->names('admin.jobs');
         Route::get('admin/jobs/{job}/applicants', [\App\Http\Controllers\JobPostingController::class, 'applicants'])->name('admin.jobs.applicants');
-        Route::resource('admin/employment-statuses', \App\Http\Controllers\Admin\EmploymentStatusController::class)->names('admin.employment-statuses');
+        Route::resource('admin/employment-statuses', \App\Http\Controllers\Admin\EmploymentStatusController::class)->names('admin.employment-statuses')->except(['show', 'create', 'edit']);
         
         // ATS / Applications
         Route::get('admin/recruitment/kanban', [\App\Http\Controllers\Admin\ApplicationController::class, 'kanban'])->name('admin.applications.kanban');
@@ -92,18 +92,18 @@ Route::middleware('auth')->group(function () {
         Route::put('settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
         Route::post('settings/test-email', [\App\Http\Controllers\SettingsController::class, 'testEmail'])->name('settings.test-email');
         
-        Route::resource('admin/departments', \App\Http\Controllers\DepartmentController::class, ['as' => 'admin']);
-        Route::resource('admin/designations', \App\Http\Controllers\DesignationController::class, ['as' => 'admin']);
-        Route::resource('admin/grade-levels', \App\Http\Controllers\GradeLevelController::class, ['as' => 'admin']);
-        Route::resource('admin/tax-brackets', \App\Http\Controllers\TaxBracketController::class, ['as' => 'admin']);
+        Route::resource('admin/departments', \App\Http\Controllers\DepartmentController::class, ['as' => 'admin'])->except(['show', 'create', 'edit']);
+        Route::resource('admin/designations', \App\Http\Controllers\DesignationController::class, ['as' => 'admin'])->except(['show', 'create', 'edit']);
+        Route::resource('admin/grade-levels', \App\Http\Controllers\GradeLevelController::class, ['as' => 'admin'])->except(['show', 'create', 'edit']);
+        Route::resource('admin/tax-brackets', \App\Http\Controllers\TaxBracketController::class, ['as' => 'admin'])->except(['show', 'create', 'edit']);
         
         // Enterprise Payroll - Bonuses, Loans, Advances, Tax Reliefs
         Route::resource('admin/bonuses', \App\Http\Controllers\Admin\BonusController::class, ['as' => 'admin']);
         Route::resource('admin/penalties', \App\Http\Controllers\Admin\PenaltyController::class, ['as' => 'admin']);
         Route::resource('admin/loans', \App\Http\Controllers\Admin\LoanDeductionController::class, ['as' => 'admin']);
         Route::resource('admin/advances', \App\Http\Controllers\Admin\SalaryAdvanceController::class, ['as' => 'admin']);
-        Route::resource('admin/tax-reliefs', \App\Http\Controllers\Admin\TaxReliefController::class, ['as' => 'admin']);
-        Route::resource('admin/overtime-policies', \App\Http\Controllers\Admin\OvertimePolicyController::class, ['as' => 'admin']);
+        Route::resource('admin/tax-reliefs', \App\Http\Controllers\Admin\TaxReliefController::class, ['as' => 'admin'])->except(['show']);
+        Route::resource('admin/overtime-policies', \App\Http\Controllers\Admin\OvertimePolicyController::class, ['as' => 'admin'])->except(['show']);
 
         
         // Payroll Reports

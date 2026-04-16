@@ -17,13 +17,13 @@
 
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-1">Last Working Day *</label>
-                    <input type="date" name="last_working_day" min="{{ date('Y-m-d') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-black focus:border-black">
+                    <input type="date" name="last_working_day" min="{{ date('Y-m-d') }}" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary">
                     <p class="text-xs text-neutral-400 mt-1">Please consult your contract regarding notice period.</p>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-1">Reason for Leaving *</label>
-                    <textarea name="reason" rows="4" required minlength="10" placeholder="Please provide a brief explanation..." class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-black focus:border-black"></textarea>
+                    <textarea name="reason" rows="4" required minlength="10" placeholder="Please provide a brief explanation..." class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary"></textarea>
                 </div>
 
                 <div class="bg-blue-50 border border-blue-100 p-4 rounded-lg flex gap-3 items-start">
@@ -42,3 +42,4 @@
         </div>
     </div>
 </x-app-layout>
+

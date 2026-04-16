@@ -25,19 +25,19 @@
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Asset Name *</label>
-                <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="e.g. MacBook Pro 16">
+                <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="e.g. MacBook Pro 16">
                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Serial Number</label>
-                <input type="text" name="serial_number" value="{{ old('serial_number') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="XYZ123456789">
+                <input type="text" name="serial_number" value="{{ old('serial_number') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="XYZ123456789">
                 @error('serial_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
-                <select name="type" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <select name="type" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                     <option value="hardware" {{ old('type') == 'hardware' ? 'selected' : '' }}>Hardware</option>
                     <option value="software" {{ old('type') == 'software' ? 'selected' : '' }}>Software</option>
                     <option value="license" {{ old('type') == 'license' ? 'selected' : '' }}>License</option>
@@ -48,7 +48,7 @@
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Status *</label>
-                <select name="status" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <select name="status" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                     <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available</option>
                     <option value="assigned" {{ old('status') == 'assigned' ? 'selected' : '' }}>Assigned</option>
                     <option value="maintenance" {{ old('status') == 'maintenance' ? 'selected' : '' }}>Maintenance</option>
@@ -64,25 +64,25 @@
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Date</label>
-                <input type="date" name="purchase_date" value="{{ old('purchase_date') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <input type="date" name="purchase_date" value="{{ old('purchase_date') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
             </div>
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Cost</label>
                 <div class="relative">
                     <span class="absolute left-3 top-2 text-gray-500">$</span>
-                    <input type="number" step="0.01" name="purchase_cost" value="{{ old('purchase_cost') }}" class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                    <input type="number" step="0.01" name="purchase_cost" value="{{ old('purchase_cost') }}" class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 </div>
             </div>
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Warranty Expiry</label>
-                <input type="date" name="warranty_expiry" value="{{ old('warranty_expiry') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <input type="date" name="warranty_expiry" value="{{ old('warranty_expiry') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
             </div>
 
             <div class="col-span-1">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Assigned To</label>
-                <select name="user_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+                <select name="user_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                     <option value="">-- No Assignment --</option>
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
@@ -94,7 +94,7 @@
             <!-- Notes -->
             <div class="col-span-full">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                <textarea name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">{{ old('notes') }}</textarea>
+                <textarea name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">{{ old('notes') }}</textarea>
             </div>
         </div>
 
@@ -105,3 +105,4 @@
     </form>
 </div>
 </x-app-layout>
+

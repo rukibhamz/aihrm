@@ -16,7 +16,7 @@
          x-transition:leave="transition-opacity ease-linear duration-300" 
          x-transition:leave-start="opacity-100" 
          x-transition:leave-end="opacity-0" 
-         class="fixed inset-0 bg-neutral-900 bg-opacity-75" 
+         class="fixed inset-0 bg-secondary bg-opacity-75" 
          @click="mobileMenuOpen = false"
          aria-hidden="true"></div>
 
@@ -28,7 +28,7 @@
          x-transition:leave="transition ease-in-out duration-300 transform" 
          x-transition:leave-start="translate-x-0" 
          x-transition:leave-end="-translate-x-full" 
-         class="relative flex-1 flex flex-col max-w-xs w-full bg-neutral-900 pt-5 pb-4">
+         class="relative flex-1 flex flex-col max-w-xs w-full bg-secondary pt-5 pb-4">
         
         <!-- Close button -->
         <div class="absolute top-0 right-0 -mr-12 pt-2">
@@ -46,7 +46,7 @@
 </div>
 
 <!-- Static Sidebar for Desktop -->
-<div class="hidden md:flex md:flex-col flex-shrink-0 h-full bg-neutral-900 text-white shadow-xl transition-all duration-300"
+<div class="hidden md:flex md:flex-col flex-shrink-0 h-full bg-secondary text-white shadow-xl transition-all duration-300"
      :class="sidebarCollapsed ? 'w-20' : 'w-64'">
     @include('layouts.sidebar-content')
 </div>

@@ -7,8 +7,8 @@
         
         <!-- Search -->
         <form method="GET" action="{{ route('admin.leave-balances.index') }}" class="flex gap-2">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Employee..." class="px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent">
-            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all">Search</button>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Employee..." class="px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all">Search</button>
         </form>
     </div>
 
@@ -76,11 +76,11 @@
                                                 <div class="grid grid-cols-2 gap-3">
                                                     <div>
                                                         <label class="block text-xs font-medium text-neutral-500 mb-1">Total Days</label>
-                                                        <input type="number" name="balances[{{ $index }}][total_days]" value="{{ $total }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                                        <input type="number" name="balances[{{ $index }}][total_days]" value="{{ $total }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-neutral-500 mb-1">Used Days</label>
-                                                        <input type="number" name="balances[{{ $index }}][used_days]" value="{{ $used }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                                        <input type="number" name="balances[{{ $index }}][used_days]" value="{{ $used }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,7 +90,7 @@
                                     <!-- Modal Footer -->
                                     <div class="px-6 py-4 flex justify-end gap-2 border-t border-neutral-100">
                                         <button type="button" @click="$dispatch('close')" class="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors">CANCEL</button>
-                                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all">SAVE CHANGES</button>
+                                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all">SAVE CHANGES</button>
                                     </div>
                                 </form>
                             </x-modal>
@@ -109,5 +109,6 @@
         </div>
     </div>
 </x-app-layout>
+
 
 

@@ -54,10 +54,10 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </span>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, email, city..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black sm:text-sm">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, email, city..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary sm:text-sm">
                 </div>
                 <div class="flex items-center gap-2">
-                    <select name="sort" onchange="this.form.submit()" class="block w-full py-2 pl-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                    <select name="sort" onchange="this.form.submit()" class="block w-full py-2 pl-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
                         <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest Applied</option>
                         <option value="ai_score" {{ request('sort') == 'ai_score' ? 'selected' : '' }}>AI Score (High to Low)</option>
                         <option value="experience" {{ request('sort') == 'experience' ? 'selected' : '' }}>Years of Experience</option>
@@ -182,3 +182,4 @@
         @endif
     </div>
 </x-app-layout>
+

@@ -28,7 +28,7 @@
                 <tr class="hover:bg-neutral-50 transition">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center flex-shrink-0">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                                 <span class="text-white text-xs font-semibold">{{ substr($user->name, 0, 2) }}</span>
                             </div>
                             <div>
@@ -65,5 +65,6 @@
         {{ $users->links() }}
     </div>
 </x-app-layout>
+
 
 

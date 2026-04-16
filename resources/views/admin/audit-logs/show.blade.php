@@ -45,7 +45,7 @@
             <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">User</h3>
             @if($audit->user)
                 <div class="flex items-center mb-2">
-                    <div class="h-10 w-10 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-lg mr-3">
+                    <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg mr-3">
                         {{ substr($audit->user->name, 0, 1) }}
                     </div>
                     <div>
@@ -150,3 +150,4 @@
     </div>
 </div>
 </x-app-layout>
+

@@ -129,7 +129,7 @@
                                 Locked
                             </span>
                         @else
-                            <button onclick='editGoal(@json($goal))' class="px-3 py-1.5 text-xs font-semibold bg-neutral-900 text-white rounded hover:bg-neutral-800 transition">Update</button>
+                            <button onclick='editGoal(@json($goal))' class="px-3 py-1.5 text-xs font-semibold bg-primary text-white rounded hover:bg-primary/90 transition">Update</button>
                             <form action="{{ route('performance.goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Delete this goal?')">
                                 @csrf
                                 @method('DELETE')
@@ -188,24 +188,24 @@
                     
                     <div>
                         <label class="block text-sm font-bold text-neutral-800 mb-1">Goal Title *</label>
-                        <input type="text" name="title" required placeholder="e.g. Increase Customer Retention" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                        <input type="text" name="title" required placeholder="e.g. Increase Customer Retention" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                     </div>
 
                     <div id="metric-fields" class="hidden grid-cols-2 gap-4 p-4 bg-neutral-50 rounded-lg border border-neutral-100">
                         <div class="col-span-2 text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">KPI Configuration</div>
                         <div>
                             <label class="block text-xs font-bold text-neutral-600 mb-1">Target Value</label>
-                            <input type="number" step="0.01" name="target_value" placeholder="100" class="w-full px-3 py-2 bg-white border border-neutral-200 rounded-md focus:ring-black focus:border-black text-sm">
+                            <input type="number" step="0.01" name="target_value" placeholder="100" class="w-full px-3 py-2 bg-white border border-neutral-200 rounded-md focus:ring-primary focus:border-primary text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-neutral-600 mb-1">Unit</label>
-                            <input type="text" name="unit" placeholder="%, USD, Users" class="w-full px-3 py-2 bg-white border border-neutral-200 rounded-md focus:ring-black focus:border-black text-sm">
+                            <input type="text" name="unit" placeholder="%, USD, Users" class="w-full px-3 py-2 bg-white border border-neutral-200 rounded-md focus:ring-primary focus:border-primary text-sm">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-1">Align with Company Objective (Optional)</label>
-                        <select name="company_objective_id" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                        <select name="company_objective_id" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                             <option value="">-- No Alignment (Individual Goal) --</option>
                             @foreach($companyObjectives as $obj)
                                 <option value="{{ $obj->id }}">{{ $obj->title }} ({{ $obj->start_date->format('M Y') }} - {{ $obj->end_date->format('M Y') }})</option>
@@ -216,17 +216,17 @@
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-1">Description</label>
-                        <textarea name="description" rows="3" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all"></textarea>
+                        <textarea name="description" rows="3" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"></textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-neutral-700 mb-1">Due Date</label>
-                            <input type="date" name="due_date" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                            <input type="date" name="due_date" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-neutral-700 mb-1">Priority (Weight)</label>
-                            <select name="weight" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                            <select name="weight" class="w-full px-4 py-2 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                 <option value="1">Low (1)</option>
                                 <option value="3" selected>Medium (3)</option>
                                 <option value="5">High (5)</option>
@@ -284,7 +284,7 @@
                 <div class="space-y-5">
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Status</label>
-                        <select name="status" id="goalStatus" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-black focus:border-black">
+                        <select name="status" id="goalStatus" class="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-primary focus:border-primary">
                             <option value="not_started">Not Started</option>
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
@@ -350,4 +350,5 @@
         }
     </script>
 </x-app-layout>
+
 

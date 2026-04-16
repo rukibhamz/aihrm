@@ -36,7 +36,7 @@
                                         @endif
                                     </div>
                                     <h3 class="text-lg font-semibold text-gray-900">
-                                        <a href="{{ route('announcements.show', $announcement) }}" class="hover:text-indigo-600">
+                                        <a href="{{ route('announcements.show', $announcement) }}" class="hover:text-primary">
                                             {{ $announcement->title }}
                                         </a>
                                     </h3>
@@ -51,7 +51,7 @@
                                     <span class="mx-2">•</span>
                                     <span>{{ $announcement->published_at?->diffForHumans() }}</span>
                                 </div>
-                                <a href="{{ route('announcements.show', $announcement) }}" class="text-sm text-indigo-600 hover:text-indigo-900">
+                                <a href="{{ route('announcements.show', $announcement) }}" class="text-sm text-primary hover:text-indigo-900">
                                     Read more →
                                 </a>
                             </div>
@@ -76,4 +76,5 @@
         </div>
     </div>
 </x-app-layout>
+
 

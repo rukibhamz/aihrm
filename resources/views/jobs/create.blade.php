@@ -29,7 +29,7 @@
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Job Title *</label>
                 <input type="text" name="title" required value="{{ old('title') }}" 
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="e.g., Senior Software Engineer">
             </div>
 
@@ -37,13 +37,13 @@
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Department</label>
                     <input type="text" name="department" value="{{ old('department') }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., Engineering">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Location</label>
                     <input type="text" name="location" value="{{ old('location') }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., Lagos, Nigeria">
                 </div>
             </div>
@@ -52,18 +52,18 @@
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Experience Level</label>
                     <input type="text" name="experience_level" value="{{ old('experience_level') }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., 3+ Years">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Application Deadline</label>
                     <input type="date" name="application_deadline" value="{{ old('application_deadline') }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Reporting To</label>
                     <input type="text" name="reporting_to" value="{{ old('reporting_to') }}"
-                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                         placeholder="e.g., Engineering Dir.">
                 </div>
             </div>
@@ -71,14 +71,14 @@
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Job Description *</label>
                 <textarea name="description" required rows="6"
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="Describe the role, responsibilities, and what the candidate will be doing...">{{ old('description') }}</textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Requirements *</label>
                 <textarea name="requirements" required rows="6"
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                     placeholder="List required skills, experience, education, etc. (AI will use this to screen candidates)">{{ old('requirements') }}</textarea>
                 <p class="mt-1 text-xs text-neutral-500">💡 Be specific - AI will match candidates against these requirements</p>
             </div>
@@ -86,7 +86,7 @@
             <div>
                 <label class="block text-sm font-medium text-neutral-700 mb-2">Status *</label>
                 <select name="status" required
-                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                    class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                     <option value="draft">Draft (not visible to candidates)</option>
                     <option value="open" selected>Open (accepting applications)</option>
                     <option value="closed">Closed (not accepting applications)</option>
@@ -100,3 +100,4 @@
         </form>
     </div>
 </x-app-layout>
+

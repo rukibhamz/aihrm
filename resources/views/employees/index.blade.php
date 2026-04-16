@@ -39,7 +39,7 @@
                     <tr class="hover:bg-neutral-50 transition">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-neutral-900 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                                     <span class="text-white text-sm font-semibold">{{ substr($employee->user->name ?? 'U', 0, 2) }}</span>
                                 </div>
                                 <div>
@@ -87,7 +87,7 @@
     <!-- Reset Password Modal -->
     <div id="resetModal" class="fixed inset-0 z-[100] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeResetModal()"></div>
+            <div class="fixed inset-0 bg-primary/40 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeResetModal()"></div>
             
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             
@@ -113,13 +113,13 @@
                             <div>
                                 <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">New Password</label>
                                 <input type="password" name="password" required 
-                                    class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-all text-sm"
+                                    class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-neutral-900 transition-all text-sm"
                                     placeholder="••••••••">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Confirm New Password</label>
                                 <input type="password" name="password_confirmation" required 
-                                    class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-all text-sm"
+                                    class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-neutral-900 transition-all text-sm"
                                     placeholder="••••••••">
                             </div>
                         </div>
@@ -153,4 +153,5 @@
         }
     </script>
 </x-app-layout>
+
 

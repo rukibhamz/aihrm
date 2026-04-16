@@ -47,6 +47,7 @@ class SettingsController extends Controller
             
             // Branding & Theme
             'primary_color' => Setting::get('primary_color', '#000000'),
+            'secondary_color' => Setting::get('secondary_color', '#171717'), // Default to neutral-900 equivalent
         ];
 
         return view('settings.index', compact('settings'));
@@ -92,6 +93,7 @@ class SettingsController extends Controller
             
             // Branding & Theme
             'primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'secondary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
         ]);
 
         // Handle logo upload
@@ -148,6 +150,7 @@ class SettingsController extends Controller
         
         // Save Branding & Theme
         Setting::set('primary_color', $validated['primary_color'] ?? '#000000');
+        Setting::set('secondary_color', $validated['secondary_color'] ?? '#171717');
 
         return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
     }

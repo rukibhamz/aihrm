@@ -11,7 +11,7 @@
                 </span>
             @endif
         </div>
-        <a href="{{ route('announcements.index') }}" class="text-sm text-indigo-600 hover:text-indigo-900">View all →</a>
+        <a href="{{ route('announcements.index') }}" class="text-sm text-primary hover:text-indigo-900">View all →</a>
     </div>
 
     @if($latestAnnouncements->count() > 0)
@@ -47,4 +47,5 @@
         </div>
     @endif
 </div>
+
 

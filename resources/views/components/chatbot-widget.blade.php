@@ -11,7 +11,7 @@
          style="height: 500px; max-height: 80vh;">
         
         <!-- Header -->
-        <div class="bg-neutral-900 p-4 flex items-center justify-between text-white">
+        <div class="bg-secondary p-4 flex items-center justify-between text-white">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@
         <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral-50" id="chat-messages">
             <!-- Welcome Message -->
             <div class="flex items-start gap-3">
-                <div class="w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center flex-shrink-0">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                     <span class="text-white text-xs font-bold">AI</span>
                 </div>
                 <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-neutral-100 text-sm text-neutral-700">
@@ -60,7 +60,7 @@
                     const userDiv = document.createElement('div');
                     userDiv.className = 'flex items-start gap-3 justify-end';
                     userDiv.innerHTML = `
-                        <div class='bg-neutral-900 text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm'>${userMsg}</div>
+                        <div class='bg-primary text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm'>${userMsg}</div>
                         <div class='w-8 h-8 bg-neutral-200 rounded-full flex items-center justify-center flex-shrink-0'>
                             <span class='text-neutral-600 text-xs font-bold'>Me</span>
                         </div>
@@ -83,7 +83,7 @@
                         const aiDiv = document.createElement('div');
                         aiDiv.className = 'flex items-start gap-3';
                         aiDiv.innerHTML = `
-                            <div class='w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center flex-shrink-0'>
+                            <div class='w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0'>
                                 <span class='text-white text-xs font-bold'>AI</span>
                             </div>
                             <div class='bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-neutral-100 text-sm text-neutral-700'>${data.response}</div>
@@ -103,11 +103,11 @@
                     <input type="text" 
                            x-model="message" 
                            placeholder="Type your question..." 
-                           class="w-full pl-4 pr-12 py-3 bg-neutral-50 border-none rounded-xl focus:ring-2 focus:ring-neutral-900 text-sm"
+                           class="w-full pl-4 pr-12 py-3 bg-neutral-50 border-none rounded-xl focus:ring-2 focus:ring-primary text-sm"
                            :disabled="loading">
                     
                     <button type="submit" 
-                            class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition disabled:opacity-50 disabled:cursor-not-allowed"
                             :disabled="loading || !message.trim()">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!loading">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -124,7 +124,7 @@
 
     <!-- Toggle Button -->
     <button @click="open = !open" 
-            class="group flex items-center justify-center w-14 h-14 bg-neutral-900 text-white rounded-full shadow-lg hover:bg-neutral-800 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-neutral-300">
+            class="group flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary/30">
         <span class="absolute -top-1 -right-1 flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>

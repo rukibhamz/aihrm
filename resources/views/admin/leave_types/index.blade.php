@@ -67,15 +67,15 @@
                                 <div class="px-6 py-4 space-y-4">
                                     <div>
                                         <label for="edit-name-{{ $type->id }}" class="block text-sm font-medium text-neutral-700 mb-1.5">Name</label>
-                                        <input type="text" id="edit-name-{{ $type->id }}" name="name" value="{{ $type->name }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                        <input type="text" id="edit-name-{{ $type->id }}" name="name" value="{{ $type->name }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                     </div>
                                     <div>
                                         <label for="edit-days-{{ $type->id }}" class="block text-sm font-medium text-neutral-700 mb-1.5">Days Allowed (Per Year)</label>
-                                        <input type="number" id="edit-days-{{ $type->id }}" name="days_allowed" value="{{ $type->days_allowed }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                        <input type="number" id="edit-days-{{ $type->id }}" name="days_allowed" value="{{ $type->days_allowed }}" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                     </div>
                                     <div class="flex items-center pt-2">
                                         <input type="hidden" name="is_paid" value="0">
-                                        <input type="checkbox" id="edit-paid-{{ $type->id }}" name="is_paid" value="1" {{ $type->is_paid ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                                        <input type="checkbox" id="edit-paid-{{ $type->id }}" name="is_paid" value="1" {{ $type->is_paid ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-primary border-neutral-300 rounded">
                                         <label for="edit-paid-{{ $type->id }}" class="ml-2 block text-sm text-neutral-900">Is Paid Leave?</label>
                                     </div>
                                     <div class="pt-2">
@@ -83,7 +83,7 @@
                                         <div class="grid grid-cols-2 gap-2 mt-2">
                                             @foreach($employmentStatuses as $status)
                                                 <div class="flex items-center">
-                                                    <input type="checkbox" id="edit-status-{{ $type->id }}-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" {{ $type->employmentStatuses->contains('id', $status->id) ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                                                    <input type="checkbox" id="edit-status-{{ $type->id }}-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" {{ $type->employmentStatuses->contains('id', $status->id) ? 'checked' : '' }} class="h-4 w-4 text-black focus:ring-primary border-neutral-300 rounded">
                                                     <label for="edit-status-{{ $type->id }}-{{ $status->id }}" class="ml-2 block text-sm text-neutral-700">{{ $status->name }}</label>
                                                 </div>
                                             @endforeach
@@ -99,7 +99,7 @@
                                                 @endphp
                                                 <div>
                                                     <label for="edit-grade-{{ $type->id }}-{{ $grade->id }}" class="block text-xs text-neutral-600 mb-1">{{ $grade->name }}</label>
-                                                    <input type="number" id="edit-grade-{{ $type->id }}-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" value="{{ $existingOverride ? $existingOverride->days_allowed : '' }}" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                                    <input type="number" id="edit-grade-{{ $type->id }}-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" value="{{ $existingOverride ? $existingOverride->days_allowed : '' }}" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                                                 </div>
                                             @endforeach
                                         </div>
@@ -107,14 +107,14 @@
                                     
                                     <div>
                                         <label for="edit-desc-{{ $type->id }}" class="block text-sm font-medium text-neutral-700 mb-1.5">Description</label>
-                                        <textarea id="edit-desc-{{ $type->id }}" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">{{ $type->description }}</textarea>
+                                        <textarea id="edit-desc-{{ $type->id }}" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">{{ $type->description }}</textarea>
                                     </div>
                                 </div>
 
                                 <!-- Modal Footer -->
                                 <div class="px-6 py-4 flex justify-end gap-2 border-t border-neutral-100">
                                     <button type="button" @click="$dispatch('close')" class="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors">CANCEL</button>
-                                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all">UPDATE</button>
+                                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all">UPDATE</button>
                                 </div>
                             </form>
                         </x-modal>
@@ -143,15 +143,15 @@
             <div class="px-6 py-4 space-y-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-neutral-700 mb-1.5">Name</label>
-                    <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                    <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                 </div>
                 <div>
                     <label for="days_allowed" class="block text-sm font-medium text-neutral-700 mb-1.5">Days Allowed (Per Year)</label>
-                    <input type="number" id="days_allowed" name="days_allowed" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                    <input type="number" id="days_allowed" name="days_allowed" required class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                 </div>
                 <div class="flex items-center pt-2">
                     <input type="hidden" name="is_paid" value="0">
-                    <input type="checkbox" id="is_paid" name="is_paid" value="1" checked class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                    <input type="checkbox" id="is_paid" name="is_paid" value="1" checked class="h-4 w-4 text-black focus:ring-primary border-neutral-300 rounded">
                     <label for="is_paid" class="ml-2 block text-sm text-neutral-900">Is Paid Leave?</label>
                 </div>
                 <div>
@@ -159,7 +159,7 @@
                     <div class="grid grid-cols-2 gap-2 mt-2">
                         @foreach($employmentStatuses as $status)
                             <div class="flex items-center">
-                                <input type="checkbox" id="create-status-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" checked class="h-4 w-4 text-black focus:ring-black border-neutral-300 rounded">
+                                <input type="checkbox" id="create-status-{{ $status->id }}" name="employment_statuses[]" value="{{ $status->id }}" checked class="h-4 w-4 text-black focus:ring-primary border-neutral-300 rounded">
                                 <label for="create-status-{{ $status->id }}" class="ml-2 block text-sm text-neutral-700">{{ $status->name }}</label>
                             </div>
                         @endforeach
@@ -174,7 +174,7 @@
                         @foreach($gradeLevels as $grade)
                             <div>
                                 <label for="create-grade-{{ $grade->id }}" class="block text-xs text-neutral-600 mb-1">{{ $grade->name }}</label>
-                                <input type="number" id="create-grade-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all">
+                                <input type="number" id="create-grade-{{ $grade->id }}" name="grade_levels[{{ $grade->id }}]" min="0" placeholder="Default" class="w-full px-3 py-1.5 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
                             </div>
                         @endforeach
                     </div>
@@ -182,17 +182,18 @@
 
                 <div>
                     <label for="description" class="block text-sm font-medium text-neutral-700 mb-1.5">Description</label>
-                    <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"></textarea>
+                    <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"></textarea>
                 </div>
             </div>
 
             <!-- Modal Footer -->
             <div class="px-6 py-4 flex justify-end gap-2 border-t border-neutral-100">
                 <button type="button" @click="$dispatch('close')" class="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors">CANCEL</button>
-                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all">CREATE</button>
+                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all">CREATE</button>
             </div>
         </form>
     </x-modal>
 </x-app-layout>
+
 
 

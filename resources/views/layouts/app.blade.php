@@ -18,6 +18,7 @@
     <style>
         :root {
             --primary-color: {{ \App\Models\Setting::get('primary_color', '#000000') }};
+            --secondary-color: {{ \App\Models\Setting::get('secondary_color', '#171717') }};
         }
         * { font-family: 'Poppins', 'Inter', sans-serif; }
         .btn-primary {
@@ -92,6 +93,11 @@
             color: #ffffff !important;
             font-weight: 600;
         }
+        
+        /* Dynamic Theme Overrides */
+        .bg-secondary { background-color: var(--secondary-color) !important; }
+        .text-secondary { color: var(--secondary-color) !important; }
+        .border-secondary { border-color: var(--secondary-color) !important; }
     </style>
 </head>
 <body x-data="{ mobileMenuOpen: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
@@ -107,7 +113,7 @@
         <!-- Mobile Header -->
         <div class="md:hidden flex items-center justify-between bg-white border-b border-neutral-200 px-4 py-3">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-black rounded-md flex items-center justify-center">
+                <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
                     <span class="text-white font-bold text-sm">AI</span>
                 </div>
                 <span class="font-bold text-lg tracking-tight">AIHRM</span>
@@ -176,7 +182,7 @@
                 <!-- User Profile Dropdown -->
                 <div class="relative ml-2" x-data="{ open: false }">
                     <button @click="open = !open" @click.away="open = false" class="flex items-center gap-3 p-1 rounded-full hover:bg-neutral-100 transition-colors">
-                        <div class="h-8 w-8 rounded-full bg-neutral-900 flex items-center justify-center text-white font-bold text-xs">
+                        <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs">
                             {{ substr(Auth::user()?->name ?? 'U', 0, 2) }}
                         </div>
                         <span class="hidden lg:block text-sm font-medium text-neutral-700">{{ Auth::user()?->name ?? 'User' }}</span>
@@ -348,4 +354,5 @@
     @stack('scripts')
 </body>
 </html>
+
 

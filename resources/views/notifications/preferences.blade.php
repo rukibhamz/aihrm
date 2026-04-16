@@ -31,12 +31,12 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" name="preferences[{{ $type }}][email]" class="form-checkbox h-5 w-5 text-black rounded border-gray-300 focus:ring-black" {{ $config['email'] ? 'checked' : '' }}>
+                                    <input type="checkbox" name="preferences[{{ $type }}][email]" class="form-checkbox h-5 w-5 text-black rounded border-gray-300 focus:ring-primary" {{ $config['email'] ? 'checked' : '' }}>
                                 </label>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" name="preferences[{{ $type }}][database]" class="form-checkbox h-5 w-5 text-black rounded border-gray-300 focus:ring-black" {{ $config['database'] ? 'checked' : '' }}>
+                                    <input type="checkbox" name="preferences[{{ $type }}][database]" class="form-checkbox h-5 w-5 text-black rounded border-gray-300 focus:ring-primary" {{ $config['database'] ? 'checked' : '' }}>
                                 </label>
                             </td>
                         </tr>
@@ -50,3 +50,4 @@
         </form>
     </div>
 </x-app-layout>
+

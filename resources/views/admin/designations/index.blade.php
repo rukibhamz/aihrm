@@ -69,7 +69,7 @@
                                                 name="title" 
                                                 value="{{ $designation->title }}"
                                                 required 
-                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                             >
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@
                                         </button>
                                         <button 
                                             type="submit" 
-                                            class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all"
                                         >
                                             UPDATE
                                         </button>
@@ -128,7 +128,7 @@
                         name="title" 
                         required 
                         placeholder="e.g. Senior Software Engineer"
-                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder-neutral-400"
+                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-neutral-400"
                     >
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 </button>
                 <button 
                     type="submit" 
-                    class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                    class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all"
                 >
                     CREATE
                 </button>
@@ -152,5 +152,6 @@
         </form>
     </x-modal>
 </x-app-layout>
+
 
 

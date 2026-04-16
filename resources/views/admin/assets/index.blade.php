@@ -19,10 +19,10 @@
 <div class="card p-4 mb-6">
     <form action="{{ route('admin.assets.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
         <div class="flex-1">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or serial..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or serial..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
         </div>
         <div class="w-full md:w-48">
-            <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <select name="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <option value="">All Types</option>
                 <option value="hardware" {{ request('type') == 'hardware' ? 'selected' : '' }}>Hardware</option>
                 <option value="software" {{ request('type') == 'software' ? 'selected' : '' }}>Software</option>
@@ -32,7 +32,7 @@
             </select>
         </div>
         <div class="w-full md:w-48">
-            <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <option value="">All Statuses</option>
                 <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>Available</option>
                 <option value="assigned" {{ request('status') == 'assigned' ? 'selected' : '' }}>Assigned</option>
@@ -103,7 +103,7 @@
                     @endif
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a href="{{ route('admin.assets.edit', $asset) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                    <a href="{{ route('admin.assets.edit', $asset) }}" class="text-primary hover:text-indigo-900 mr-3">Edit</a>
                     <form action="{{ route('admin.assets.destroy', $asset) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this asset? This cannot be undone.');">
                         @csrf
                         @method('DELETE')
@@ -114,7 +114,7 @@
             @empty
             <tr>
                 <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                    No assets found. <a href="{{ route('admin.assets.create') }}" class="text-indigo-600 font-medium">Create one now</a>
+                    No assets found. <a href="{{ route('admin.assets.create') }}" class="text-primary font-medium">Create one now</a>
                 </td>
             </tr>
             @endforelse
@@ -126,3 +126,5 @@
     {{ $assets->withQueryString()->links() }}
 </div>
 </x-app-layout>
+
+

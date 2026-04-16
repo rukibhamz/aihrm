@@ -58,7 +58,7 @@
             <div class="mt-4">
                 <form method="POST" action="{{ route('two-factor.recovery-codes.regenerate') }}">
                     @csrf
-                    <button type="submit" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium" onclick="return confirm('This will invalidate your old recovery codes. Continue?')">
+                    <button type="submit" class="text-sm text-primary hover:text-indigo-800 font-medium" onclick="return confirm('This will invalidate your old recovery codes. Continue?')">
                         Regenerate Recovery Codes
                     </button>
                 </form>
@@ -98,3 +98,4 @@
         @endif
     </div>
 </section>
+

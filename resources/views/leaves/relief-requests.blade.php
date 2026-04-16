@@ -65,7 +65,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="relief_officer_status" value="accepted">
-                                        <button type="submit" class="px-3 py-1.5 bg-neutral-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors shadow-sm">
+                                        <button type="submit" class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold hover:bg-black transition-colors shadow-sm">
                                             Accept
                                         </button>
                                     </form>
@@ -112,3 +112,4 @@
         </div>
     </div>
 </x-app-layout>
+

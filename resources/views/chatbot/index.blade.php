@@ -61,7 +61,7 @@
                             id="message-input"
                             name="message"
                             placeholder="Ask me anything about HR policies, leave, procedures..."
-                            class="flex-1 px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm"
+                            class="flex-1 px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm"
                             required
                         >
                         <button 
@@ -185,3 +185,4 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
     </script>
 </x-app-layout>
+

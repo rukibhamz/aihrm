@@ -17,7 +17,7 @@
     <form action="{{ route('admin.audit-logs.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">User</label>
-            <select name="user_id" class="w-full text-sm border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <select name="user_id" class="w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <option value="">All Users</option>
                 @foreach($users as $user)
                     <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
@@ -28,7 +28,7 @@
         </div>
         <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">Event</label>
-            <select name="event" class="w-full text-sm border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <select name="event" class="w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
                 <option value="">All Events</option>
                 <option value="created" {{ request('event') == 'created' ? 'selected' : '' }}>Created</option>
                 <option value="updated" {{ request('event') == 'updated' ? 'selected' : '' }}>Updated</option>
@@ -38,7 +38,7 @@
         </div>
         <div>
             <label class="block text-xs font-medium text-gray-700 mb-1">Module (Model)</label>
-            <input type="text" name="auditable_type" value="{{ request('auditable_type') }}" placeholder="e.g. Employee" class="w-full text-sm border-gray-300 rounded-lg focus:ring-black focus:border-black">
+            <input type="text" name="auditable_type" value="{{ request('auditable_type') }}" placeholder="e.g. Employee" class="w-full text-sm border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
         </div>
         <div class="flex items-end">
             <button type="submit" class="btn-primary w-full justify-center">Filter</button>
@@ -117,3 +117,4 @@
     {{ $audits->withQueryString()->links() }}
 </div>
 </x-app-layout>
+

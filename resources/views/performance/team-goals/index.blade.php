@@ -93,7 +93,7 @@
                             </div>
                             <button onclick='scoreGoal(@json($goal))' class="text-xs font-bold text-blue-600 hover:text-blue-800 transition">Edit Score</button>
                         @else
-                            <button onclick='scoreGoal(@json($goal))' class="w-full py-2 text-xs font-black bg-black text-white rounded hover:bg-neutral-800 transition uppercase tracking-widest">
+                            <button onclick='scoreGoal(@json($goal))' class="w-full py-2 text-xs font-black bg-black text-white rounded hover:bg-primary/90 transition uppercase tracking-widest">
                                 Evaluate KPI
                             </button>
                         @endif
@@ -160,7 +160,7 @@
 
                     <div>
                         <label class="block text-sm font-bold text-neutral-900 mb-1">Feedback & Comments</label>
-                        <textarea name="manager_comment" id="managerComment" rows="4" placeholder="Provide constructive feedback on this KPI execution..." class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition-all text-sm"></textarea>
+                        <textarea name="manager_comment" id="managerComment" rows="4" placeholder="Provide constructive feedback on this KPI execution..." class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm"></textarea>
                     </div>
                 </div>
 
@@ -192,3 +192,4 @@
         }
     </script>
 </x-app-layout>
+

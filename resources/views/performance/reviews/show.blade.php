@@ -69,7 +69,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Overall Performance Rating</label>
-                        <select name="content[rating]" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <select name="content[rating]" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select rating...</option>
                             <option value="5">5 — Exceptional</option>
                             <option value="4">4 — Exceeds Expectations</option>
@@ -81,17 +81,17 @@
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Strengths</label>
-                        <textarea name="content[strengths]" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm" placeholder="Key strengths demonstrated..."></textarea>
+                        <textarea name="content[strengths]" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm" placeholder="Key strengths demonstrated..."></textarea>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Areas for Improvement</label>
-                        <textarea name="content[improvements]" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm" placeholder="Areas where improvement is needed..."></textarea>
+                        <textarea name="content[improvements]" rows="3" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm" placeholder="Areas where improvement is needed..."></textarea>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Overall Comments</label>
-                        <textarea name="content[comments]" rows="4" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm" placeholder="General comments and feedback..."></textarea>
+                        <textarea name="content[comments]" rows="4" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm" placeholder="General comments and feedback..."></textarea>
                     </div>
 
                     <div class="flex gap-3 pt-4 border-t border-neutral-200">
@@ -105,3 +105,4 @@
         </div>
     </div>
 </x-app-layout>
+

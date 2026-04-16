@@ -71,7 +71,7 @@
                                                 name="name" 
                                                 value="{{ $gradeLevel->name }}"
                                                 required 
-                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                             >
                                         </div>
                                         <div>
@@ -84,7 +84,7 @@
                                                 name="basic_salary_range" 
                                                 value="{{ $gradeLevel->basic_salary_range }}"
                                                 placeholder="e.g. 100,000 - 150,000"
-                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                                                class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                             >
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                         </button>
                                         <button 
                                             type="submit" 
-                                            class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all"
                                         >
                                             UPDATE
                                         </button>
@@ -143,7 +143,7 @@
                         name="name" 
                         required 
                         placeholder="e.g. Level 1, Senior"
-                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder-neutral-400"
+                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-neutral-400"
                     >
                 </div>
                 <div>
@@ -155,7 +155,7 @@
                         id="basic_salary_range" 
                         name="basic_salary_range" 
                         placeholder="e.g. 100,000 - 150,000"
-                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder-neutral-400"
+                        class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-neutral-400"
                     >
                 </div>
             </div>
@@ -171,7 +171,7 @@
                 </button>
                 <button 
                     type="submit" 
-                    class="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded-md hover:bg-neutral-800 transition-all"
+                    class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-all"
                 >
                     CREATE
                 </button>
@@ -179,5 +179,6 @@
         </form>
     </x-modal>
 </x-app-layout>
+
 
 
