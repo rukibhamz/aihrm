@@ -108,6 +108,17 @@
                         </select>
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-neutral-700 mb-2">Grade Level</label>
+                        <select name="grade_level_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary transition text-sm">
+                            <option value="">Select Grade Level</option>
+                            @foreach($gradeLevels as $level)
+                                <option value="{{ $level->id }}" {{ old('grade_level_id', $employee->grade_level_id) == $level->id ? 'selected' : '' }}>
+                                    {{ $level->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Employment Status</label>
                         <select name="employment_status_id" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
                             <option value="">Select Status</option>

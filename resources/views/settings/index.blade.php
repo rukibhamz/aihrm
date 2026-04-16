@@ -442,19 +442,20 @@
                 </div>
             </div>
 
-            <!-- Floating Save Bar -->
-            <div class="fixed bottom-10 right-10 z-50">
-                <button type="submit" 
-                    @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
-                    class="flex items-center gap-4 px-8 py-4 bg-neutral-900 text-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:bg-black hover:-translate-y-1 active:translate-y-0 transition-all focus:outline-none group border border-white/10">
-                    <div class="flex flex-col items-start pr-4 border-r border-white/10">
-                        <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-bold">System Status</span>
-                        <span class="text-xs font-bold text-white uppercase tracking-widest">Sync Configurations</span>
-                    </div>
-                    <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    </div>
-                </button>
+            <!-- Sticky Save Bar -->
+            <div class="sticky bottom-0 -mx-8 -mb-8 mt-12 px-8 py-6 bg-white/80 backdrop-blur-md border-t border-neutral-200 flex items-center justify-between z-20">
+                <div>
+                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-widest">Configuration Management</h4>
+                    <p class="text-[10px] text-neutral-500 mt-1 italic">Changes will be applied globally across the organization.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button type="submit" 
+                        @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
+                        class="flex items-center gap-3 px-10 py-3.5 bg-neutral-900 text-white rounded-xl shadow-xl hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all focus:outline-none group">
+                        <span class="font-bold text-xs uppercase tracking-widest">Sync Configurations</span>
+                        <svg class="w-4 h-4 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    </button>
+                </div>
             </div>
         </form>
     </div>

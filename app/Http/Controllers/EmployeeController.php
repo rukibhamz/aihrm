@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\EmploymentStatus;
+use App\Models\GradeLevel;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -175,8 +176,9 @@ class EmployeeController extends Controller
             ->where('id', '!=', $employee->id) // Prevent self-selection
             ->get();
         $employmentStatuses = EmploymentStatus::all();
+        $gradeLevels = GradeLevel::all();
             
-        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers', 'roles', 'employmentStatuses'));
+        return view('employees.edit', compact('employee', 'departments', 'designations', 'managers', 'roles', 'employmentStatuses', 'gradeLevels'));
     }
 
     public function update(Request $request, Employee $employee)
@@ -195,6 +197,7 @@ class EmployeeController extends Controller
             'join_date' => 'nullable|date',
             'status' => 'required|in:active,inactive,terminated',
             'employment_status_id' => 'nullable|exists:employment_statuses,id',
+            'grade_level_id' => 'nullable|exists:grade_levels,id',
             'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|max:2048',
         ]);
@@ -221,6 +224,7 @@ class EmployeeController extends Controller
             'dob' => $validated['dob'] ?? null,
             'gender' => $validated['gender'],
             'employment_status_id' => $validated['employment_status_id'],
+            'grade_level_id' => $validated['grade_level_id'] ?? null,
             'join_date' => $validated['join_date'] ?? null,
             'status' => $validated['status'],
         ]);
