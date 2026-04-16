@@ -25,7 +25,11 @@
         </div>
     @endif
 
-    <div x-data="{ activeTab: localStorage.getItem('settings_tab') || 'general' }" 
+    <div x-data="{ 
+            activeTab: localStorage.getItem('settings_tab') || 'general',
+            primaryColor: '{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}',
+            secondaryColor: '{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}'
+         }" 
          x-init="$watch('activeTab', value => localStorage.setItem('settings_tab', value))"
          class="space-y-6">
         
@@ -161,11 +165,11 @@
                                     </div>
                                     <div class="flex-1">
                                         <input type="file" name="company_logo" class="block w-full text-xs text-neutral-500
-                                            file:mr-4 file:py-2.5 file:px-6
+                                            file:mr-4 file:py-3 file:px-6
                                             file:rounded-xl file:border-0
                                             file:text-xs file:font-bold
-                                            file:bg-black file:text-white
-                                            hover:file:bg-neutral-800 transition cursor-pointer">
+                                            file:bg-neutral-900 file:text-white
+                                            hover:file:bg-black transition cursor-pointer">
                                         <p class="mt-2 text-[10px] text-neutral-400 italic">SVG or transparent PNG recommended (256x256px).</p>
                                     </div>
                                 </div>
@@ -183,11 +187,11 @@
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-4">Primary Brand Color</label>
                                 <div class="flex items-center gap-4">
-                                    <input type="color" name="primary_color" value="{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}"
+                                    <input type="color" name="primary_color" x-model="primaryColor"
                                         class="w-16 h-16 border-0 rounded-2xl cursor-pointer p-0 overflow-hidden shadow-sm">
                                     <div class="flex-1">
-                                        <input type="text" value="{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}" 
-                                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono bg-neutral-50" readonly>
+                                        <input type="text" x-model="primaryColor" 
+                                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
                                         <p class="mt-2 text-[10px] text-neutral-400 italic">This color will be used for buttons, links, and highlights.</p>
                                     </div>
                                 </div>
@@ -196,11 +200,11 @@
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-4">Secondary Brand Color</label>
                                 <div class="flex items-center gap-4">
-                                    <input type="color" name="secondary_color" value="{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}"
+                                    <input type="color" name="secondary_color" x-model="secondaryColor"
                                         class="w-16 h-16 border-0 rounded-2xl cursor-pointer p-0 overflow-hidden shadow-sm">
                                     <div class="flex-1">
-                                        <input type="text" value="{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}" 
-                                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono bg-neutral-50" readonly>
+                                        <input type="text" x-model="secondaryColor" 
+                                            class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition">
                                         <p class="mt-2 text-[10px] text-neutral-400 italic">This color will be used for the sidebar and major backgrounds.</p>
                                     </div>
                                 </div>
@@ -283,8 +287,8 @@
                                 </div>
                                 <button type="button" 
                                         @click="if(testEmail) { $el.closest('form').action = '{{ route('settings.test-email') }}'; $el.closest('form').submit(); }"
-                                        class="w-full py-2.5 bg-white text-black text-xs font-bold rounded-lg hover:bg-neutral-200 transition-colors uppercase tracking-widest">
-                                    Send Test
+                                        class="w-full py-3 bg-white text-neutral-900 text-xs font-bold rounded-xl hover:bg-neutral-100 transition-all uppercase tracking-widest shadow-sm border border-neutral-200">
+                                    Send Test Email
                                 </button>
                             </div>
                         </div>
@@ -404,7 +408,8 @@
                             Core Workflows
                         </h3>
                         <p class="text-sm text-neutral-600 mb-6 leading-relaxed italic">Manage multi-stage approval levels for critical system actions like leave requests and financial disbursements.</p>
-                        <a href="{{ route('admin.approval-chains.index') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl text-xs font-bold hover:bg-black transition shadow-lg shadow-neutral-200 uppercase tracking-widest">
+                        <a href="{{ route('admin.approval-chains.index') }}" 
+                           class="inline-flex items-center gap-3 px-6 py-3 bg-neutral-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-all shadow-lg shadow-neutral-200 uppercase tracking-widest">
                             Configuration Master
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -438,12 +443,16 @@
             </div>
 
             <!-- Floating Save Bar -->
-            <div class="fixed bottom-8 right-8 z-40">
-                <button type="submit" @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
-                    class="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full shadow-2xl hover:bg-black hover:scale-105 active:scale-95 transition-all focus:outline-none">
-                    <span class="font-bold text-sm uppercase tracking-widest pl-2">Sync Configurations</span>
-                    <div class="w-8 h-8 bg-neutral-800 rounded-full flex items-center justify-center">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+            <div class="fixed bottom-10 right-10 z-50">
+                <button type="submit" 
+                    @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
+                    class="flex items-center gap-4 px-8 py-4 bg-neutral-900 text-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:bg-black hover:-translate-y-1 active:translate-y-0 transition-all focus:outline-none group border border-white/10">
+                    <div class="flex flex-col items-start pr-4 border-r border-white/10">
+                        <span class="text-[10px] text-neutral-400 uppercase tracking-widest font-bold">System Status</span>
+                        <span class="text-xs font-bold text-white uppercase tracking-widest">Sync Configurations</span>
+                    </div>
+                    <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
                     </div>
                 </button>
             </div>
