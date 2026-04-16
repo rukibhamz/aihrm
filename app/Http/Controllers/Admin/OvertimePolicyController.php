@@ -85,4 +85,9 @@ class OvertimePolicyController extends Controller
         $overtimePolicy->delete();
         return redirect()->route('admin.overtime-policies.index')->with('success', 'Overtime Policy deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.overtime-policies.index');
+    }
 }

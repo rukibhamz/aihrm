@@ -87,4 +87,9 @@ class TaxReliefController extends Controller
         $taxRelief->delete();
         return redirect()->route('admin.tax-reliefs.index')->with('success', 'Tax Relief deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.tax-reliefs.index');
+    }
 }

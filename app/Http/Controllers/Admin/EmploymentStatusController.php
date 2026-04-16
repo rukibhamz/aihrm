@@ -52,4 +52,19 @@ class EmploymentStatusController extends Controller
 
         return redirect()->back()->with('success', 'Employment status deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.employment-statuses.index');
+    }
+
+    public function create()
+    {
+        return redirect()->route('admin.employment-statuses.index');
+    }
+
+    public function edit()
+    {
+        return redirect()->route('admin.employment-statuses.index');
+    }
 }

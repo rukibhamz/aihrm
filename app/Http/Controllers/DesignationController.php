@@ -45,4 +45,19 @@ class DesignationController extends Controller
 
         return redirect()->route('admin.designations.index')->with('success', 'Designation deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.designations.index');
+    }
+
+    public function create()
+    {
+        return redirect()->route('admin.designations.index');
+    }
+
+    public function edit()
+    {
+        return redirect()->route('admin.designations.index');
+    }
 }

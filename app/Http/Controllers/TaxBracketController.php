@@ -48,4 +48,19 @@ class TaxBracketController extends Controller
         $taxBracket->delete();
         return redirect()->route('admin.tax-brackets.index')->with('success', 'Tax bracket deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.tax-brackets.index');
+    }
+
+    public function create()
+    {
+        return redirect()->route('admin.tax-brackets.index');
+    }
+
+    public function edit()
+    {
+        return redirect()->route('admin.tax-brackets.index');
+    }
 }

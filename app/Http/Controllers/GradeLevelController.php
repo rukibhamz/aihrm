@@ -47,4 +47,19 @@ class GradeLevelController extends Controller
 
         return redirect()->route('admin.grade-levels.index')->with('success', 'Grade Level deleted successfully.');
     }
+
+    public function show()
+    {
+        return redirect()->route('admin.grade-levels.index');
+    }
+
+    public function create()
+    {
+        return redirect()->route('admin.grade-levels.index');
+    }
+
+    public function edit()
+    {
+        return redirect()->route('admin.grade-levels.index');
+    }
 }
