@@ -90,7 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:Admin')->group(function () {
         Route::get('settings', [\App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
         Route::put('settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
-        Route::post('settings/test-email', [\App\Http\Controllers\SettingsController::class, 'testEmail'])->name('settings.test-email');
+        Route::match(['post', 'put'], 'settings/test-email', [\App\Http\Controllers\SettingsController::class, 'testEmail'])->name('settings.test-email');
         
         Route::resource('admin/departments', \App\Http\Controllers\DepartmentController::class, ['as' => 'admin']);
         Route::resource('admin/designations', \App\Http\Controllers\DesignationController::class, ['as' => 'admin']);
