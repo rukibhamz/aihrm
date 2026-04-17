@@ -275,15 +275,15 @@
                     </div>
 
                     <div class="space-y-6">
-                        <div class="card p-8 bg-neutral-950 text-white">
-                            <h3 class="text-sm font-bold uppercase tracking-widest mb-4 italic text-neutral-400">Connection Test</h3>
-                            <p class="text-xs text-neutral-400 mb-6 italic leading-relaxed">Ensure your credentials are correct by sending a diagnostic message.</p>
+                        <div class="card p-8 border border-neutral-200">
+                            <h3 class="text-sm font-bold uppercase tracking-widest mb-4 italic text-neutral-900">Connection Test</h3>
+                            <p class="text-xs text-neutral-500 mb-6 italic leading-relaxed">Ensure your credentials are correct by sending a diagnostic message.</p>
                             
                             <div class="space-y-4" x-data="{ testEmail: '' }">
                                 <div>
-                                    <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-tighter mb-1.5">Recipient Address</label>
-                                    <input type="email" x-model="testEmail" placeholder="you@domain.com"
-                                        class="w-full px-4 py-2.5 bg-primary border border-neutral-800 rounded-lg text-xs focus:ring-1 focus:ring-white focus:border-transparent text-white">
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Recipient Address</label>
+                                    <input type="email" name="test_email" x-model="testEmail" placeholder="you@domain.com"
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
                                 </div>
                                 <button type="button" 
                                         @click="if(testEmail) { $el.closest('form').action = '{{ route('settings.test-email') }}'; $el.closest('form').submit(); }"
