@@ -28,7 +28,7 @@
          x-transition:leave="transition ease-in-out duration-300 transform" 
          x-transition:leave-start="translate-x-0" 
          x-transition:leave-end="-translate-x-full" 
-         class="relative flex-1 flex flex-col max-w-xs w-full bg-secondary pt-5 pb-4">
+         class="relative flex-1 flex flex-col max-w-xs w-full bg-secondary text-white pt-5 pb-4">
         
         <!-- Close button -->
         <div class="absolute top-0 right-0 -mr-12 pt-2">
