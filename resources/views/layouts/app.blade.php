@@ -100,8 +100,19 @@
         .border-secondary { border-color: var(--secondary-color) !important; }
     </style>
 </head>
-<body x-data="{ mobileMenuOpen: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
-      x-init="$watch('sidebarCollapsed', value => localStorage.setItem('sidebarCollapsed', value))"
+<body x-data="{ mobileMenuOpen: false, sidebarCollapsed: window.innerWidth < 768 ? false : localStorage.getItem('sidebarCollapsed') === 'true' }" 
+      x-init="
+          $watch('sidebarCollapsed', value => {
+              if (window.innerWidth >= 768) {
+                  localStorage.setItem('sidebarCollapsed', value);
+              }
+          });
+          window.addEventListener('resize', () => {
+              if (window.innerWidth < 768) {
+                  sidebarCollapsed = false;
+              }
+          });
+      "
       class="bg-neutral-50 antialiased h-screen overflow-hidden flex">
     
     <!-- Sidebar -->
@@ -195,7 +206,7 @@
                     </div>
                 </div>
 
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-neutral-500 hover:text-black p-1">
+                <button @click="sidebarCollapsed = false; mobileMenuOpen = !mobileMenuOpen" class="text-neutral-500 hover:text-black p-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
