@@ -43,7 +43,7 @@ class SecurityHeaders
 
         // Permissions Policy
         $response->headers->set('Permissions-Policy', 
-            'geolocation=(), microphone=(), camera=()'
+            'geolocation=(self), microphone=(), camera=()'
         );
 
         // HSTS (only in production with HTTPS)
