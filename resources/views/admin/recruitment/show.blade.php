@@ -179,7 +179,7 @@
                                                 {{ $interview->scorecard->total_score }}/100
                                             </span>
                                         </div>
-                                        <div class="grid grid-cols-5 gap-3 mb-3">
+                                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-3">
                                             @foreach($interview->scorecard->criteria_scores as $criteria => $score)
                                             <div class="text-center">
                                                 <div class="text-lg font-black {{ $score >= 4 ? 'text-green-600' : ($score >= 3 ? 'text-yellow-600' : 'text-red-600') }}">{{ $score }}/5</div>
@@ -212,7 +212,7 @@
                                         </button>
                                         <form id="scorecardForm{{ $interview->id }}" action="{{ route('admin.interviews.scorecard', $interview) }}" method="POST" class="hidden mt-4 space-y-4 p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
                                             @csrf
-                                            <div class="grid grid-cols-5 gap-3">
+                                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
                                                 @foreach(['communication', 'technical_skills', 'problem_solving', 'cultural_fit', 'leadership'] as $criteria)
                                                 <div>
                                                     <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1">{{ str_replace('_', ' ', $criteria) }}</label>
@@ -235,7 +235,7 @@
                                                     <option value="strong_no_hire">👎👎 Strong No Hire</option>
                                                 </select>
                                             </div>
-                                            <div class="grid grid-cols-2 gap-4">
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div>
                                                     <label class="block text-xs font-bold text-neutral-600 mb-1">Strengths</label>
                                                     <textarea name="strengths" rows="2" class="w-full px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-primary focus:border-primary" placeholder="Key strengths observed..."></textarea>
@@ -316,7 +316,7 @@
             </div>
             <form method="POST" action="{{ route('admin.interviews.store', $application) }}" class="p-6 space-y-4">
                 @csrf
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Interviewer *</label>
                         <select name="interviewer_id" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
@@ -335,7 +335,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 mb-1">Date & Time *</label>
                         <input type="datetime-local" name="scheduled_at" required class="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">

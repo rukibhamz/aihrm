@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
             <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-black">
                 Document Center
@@ -25,7 +25,7 @@
     <a href="{{ route('admin.documents.index', ['type' => 'id_proof']) }}" class="px-3 py-1.5 text-sm font-medium rounded-md {{ request('type') == 'id_proof' ? 'bg-black text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">ID Proofs</a>
 </div>
 
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>

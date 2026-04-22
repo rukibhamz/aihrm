@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">Tax Brackets Management</x-slot>
 
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <h1 class="text-2xl font-bold">Statutory Tax Brackets</h1>
         <button onclick="document.getElementById('createModal').classList.remove('hidden')" class="btn-primary">
             + Add Tax Bracket
@@ -15,7 +15,8 @@
     @endif
 
     <div class="card p-6">
-        <table class="w-full">
+        <div class="overflow-x-auto">
+        <table class="w-full min-w-[780px]">
             <thead>
                 <tr class="border-b border-neutral-200">
                     <th class="text-left py-3 px-4 font-semibold text-sm">Bracket Name</th>
@@ -49,6 +50,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
     <!-- Create Modal -->

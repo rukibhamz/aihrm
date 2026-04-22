@@ -4,7 +4,7 @@
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Leave Calendar</h1>
             <p class="mt-1 text-sm text-neutral-500">Overview of approved leaves for {{ $date->format('F Y') }}</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto">
             <a href="{{ route('admin.leaves.calendar', ['date' => $date->copy()->subMonth()->format('Y-m-d')]) }}" class="btn-secondary">
                 &larr; Previous
             </a>
@@ -16,6 +16,7 @@
     </div>
 
     <div class="card overflow-x-auto">
+        <div class="min-w-[700px]">
         <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <div class="py-3">Sun</div>
             <div class="py-3">Mon</div>
@@ -36,7 +37,7 @@
                 
                 // Previous month padding
                 for ($i = 0; $i < $startDayOfWeek; $i++) {
-                    echo '<div class="bg-white min-h-[120px] p-2 text-gray-300"></div>';
+                    echo '<div class="bg-white min-h-[96px] sm:min-h-[120px] p-2 text-gray-300"></div>';
                 }
 
                 // Days of month
@@ -44,7 +45,7 @@
                     $dateStr = $date->copy()->day($currentDay)->format('Y-m-d');
                     $isToday = $dateStr === now()->format('Y-m-d');
                     
-                    echo '<div class="bg-white min-h-[120px] p-2 relative group hover:bg-gray-50 transition">';
+                    echo '<div class="bg-white min-h-[96px] sm:min-h-[120px] p-2 relative group hover:bg-gray-50 transition">';
                     echo '<span class="text-sm font-medium ' . ($isToday ? 'bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : 'text-gray-700') . '">' . $currentDay . '</span>';
                     
                     // Leaves for this day
@@ -75,10 +76,11 @@
                 $remainingCells = 7 - (($startDayOfWeek + $daysInMonth) % 7);
                 if ($remainingCells < 7) {
                     for ($i = 0; $i < $remainingCells; $i++) {
-                        echo '<div class="bg-white min-h-[120px] p-2 text-gray-300"></div>';
+                        echo '<div class="bg-white min-h-[96px] sm:min-h-[120px] p-2 text-gray-300"></div>';
                     }
                 }
             @endphp
+        </div>
         </div>
     </div>
 </x-app-layout>

@@ -53,26 +53,48 @@
             btn.disabled = true;
             btn.innerText = 'Verifying Location...';
             
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        // In a real production app, we would send these coords to the server for a real distance check
-                        // For now, we allow the QR to show if geolocation is enabled.
-                        document.getElementById('locationOverlay').classList.add('hidden');
-                        document.getElementById('qrcode').classList.remove('opacity-0');
-                        document.getElementById('qrStatus').innerText = 'Active & Secure Token';
-                        generateQR();
-                    },
-                    (error) => {
-                        alert('Error: ' + error.message + '. Location is mandatory for QR clock-ins.');
-                        btn.disabled = false;
-                        btn.innerText = 'Allow Location';
-                    },
-                    { enableHighAccuracy: true }
-                );
-            } else {
+            const resetButton = () => {
+                btn.disabled = false;
+                btn.innerText = 'Allow Location';
+            };
+
+            const unlockQr = () => {
+                // In a real production app, we would send these coords to the server for a real distance check.
+                document.getElementById('locationOverlay').classList.add('hidden');
+                document.getElementById('qrcode').classList.remove('opacity-0');
+                document.getElementById('qrStatus').innerText = 'Active & Secure Token';
+                generateQR();
+            };
+
+            if (!navigator.geolocation) {
                 alert('Geolocation not supported.');
+                resetButton();
+                return;
             }
+
+            navigator.geolocation.getCurrentPosition(
+                unlockQr,
+                () => {
+                    navigator.geolocation.getCurrentPosition(
+                        unlockQr,
+                        (error) => {
+                            let errorMessage = error.message;
+                            if (error.code === error.PERMISSION_DENIED) {
+                                errorMessage = 'Permission denied. Please allow location access in your browser settings.';
+                            } else if (error.code === error.TIMEOUT) {
+                                errorMessage = 'Unable to get your location in time. Turn on location/GPS and try again.';
+                            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                                errorMessage = 'Location is unavailable on this device right now. Please try again.';
+                            }
+
+                            alert('Error: ' + errorMessage + '. Location is mandatory for QR clock-ins.');
+                            resetButton();
+                        },
+                        { enableHighAccuracy: false, timeout: 20000, maximumAge: 120000 }
+                    );
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
         }
 
         function generateQR() {

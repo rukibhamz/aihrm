@@ -21,14 +21,14 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <!-- Tax Card -->
-                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-x-auto">
+                    <div class="bg-white rounded-3xl sm:rounded-[2.5rem] border border-gray-100 shadow-sm p-6 sm:p-10 relative overflow-x-auto">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-red-50 blur-3xl rounded-full translate-x-12 -translate-y-12"></div>
                         <div class="relative z-10">
                             <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-6">
                                 <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                             </div>
                             <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Total PAYE Tax</h3>
-                            <div class="text-5xl font-black text-gray-900">{{ number_format($data['total_tax'], 2) }}</div>
+                            <div class="text-3xl sm:text-5xl font-black text-gray-900 break-words">{{ number_format($data['total_tax'], 2) }}</div>
                             <p class="text-xs font-bold text-gray-500 mt-6 leading-relaxed">
                                 Calculated from {{ $data['employee_count'] }} active employee records. This amount should be remitted to the relevant tax authorities.
                             </p>
@@ -36,14 +36,14 @@
                     </div>
 
                     <!-- Pension Card -->
-                    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-10 relative overflow-x-auto">
+                    <div class="bg-white rounded-3xl sm:rounded-[2.5rem] border border-gray-100 shadow-sm p-6 sm:p-10 relative overflow-x-auto">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-green-50 blur-3xl rounded-full translate-x-12 -translate-y-12"></div>
                         <div class="relative z-10">
                             <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-6">
                                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Total Pension Fund</h3>
-                            <div class="text-5xl font-black text-gray-900">{{ number_format($data['total_pension'], 2) }}</div>
+                            <div class="text-3xl sm:text-5xl font-black text-gray-900 break-words">{{ number_format($data['total_pension'], 2) }}</div>
                              <p class="text-xs font-bold text-gray-500 mt-6 leading-relaxed">
                                 Combined employee and employer contributions. Amounts ready for PFA remittance.
                             </p>

@@ -68,13 +68,13 @@
                 </div>
 
                 <!-- Footer Summary Card -->
-                <div class="bg-primary text-white p-10 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="bg-primary text-white p-6 sm:p-10 rounded-3xl sm:rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center gap-8">
                     <div>
                         <h3 class="text-2xl font-black mb-1">Company Total Payout</h3>
                         <p class="text-neutral-400 font-medium">Summed across all active departments mentioned above.</p>
                     </div>
                     <div class="text-center md:text-right">
-                         <div class="text-5xl font-black text-white">{{ number_format($data->sum('total_net'), 2) }}</div>
+                         <div class="text-3xl sm:text-5xl font-black text-white break-words">{{ number_format($data->sum('total_net'), 2) }}</div>
                          <div class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500 mt-2">Total organizational cost</div>
                     </div>
                 </div>

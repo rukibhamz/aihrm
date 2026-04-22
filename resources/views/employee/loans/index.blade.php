@@ -1,6 +1,6 @@
 <x-app-layout>
     <div x-data="{ openModal: false }" class="mb-8">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight text-neutral-900">My Loans</h1>
                 <p class="mt-1 text-sm text-neutral-500">View your active loan deductions and apply for new requests</p>
@@ -118,7 +118,7 @@
                             <h3 class="text-xl leading-6 font-bold text-neutral-900 mb-5">Apply for a Loan</h3>
                             
                             <div class="space-y-4">
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-neutral-700">Total Loan Amount (₦)</label>
                                         <input type="number" name="loan_amount" min="5000" step="500" required class="mt-1 form-input w-full" placeholder="e.g. 500000">

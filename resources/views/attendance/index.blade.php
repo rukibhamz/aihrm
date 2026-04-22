@@ -38,30 +38,54 @@
                             const btn = document.getElementById('clockInBtn');
                             const btnText = document.getElementById('btnText');
                             const icon = document.getElementById('syncIcon');
+                            const form = document.getElementById('clockInForm');
                             
                             btn.disabled = true;
                             btnText.innerText = 'Locating...';
                             icon.classList.add('animate-spin');
 
-                            if (navigator.geolocation) {
-                                navigator.geolocation.getCurrentPosition(
-                                    (position) => {
-                                        document.getElementById('latitude').value = position.coords.latitude;
-                                        document.getElementById('longitude').value = position.coords.longitude;
-                                        document.getElementById('clockInForm').submit();
-                                    },
-                                    (error) => {
-                                        alert('Location error: ' + error.message + '. Please enable GPS to clock in.');
-                                        btn.disabled = false;
-                                        btnText.innerText = 'Clock In';
-                                        icon.classList.remove('animate-spin');
-                                    },
-                                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                                );
-                            } else {
+                            const resetButtonState = () => {
+                                btn.disabled = false;
+                                btnText.innerText = 'Clock In';
+                                icon.classList.remove('animate-spin');
+                            };
+
+                            const submitWithLocation = (position) => {
+                                document.getElementById('latitude').value = position.coords.latitude;
+                                document.getElementById('longitude').value = position.coords.longitude;
+                                form.submit();
+                            };
+
+                            if (!navigator.geolocation) {
                                 alert('Geolocation is not supported by this browser.');
-                                document.getElementById('clockInForm').submit(); // Fallback to non-geofenced
+                                form.submit(); // Fallback to non-geofenced
+                                return;
                             }
+
+                            navigator.geolocation.getCurrentPosition(
+                                submitWithLocation,
+                                (highAccuracyError) => {
+                                    // Retry with relaxed settings, since strict GPS often times out on mobile.
+                                    navigator.geolocation.getCurrentPosition(
+                                        submitWithLocation,
+                                        (error) => {
+                                            let errorMessage = error.message;
+                                            if (error.code === error.PERMISSION_DENIED) {
+                                                errorMessage = 'Permission denied. Please allow location access in your browser settings.';
+                                            } else if (error.code === error.TIMEOUT) {
+                                                errorMessage = 'Unable to get your location in time. Turn on location/GPS and try again.';
+                                            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                                                errorMessage = 'Location is unavailable on this device right now. Please try again.';
+                                            }
+
+                                            alert('Location error: ' + errorMessage);
+                                            resetButtonState();
+                                        },
+                                        { enableHighAccuracy: false, timeout: 20000, maximumAge: 120000 }
+                                    );
+                                },
+                                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                            );
                         }
                     </script>
                 @elseif(!$todayAttendance->clock_out)

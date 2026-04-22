@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Approval Workflows</h1>
             <p class="mt-1 text-sm text-neutral-500">Configure multi-level approval chains for company requests</p>
