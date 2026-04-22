@@ -8,6 +8,7 @@ use App\Models\Designation;
 use App\Models\EmploymentStatus;
 use App\Models\GradeLevel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
@@ -37,7 +38,7 @@ class EmployeeController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'nullable|string|min:8|confirmed', // Add validation for optional password
+            'password' => 'nullable|string|min:8|confirmed',
             'department_id' => 'required|exists:departments,id',
             'designation' => 'required|string|max:255',
             'grade_level_id' => 'nullable|exists:grade_levels,id',
@@ -60,7 +61,7 @@ class EmployeeController extends Controller
             'name' => $validated['first_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
             'password' => \Illuminate\Support\Facades\Hash::make($rawPassword),
-            'must_change_password' => !$request->filled('password'), // Only force change if auto-generated
+            'must_change_password' => true,
         ]);
         
         // Assign selected role
@@ -75,12 +76,12 @@ class EmployeeController extends Controller
             'department_id' => $validated['department_id'],
             'designation_id' => $designation->id,
             'grade_level_id' => $validated['grade_level_id'] ?? null,
-            'manager_id' => $validated['manager_id'],
+            'manager_id' => $validated['manager_id'] ?? null,
             'phone' => $validated['phone'] ?? null,
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
             'gender' => $validated['gender'],
-            'employment_status_id' => $validated['employment_status_id'],
+            'employment_status_id' => $validated['employment_status_id'] ?? null,
             'join_date' => $validated['join_date'] ?? now(),
             'status' => 'active',
         ]);
@@ -113,9 +114,13 @@ class EmployeeController extends Controller
             ]);
         }
 
-        $message = $request->filled('password') 
-            ? "Employee created successfully." 
-            : "Employee created successfully. Temporary password: {$rawPassword}";
+        $resetLinkStatus = Password::sendResetLink([
+            'email' => $user->email,
+        ]);
+
+        $message = $resetLinkStatus === Password::RESET_LINK_SENT
+            ? 'Employee created successfully. A password setup email has been sent to the employee.'
+            : 'Employee created successfully, but the password setup email could not be sent right now. The employee can use "Forgot Password" to set it.';
 
         return redirect()->route('employees.index')->with('success', $message);
     }
@@ -218,12 +223,12 @@ class EmployeeController extends Controller
         $employee->update([
             'department_id' => $validated['department_id'],
             'designation_id' => $designation->id,
-            'manager_id' => $validated['manager_id'],
+            'manager_id' => $validated['manager_id'] ?? null,
             'phone' => $validated['phone'] ?? null,
             'address' => $validated['address'] ?? null,
             'dob' => $validated['dob'] ?? null,
             'gender' => $validated['gender'],
-            'employment_status_id' => $validated['employment_status_id'],
+            'employment_status_id' => $validated['employment_status_id'] ?? null,
             'grade_level_id' => $validated['grade_level_id'] ?? null,
             'join_date' => $validated['join_date'] ?? null,
             'status' => $validated['status'],

@@ -24,6 +24,7 @@ class User extends Authenticatable implements AuditableContract
         'name',
         'email',
         'password',
+        'must_change_password',
         'provider',
         'provider_id',
         'provider_token',
