@@ -75,14 +75,28 @@ class PayrollController extends Controller
                 }
 
                 // 1b. Unpaid leave proration
-                $unpaidLeaveDays = \App\Models\LeaveRequest::where('user_id', $user->id)
+                $unpaidLeaveRequests = \App\Models\LeaveRequest::where('user_id', $user->id)
                     ->where('status', 'approved')
                     ->whereHas('leaveType', fn($q) => $q->where('is_paid', false))
                     ->where(function ($q) use ($periodStart, $periodEnd) {
                         $q->whereBetween('start_date', [$periodStart, $periodEnd])
                           ->orWhereBetween('end_date', [$periodStart, $periodEnd]);
                     })
-                    ->sum('days');
+                    ->get(['start_date', 'end_date']);
+
+                $unpaidLeaveDays = $unpaidLeaveRequests->sum(function ($leaveRequest) use ($periodStart, $periodEnd) {
+                    $leaveStart = \Carbon\Carbon::parse($leaveRequest->start_date)->startOfDay();
+                    $leaveEnd = \Carbon\Carbon::parse($leaveRequest->end_date)->endOfDay();
+
+                    $overlapStart = $leaveStart->greaterThan($periodStart) ? $leaveStart : $periodStart;
+                    $overlapEnd = $leaveEnd->lessThan($periodEnd) ? $leaveEnd : $periodEnd;
+
+                    if ($overlapStart->greaterThan($overlapEnd)) {
+                        return 0;
+                    }
+
+                    return $overlapStart->diffInDays($overlapEnd) + 1;
+                });
 
                 $daysWorked = max(0, $daysWorked - $unpaidLeaveDays);
                 $prorationFraction = $totalDaysInMonth > 0 ? $daysWorked / $totalDaysInMonth : 0;
