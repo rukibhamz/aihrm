@@ -15,6 +15,21 @@
             
             <form method="POST" action="{{ route('leaves.store') }}">
                 @csrf
+
+                @if(auth()->user()->hasAnyRole(['Admin', 'HR']))
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="user_id">Assign To Employee</label>
+                    <select name="user_id" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                        <option value="">Select Employee</option>
+                        @foreach($users as $employeeUser)
+                            <option value="{{ $employeeUser->id }}" {{ old('user_id') == $employeeUser->id ? 'selected' : '' }}>
+                                {{ $employeeUser->name }} ({{ $employeeUser->email }})
+                            </option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1">This leave request will be created for the selected employee.</p>
+                </div>
+                @endif
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="leave_type_id">Leave Type</label>

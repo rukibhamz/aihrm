@@ -6,6 +6,7 @@
                     <h2 class="text-2xl font-bold text-neutral-900">Leave Requests Overview</h2>
                     <p class="text-sm text-neutral-500 mt-1">View all employee leave requests. Line managers handle approvals for their teams.</p>
                 </div>
+                <a href="{{ route('leaves.create') }}" class="btn-primary">Assign Leave</a>
             </div>
 
             <!-- Filters -->

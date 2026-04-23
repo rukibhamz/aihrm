@@ -31,35 +31,54 @@ class LeaveController extends Controller
 
     public function create()
     {
+        $isAdminOrHr = Auth::user()->hasAnyRole(['Admin', 'HR']);
         $employee = Auth::user()->employee;
         $statusId = $employee ? $employee->employment_status_id : null;
         $departmentId = $employee ? $employee->department_id : null;
 
-        $leaveTypes = LeaveType::whereDoesntHave('employmentStatuses')
-            ->orWhereHas('employmentStatuses', function($q) use ($statusId) {
-                $q->where('employment_status_id', $statusId);
-            })->get();
+        if ($isAdminOrHr) {
+            $leaveTypes = LeaveType::all();
+        } else {
+            $leaveTypes = LeaveType::whereDoesntHave('employmentStatuses')
+                ->orWhereHas('employmentStatuses', function($q) use ($statusId) {
+                    $q->where('employment_status_id', $statusId);
+                })->get();
+        }
 
-        $users = User::whereHas('employee', function($q) use ($departmentId) {
-            if ($departmentId) {
-                $q->where('department_id', $departmentId);
-            }
-            $q->where('status', 'active');
-        })->where('id', '!=', Auth::id())->get();
+        if ($isAdminOrHr) {
+            $users = User::whereHas('employee', function($q) {
+                $q->where('status', 'active');
+            })->get();
+        } else {
+            $users = User::whereHas('employee', function($q) use ($departmentId) {
+                if ($departmentId) {
+                    $q->where('department_id', $departmentId);
+                }
+                $q->where('status', 'active');
+            })->where('id', '!=', Auth::id())->get();
+        }
 
         return view('leaves.create', compact('leaveTypes', 'users'));
     }
 
     public function store(Request $request)
     {
+        $isAdminOrHr = Auth::user()->hasAnyRole(['Admin', 'HR']);
+
         $validated = $request->validate([
             'leave_type_id' => 'required|exists:leave_types,id',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string|max:500',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
-        $employee = Auth::user()->employee;
+        $requestUserId = $isAdminOrHr && $request->filled('user_id')
+            ? (int) $request->user_id
+            : Auth::id();
+
+        $targetUser = User::with('employee')->findOrFail($requestUserId);
+        $employee = $targetUser->employee;
         $leaveType = LeaveType::find($validated['leave_type_id']);
 
         // Gender-based restrictions
@@ -78,7 +97,7 @@ class LeaveController extends Controller
         );
 
         // Check Balance
-        $balance = \App\Models\LeaveBalance::where('user_id', Auth::id())
+        $balance = \App\Models\LeaveBalance::where('user_id', $targetUser->id)
             ->where('leave_type_id', $validated['leave_type_id'])
             ->first();
 
@@ -87,10 +106,10 @@ class LeaveController extends Controller
             
             // Create default balance if not exists (for MVP)
             $balance = \App\Models\LeaveBalance::create([
-                'user_id' => Auth::id(),
+                'user_id' => $targetUser->id,
                 'leave_type_id' => $validated['leave_type_id'],
                 'year' => date('Y'),
-                'total_days' => $allowedDays,
+                'total_days' => $leaveType->getDaysAllowedForUser($targetUser),
                 'used_days' => 0,
             ]);
         }
@@ -103,7 +122,7 @@ class LeaveController extends Controller
 
         // Create Request
         $leaveRequest = LeaveRequest::create([
-            'user_id' => Auth::id(),
+            'user_id' => $targetUser->id,
             'leave_type_id' => $validated['leave_type_id'],
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
@@ -125,6 +144,10 @@ class LeaveController extends Controller
         
         // Note: Balance is deducted upon APPROVAL, not request. 
         // Logic for deduction should be in LeaveApprovalController.
+
+        if ($isAdminOrHr) {
+            return redirect()->route('admin.leaves.index')->with('success', 'Leave assigned successfully.');
+        }
 
         return redirect()->route('leaves.index')->with('success', 'Leave request submitted successfully.');
     }
