@@ -93,6 +93,20 @@
                                     <textarea name="company_address" rows="3"
                                         class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">{{ old('company_address', $settings['company_address']) }}</textarea>
                                 </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Currency Code</label>
+                                    <input type="text" name="currency_code" value="{{ old('currency_code', $settings['currency_code'] ?? 'NGN') }}"
+                                        placeholder="NGN"
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium uppercase">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Currency Symbol / Prefix</label>
+                                    <input type="text" name="currency_symbol" value="{{ old('currency_symbol', $settings['currency_symbol'] ?? 'NGN') }}"
+                                        placeholder="NGN or $"
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
+                                </div>
                             </div>
                         </div>
 

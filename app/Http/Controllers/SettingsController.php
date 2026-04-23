@@ -16,6 +16,8 @@ class SettingsController extends Controller
             'company_phone' => Setting::get('company_phone', ''),
             'company_address' => Setting::get('company_address', ''),
             'company_logo' => Setting::get('company_logo', ''),
+            'currency_code' => Setting::get('currency_code', 'NGN'),
+            'currency_symbol' => Setting::get('currency_symbol', 'NGN'),
             
             // Working Days Configuration
             'working_days' => json_decode(Setting::get('working_days', '[1,2,3,4,5]'), true),
@@ -61,6 +63,8 @@ class SettingsController extends Controller
             'company_phone' => 'nullable|string|max:20',
             'company_address' => 'nullable|string|max:500',
             'company_logo' => 'nullable|image|max:2048',
+            'currency_code' => 'nullable|string|max:10',
+            'currency_symbol' => 'nullable|string|max:10',
             
             // Working Days Validation
             'working_days' => 'required|array|min:1',
@@ -114,6 +118,8 @@ class SettingsController extends Controller
         Setting::set('company_email', $validated['company_email'] ?? '');
         Setting::set('company_phone', $validated['company_phone'] ?? '');
         Setting::set('company_address', $validated['company_address'] ?? '');
+        Setting::set('currency_code', strtoupper($validated['currency_code'] ?? 'NGN'));
+        Setting::set('currency_symbol', $validated['currency_symbol'] ?? 'NGN');
         
         // Save Working Days
         Setting::set('working_days', json_encode($validated['working_days']));

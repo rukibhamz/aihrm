@@ -27,9 +27,26 @@
     </style>
 </head>
 <body>
+    @php
+        $companyName = \App\Models\Setting::get('company_name', config('app.name', 'AIHRM'));
+        $companyAddress = \App\Models\Setting::get('company_address', '');
+        $companyLogo = \App\Models\Setting::get('company_logo', '');
+        $currencyPrefix = \App\Models\Setting::get('currency_symbol', \App\Models\Setting::get('currency_code', 'NGN'));
+        $currencyPrefix = trim($currencyPrefix) !== '' ? trim($currencyPrefix) : 'NGN';
+        $logoPath = $companyLogo ? public_path('storage/' . ltrim($companyLogo, '/')) : null;
+        $hasLogo = $logoPath && file_exists($logoPath);
+    @endphp
+
     <div class="header">
-        <div class="logo">AIHRM Inc.</div>
-        <div class="company-info">123 Business Park, Lagos, Nigeria • taxid: 99887766</div>
+        @if($hasLogo)
+            <div style="margin-bottom: 10px;">
+                <img src="{{ $logoPath }}" alt="Company Logo" style="max-height: 55px;">
+            </div>
+        @endif
+        <div class="logo">{{ $companyName }}</div>
+        @if($companyAddress)
+            <div class="company-info">{{ $companyAddress }}</div>
+        @endif
     </div>
 
     <div class="title">Payslip: {{ date('F Y', mktime(0, 0, 0, $payslip->payroll->month, 10)) }}</div>
@@ -63,10 +80,10 @@
         <thead>
             <tr>
                 <th width="50%">Earnings</th>
-                <th width="15%" class="amount">Amount (₦)</th>
+                <th width="15%" class="amount">Amount ({{ $currencyPrefix }})</th>
                 <th width="5%"></th>
                 <th width="30%">Deductions</th>
-                <th width="15%" class="amount">Amount (₦)</th>
+                <th width="15%" class="amount">Amount ({{ $currencyPrefix }})</th>
             </tr>
         </thead>
         <tbody>
@@ -104,7 +121,7 @@
     </table>
 
     <div class="net-pay">
-        Net Pay: ₦{{ number_format($payslip->net_salary, 2) }}
+        Net Pay: {{ $currencyPrefix }}{{ number_format($payslip->net_salary, 2) }}
     </div>
 
     <div class="footer">
