@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bonus;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 class BonusController extends Controller
 {
     public function index()

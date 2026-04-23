@@ -135,7 +135,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                            <a href="{{ route('admin.performance.goals.show', $goal) }}" class="text-blue-600 hover:text-blue-900 transition-colors">View Goal</a>
+                            <a href="{{ route('performance.goals.show', $goal) }}" class="text-blue-600 hover:text-blue-900 transition-colors">View Goal</a>
                         </td>
                     </tr>
                 @empty

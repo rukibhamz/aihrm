@@ -210,7 +210,7 @@
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                                             Submit Scorecard
                                         </button>
-                                        <form id="scorecardForm{{ $interview->id }}" action="{{ route('admin.interviews.scorecard', $interview) }}" method="POST" class="hidden mt-4 space-y-4 p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
+                                        <form id="scorecardForm{{ $interview->id }}" action="{{ route('admin.interviews.submitScorecard', $interview) }}" method="POST" class="hidden mt-4 space-y-4 p-4 bg-indigo-50/50 rounded-lg border border-indigo-100">
                                             @csrf
                                             <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
                                                 @foreach(['communication', 'technical_skills', 'problem_solving', 'cultural_fit', 'leadership'] as $criteria)

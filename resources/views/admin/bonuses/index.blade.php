@@ -13,6 +13,15 @@
             {{ session('success') }}
         </div>
     @endif
+    @if($errors->any())
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg">
+            <ul class="list-disc pl-5">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="card p-6">
         <div class="overflow-x-auto">
@@ -83,10 +92,10 @@
                 <div>
                     <label class="block text-sm font-medium mb-2">Type</label>
                     <select name="type" required class="w-full px-4 py-2 border border-neutral-300 rounded-lg">
+                        <option value="one-time">One-time</option>
+                        <option value="recurring">Recurring</option>
                         <option value="performance">Performance</option>
-                        <option value="annual">Annual</option>
-                        <option value="project">Project</option>
-                        <option value="other">Other</option>
+                        <option value="sales">Sales</option>
                     </select>
                 </div>
                 <div>
@@ -109,7 +118,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">Reason</label>
-                    <textarea name="reason" rows="3" class="w-full px-4 py-2 border border-neutral-300 rounded-lg"></textarea>
+                    <textarea name="description" rows="3" class="w-full px-4 py-2 border border-neutral-300 rounded-lg"></textarea>
                 </div>
                 <div class="flex gap-3 pt-4">
                     <button type="submit" class="btn-primary flex-1">Add Bonus</button>

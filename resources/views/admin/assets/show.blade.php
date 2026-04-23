@@ -116,7 +116,7 @@
                         {{ substr($asset->assignedTo->name, 0, 1) }}
                     </div>
                     <div>
-                        <a href="{{ route('admin.employees.show', $asset->assignedTo->employee ?? 0) }}" class="font-bold text-gray-900 hover:underline">
+                        <a href="{{ route('employees.show', $asset->assignedTo->employee ?? 0) }}" class="font-bold text-gray-900 hover:underline">
                             {{ $asset->assignedTo->name }}
                         </a>
                         <p class="text-sm text-gray-500">{{ $asset->assignedTo->employee->designation->title ?? 'Employee' }}</p>

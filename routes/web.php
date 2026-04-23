@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
 
         // Payroll & Salary
         Route::get('admin/salary', [\App\Http\Controllers\Admin\SalaryStructureController::class, 'index'])->name('admin.salary.index');
+        Route::get('admin/salary/create', [\App\Http\Controllers\SalaryStructureController::class, 'create'])->name('admin.salary.create');
+        Route::post('admin/salary', [\App\Http\Controllers\SalaryStructureController::class, 'store'])->name('admin.salary.store');
         Route::get('admin/salary/{user}/edit', [\App\Http\Controllers\Admin\SalaryStructureController::class, 'edit'])->name('admin.salary.edit');
         Route::put('admin/salary/{user}', [\App\Http\Controllers\Admin\SalaryStructureController::class, 'update'])->name('admin.salary.update');
 
@@ -178,6 +180,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('admin/approval-chains', \App\Http\Controllers\Admin\ApprovalChainController::class, ['as' => 'admin']);
         Route::post('admin/approval-chains/{chain}/steps', [\App\Http\Controllers\Admin\ApprovalChainController::class, 'storeStep'])->name('admin.approval-chains.steps.store');
         Route::delete('admin/approval-steps/{step}', [\App\Http\Controllers\Admin\ApprovalChainController::class, 'destroyStep'])->name('admin.approval-chains.steps.destroy');
+
+        // AI Insights (Admin)
+        Route::get('admin/ai/compliance', [\App\Http\Controllers\Admin\AIController::class, 'compliance'])->name('admin.ai.compliance');
+        Route::post('admin/ai/compliance/run', [\App\Http\Controllers\Admin\AIController::class, 'runComplianceCheck'])->name('admin.ai.compliance.run');
+        Route::get('admin/ai/performance', [\App\Http\Controllers\Admin\AIController::class, 'performance'])->name('admin.ai.performance');
+        Route::post('admin/ai/performance/analyze', [\App\Http\Controllers\Admin\AIController::class, 'analyzePerformance'])->name('admin.ai.performance.analyze');
     });
     
     // Attendance and other SS
@@ -216,6 +224,10 @@ Route::middleware('auth')->group(function () {
     Route::get('notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
     Route::get('notifications/poll', [\App\Http\Controllers\NotificationController::class, 'poll'])->name('notifications.poll');
     Route::get('notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+    // AI Chat Assistant (Authenticated Users)
+    Route::get('chatbot', [\App\Http\Controllers\ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('chatbot/send', [\App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
 
     // Announcements (Employee View)
     Route::get('announcements', [\App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcements.index');
