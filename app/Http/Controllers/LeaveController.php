@@ -14,13 +14,17 @@ class LeaveController extends Controller
 {
     public function index(Request $request)
     {
-        // Check if viewing another employee's leaves (admin feature)
-        $userId = $request->query('user_id', Auth::id());
-        
-        $leaves = LeaveRequest::with('leaveType')
-            ->where('user_id', $userId)
-            ->latest()
-            ->paginate(10);
+        $query = LeaveRequest::with(['leaveType', 'user'])->latest();
+
+        // Admin/HR should see all leave requests by default.
+        // Other users only see their own requests.
+        if (! Auth::user()->hasAnyRole(['Admin', 'HR'])) {
+            $query->where('user_id', Auth::id());
+        } elseif ($request->filled('user_id')) {
+            $query->where('user_id', $request->query('user_id'));
+        }
+
+        $leaves = $query->paginate(10);
             
         return view('leaves.index', compact('leaves'));
     }
