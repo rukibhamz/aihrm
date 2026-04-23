@@ -122,6 +122,13 @@
                     </div>
                 </div>
 
+                <div class="mt-6">
+                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Handover Note</label>
+                    <div class="bg-neutral-50 p-4 rounded-xl text-neutral-700 text-sm leading-relaxed border border-neutral-100">
+                        {{ $leaf->handover_note ?: 'N/A' }}
+                    </div>
+                </div>
+
                 @if($leaf->status === 'rejected' && $leaf->rejection_reason)
                 <div class="mt-6 p-4 bg-red-50 border border-red-100 rounded-xl">
                     <label class="block text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Rejection Remarks</label>

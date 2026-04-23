@@ -45,6 +45,12 @@
                 </div>
 
                 <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="handover_note">Handover Note</label>
+                    <textarea name="handover_note" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>{{ old('handover_note', $leaf->handover_note) }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">Provide key handover details for continuity while on leave.</p>
+                </div>
+
+                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="relief_officer_id">Relief Officer (Optional)</label>
                     <select name="relief_officer_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
                         <option value="">Select a Relief Officer</option>

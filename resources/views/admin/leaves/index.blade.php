@@ -69,7 +69,9 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <span class="text-neutral-400">View Only</span>
+                                <a href="{{ route('leaves.show', $leave) }}" class="text-primary hover:text-black">
+                                    View Details
+                                </a>
                             </td>
                         </tr>
                         @empty

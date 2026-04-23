@@ -70,6 +70,7 @@ class LeaveController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string|max:500',
+            'handover_note' => 'required|string|max:1000',
             'user_id' => 'nullable|exists:users,id',
         ]);
 
@@ -127,6 +128,7 @@ class LeaveController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'reason' => $validated['reason'],
+            'handover_note' => $validated['handover_note'],
             'relief_officer_id' => $request->relief_officer_id,
             'relief_officer_status' => $request->relief_officer_id ? 'pending' : 'none',
             'status' => 'pending',
@@ -154,7 +156,18 @@ class LeaveController extends Controller
 
     public function show(LeaveRequest $leaf)
     {
-        $leaf->load(['leaveType', 'user.employee']);
+        $leaf->load(['leaveType', 'user.employee', 'reliefOfficer']);
+
+        $viewer = Auth::user();
+        $isOwner = (int) $leaf->user_id === (int) $viewer->id;
+        $isAdminOrHr = $viewer->hasAnyRole(['Admin', 'HR']);
+        $managedEmployee = \App\Models\Employee::where('user_id', $leaf->user_id)->first();
+        $isLineManager = $managedEmployee && (int) $managedEmployee->manager_id === (int) $viewer->id;
+
+        if (! ($isOwner || $isAdminOrHr || $isLineManager)) {
+            abort(403, 'Unauthorized to view this leave request.');
+        }
+
         return view('leaves.show', compact('leaf'));
     }
 
@@ -216,6 +229,7 @@ class LeaveController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string|max:500',
+            'handover_note' => 'required|string|max:1000',
         ]);
 
         $employee = Auth::user()->employee;
@@ -263,6 +277,7 @@ class LeaveController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'reason' => $validated['reason'],
+            'handover_note' => $validated['handover_note'],
             'relief_officer_id' => $request->relief_officer_id,
             'relief_officer_status' => $request->relief_officer_id ? 'pending' : 'none',
         ]);

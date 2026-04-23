@@ -37,6 +37,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex gap-2">
+                                    <a href="{{ route('leaves.show', $request) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs">
+                                        View
+                                    </a>
                                     <form method="POST" action="{{ route('leaves.approve', $request) }}">
                                         @csrf
                                         @method('PATCH')
