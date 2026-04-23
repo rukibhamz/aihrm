@@ -15,11 +15,18 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <div class="relative mt-1">
+                <x-text-input id="password" class="block w-full pr-10"
+                                type="password"
+                                name="password"
+                                required autocomplete="current-password" />
+                <button type="button" id="toggle-login-password" class="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700" aria-label="Show password">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </button>
+            </div>
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -100,5 +107,17 @@
         </div>
         @endif
     </form>
+
+    <script>
+        (function () {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('toggle-login-password');
+            if (!passwordInput || !toggleButton) return;
+
+            toggleButton.addEventListener('click', function () {
+                passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+            });
+        })();
+    </script>
 </x-guest-layout>
 

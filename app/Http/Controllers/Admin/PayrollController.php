@@ -112,6 +112,7 @@ class PayrollController extends Controller
                     ->whereYear('date', $request->year)
                     ->sum('overtime_hours');
 
+                $metaInfo = [];
                 $overtimeEarnings = 0;
                 if ($overtimeHours > 0) {
                    $policy = \App\Models\OvertimePolicy::where('is_active', true)->first();
@@ -140,7 +141,12 @@ class PayrollController extends Controller
 
                 // PAYE Tax - Dynamic from Tax Brackets or fallback to fixed
                 $taxableIncome = max(0, $gross - $pension - $totalTaxRelief); // Pension and Reliefs are tax-exempt
-                $payeTax = $this->calculatePAYE($taxableIncome, $taxBrackets, $structure->tax_paye, $prorationFraction);
+                $payeTax = $this->calculatePAYE(
+                    $taxableIncome,
+                    $taxBrackets,
+                    (float) ($structure->tax_paye ?? 0),
+                    $prorationFraction
+                );
 
                 $deductionsBreakdown = [
                     'Pension' => $pension,
@@ -148,12 +154,12 @@ class PayrollController extends Controller
                 ];
                 $totalDeductions = $pension + $payeTax;
 
-                $metaInfo = [
+                $metaInfo = array_merge($metaInfo, [
                     'proration_fraction' => round($prorationFraction, 4),
                     'days_worked' => $daysWorked,
                     'total_days_in_month' => $totalDaysInMonth,
                     'unpaid_leave_days' => $unpaidLeaveDays,
-                ];
+                ]);
 
                 // Dynamic Deductions (Loans & Advances are not prorated)
                 $advance = \App\Models\SalaryAdvance::getPendingAdvance($user->id, $request->month, $request->year);
