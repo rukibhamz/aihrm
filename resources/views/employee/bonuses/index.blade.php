@@ -6,11 +6,10 @@
         </div>
     </div>
 
-    @if(session('success'))
-    <div class="mb-4 bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-        {{ session('success') }}
-    </div>
-    @endif
+    <x-flash-messages
+        successClass="mb-4 bg-green-50 text-green-700 p-4 rounded-md border border-green-200"
+        errorClass="mb-4 bg-red-50 text-red-700 p-4 rounded-md border border-red-200"
+    />
 
     <div class="card overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-200">

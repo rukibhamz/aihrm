@@ -5,14 +5,10 @@
             <p class="text-sm text-neutral-500">Manage leave requests where you've been assigned as a relief officer.</p>
         </div>
 
-        @if(session('success'))
-            <div class="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl flex items-center gap-3">
-                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="font-medium text-sm">{{ session('success') }}</span>
-            </div>
-        @endif
+        <x-flash-messages
+            successClass="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-xl font-medium text-sm"
+            errorClass="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl font-medium text-sm"
+        />
 
         <div class="bg-white shadow-sm border border-neutral-200 rounded-xl overflow-hidden">
             <div class="overflow-x-auto">

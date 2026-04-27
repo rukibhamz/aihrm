@@ -4,12 +4,10 @@
         <p class="mt-1 text-sm text-neutral-500">Configure your organization's global parameters, branding, and integrations.</p>
     </div>
 
-    @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm flex items-center gap-2">
-            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-flash-messages
+        successClass="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm"
+        errorClass="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm"
+    />
 
 @php /** @var \Illuminate\Support\ViewErrorBag $errors */ @endphp
     @if($errors->any())

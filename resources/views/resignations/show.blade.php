@@ -1,12 +1,10 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         
-        @if(session('success'))
-        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            {{ session('success') }}
-        </div>
-        @endif
+        <x-flash-messages
+            successClass="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg"
+            errorClass="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg"
+        />
 
         <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
              <div class="p-6 border-b border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

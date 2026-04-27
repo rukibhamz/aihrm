@@ -10,17 +10,10 @@
             </button>
         </div>
 
-        @if(session('success'))
-        <div class="mb-4 bg-green-50 text-green-700 p-4 rounded-md border border-green-200">
-            {{ session('success') }}
-        </div>
-        @endif
-        
-        @if(session('error'))
-        <div class="mb-4 bg-red-50 text-red-700 p-4 rounded-md border border-red-200">
-            {{ session('error') }}
-        </div>
-        @endif
+        <x-flash-messages
+            successClass="mb-4 bg-green-50 text-green-700 p-4 rounded-md border border-green-200"
+            errorClass="mb-4 bg-red-50 text-red-700 p-4 rounded-md border border-red-200"
+        />
 
         @if($errors->any())
         <div class="mb-4 bg-red-50 text-red-700 p-4 rounded-md border border-red-200">

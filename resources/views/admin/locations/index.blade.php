@@ -10,12 +10,10 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-100 rounded-xl text-green-700 text-sm flex items-center gap-3">
-            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-flash-messages
+        successClass="mb-6 p-4 bg-green-50 border border-green-100 rounded-xl text-green-700 text-sm"
+        errorClass="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl text-red-700 text-sm"
+    />
 
     <div class="bg-white rounded-xl shadow-sm border border-neutral-100 overflow-hidden">
         <div class="overflow-x-auto">

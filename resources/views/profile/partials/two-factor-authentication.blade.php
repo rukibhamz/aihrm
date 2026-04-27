@@ -9,17 +9,10 @@
         </p>
     </header>
 
-    @if(session('success'))
-        <div class="mt-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mt-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm">
-            {{ session('error') }}
-        </div>
-    @endif
+    <x-flash-messages
+        successClass="mt-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm"
+        errorClass="mt-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm"
+    />
 
     <div class="mt-6 space-y-6">
         @if(auth()->user()->two_factor_enabled)

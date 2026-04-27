@@ -1,17 +1,7 @@
 <x-app-layout>
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
         <div class="p-6 bg-white border-b border-gray-200">
-            @if(session('success'))
-                <div class="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
+            <x-flash-messages />
 
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>

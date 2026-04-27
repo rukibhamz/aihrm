@@ -14,14 +14,10 @@
         </div>
     </div>
 
-    @if (session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg flex items-center gap-2 shadow-sm">
-            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-flash-messages
+        successClass="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg shadow-sm"
+        errorClass="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg shadow-sm"
+    />
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">

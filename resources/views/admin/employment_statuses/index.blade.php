@@ -12,17 +12,10 @@
         </button>
     </div>
 
-    @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-            {{ session('error') }}
-        </div>
-    @endif
+    <x-flash-messages
+        successClass="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700"
+        errorClass="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700"
+    />
 
     <div class="card overflow-x-auto">
         <table class="w-full text-left text-sm text-neutral-600">
