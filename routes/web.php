@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('leaves/approvals', [\App\Http\Controllers\LeaveApprovalController::class, 'index'])->name('leaves.approvals');
     Route::patch('leaves/{leaveRequest}/approve', [\App\Http\Controllers\LeaveApprovalController::class, 'approve'])->name('leaves.approve');
     Route::patch('leaves/{leaveRequest}/reject', [\App\Http\Controllers\LeaveApprovalController::class, 'reject'])->name('leaves.reject');
+    Route::get('leaves/{leaveRequest}/reject', [\App\Http\Controllers\LeaveApprovalController::class, 'rejectRedirect'])->name('leaves.reject.redirect');
 
     // Job Postings & Recruitment (Admin View)
     Route::middleware('permission:view employees')->group(function () {

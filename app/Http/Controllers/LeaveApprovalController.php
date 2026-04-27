@@ -109,4 +109,11 @@ class LeaveApprovalController extends Controller
 
         return redirect()->back()->with('success', 'Leave request rejected.');
     }
+
+    public function rejectRedirect(LeaveRequest $leaveRequest)
+    {
+        return redirect()
+            ->route('leaves.approvals')
+            ->with('error', 'Invalid request method for rejecting leave. Please use the Reject button.');
+    }
 }

@@ -7,6 +7,12 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Leave Approvals</h2>
 
             <div class="overflow-x-auto">
