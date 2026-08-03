@@ -476,6 +476,9 @@
             width: 4.5rem;
             min-width: 4.5rem;
             max-width: 4.5rem;
+            overflow: visible;
+            position: relative;
+            z-index: 40;
         }
         /* Only animate after explicit user toggle (never on first paint) */
         html.sidebar-anim #app-sidebar-desktop {
@@ -485,12 +488,56 @@
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-brand-text,
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-section-label,
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-label,
-        html.sidebar-collapsed #app-sidebar-desktop .sidebar-submenu,
+        html.sidebar-collapsed #app-sidebar-desktop .sidebar-submenu:not(.sidebar-flyout),
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-nav-link > span,
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-nav-link > .sidebar-badge,
         html.sidebar-collapsed #app-sidebar-desktop button.sidebar-nav-link > span,
         html.sidebar-collapsed #app-sidebar-desktop button.sidebar-nav-link > svg:last-of-type:not(:first-of-type) {
             display: none !important;
+        }
+
+        /* Collapsed hover label (name tip) */
+        .sidebar-collapsed-tip {
+            white-space: nowrap;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            line-height: 1.25;
+            border-radius: 0.5rem;
+            background: #18181b;
+            color: #fafafa;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+            pointer-events: none;
+        }
+        .dark .sidebar-collapsed-tip {
+            background: #27272a;
+            color: #f4f4f5;
+            border: 1px solid #3f3f46;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Collapsed click flyout (submenu panel) */
+        .sidebar-flyout {
+            margin: 0 !important;
+            padding: 0.375rem !important;
+            border-left: none !important;
+            min-width: 13.5rem;
+            max-width: 18rem;
+            max-height: calc(100vh - 1rem);
+            overflow-y: auto;
+            border-radius: 0.75rem;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.14);
+        }
+        .dark .sidebar-flyout {
+            background: #18181b;
+            border-color: #27272a;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        .sidebar-flyout .sidebar-sub-link {
+            padding-left: 0.625rem !important;
+            padding-right: 0.75rem !important;
         }
         html.sidebar-collapsed #app-sidebar-desktop .sidebar-nav-link,
         html.sidebar-collapsed #app-sidebar-desktop button.sidebar-nav-link {
@@ -552,6 +599,7 @@
           syncSidebarClass() {
               const collapsed = this.sidebarCollapsed && window.matchMedia('(min-width: 768px)').matches;
               document.documentElement.classList.toggle('sidebar-collapsed', collapsed);
+              window.dispatchEvent(new CustomEvent('sidebar-collapse-changed', { detail: { collapsed } }));
           },
           toggleSidebar() {
               document.documentElement.classList.add('sidebar-anim');
@@ -708,9 +756,16 @@
         <!-- Top Bar (Desktop) -->
         <header class="hidden md:flex bg-white dark:bg-zinc-900 border-b border-neutral-200 dark:border-zinc-800 h-16 items-center justify-between px-6 md:px-8 gap-4">
             <div class="flex items-center gap-4 min-w-0">
-                <button type="button" @click="toggleSidebar()" class="flex text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white focus:outline-none" title="Toggle sidebar">
-                    <svg class="w-6 h-6" :class="sidebarCollapsed ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                <button type="button"
+                        @click="toggleSidebar()"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-xl text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--primary-color)_35%,transparent)] transition-colors duration-150"
+                        :title="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+                        :aria-label="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+                        :aria-expanded="(!sidebarCollapsed).toString()">
+                    <svg class="h-5 w-5 transition-transform duration-200 ease-out"
+                         :class="sidebarCollapsed ? 'rotate-180' : ''"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                     </svg>
                 </button>
             </div>

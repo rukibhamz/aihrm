@@ -36,7 +36,108 @@
     $userEmail = $authUser?->email ?? '';
 @endphp
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full"
+     x-data="{
+        activeMenu: '{{ $activeMenu }}',
+        flyoutKey: null,
+        flyoutStyle: {},
+        tip: { show: false, label: '', style: {} },
+        init() {
+            window.addEventListener('sidebar-collapse-changed', (e) => {
+                if (!e.detail?.collapsed) {
+                    this.flyoutKey = null;
+                    this.flyoutStyle = {};
+                    this.hideTip();
+                }
+            });
+        },
+        isCollapsed() {
+            return document.documentElement.classList.contains('sidebar-collapsed');
+        },
+        getNavQuery() {
+            try {
+                return (window.Alpine && Alpine.$data(document.body)?.navQuery) || '';
+            } catch (e) {
+                return '';
+            }
+        },
+        match(label) {
+            const q = (this.getNavQuery() || '').trim().toLowerCase();
+            return !q || String(label).toLowerCase().includes(q);
+        },
+        matchAny() {
+            const q = (this.getNavQuery() || '').trim().toLowerCase();
+            if (!q) return true;
+            return Array.from(arguments).some(l => String(l).toLowerCase().includes(q));
+        },
+        sectionOpen(key) {
+            if (this.isCollapsed()) return this.flyoutKey === key;
+            return this.activeMenu === key || !!this.getNavQuery();
+        },
+        openSection(key, event) {
+            if (this.isCollapsed()) {
+                this.hideTip();
+                if (this.flyoutKey === key) {
+                    this.flyoutKey = null;
+                    this.flyoutStyle = {};
+                    return;
+                }
+                const el = event.currentTarget;
+                const r = el.getBoundingClientRect();
+                this._ignoreOutside = true;
+                this.flyoutKey = key;
+                this.flyoutStyle = {
+                    position: 'fixed',
+                    top: Math.max(8, r.top) + 'px',
+                    left: (r.right + 8) + 'px',
+                    zIndex: '80',
+                };
+                this.$nextTick(() => {
+                    this.clampFlyout(key);
+                    requestAnimationFrame(() => { this._ignoreOutside = false; });
+                });
+            } else {
+                this.flyoutKey = null;
+                this.flyoutStyle = {};
+                this.activeMenu = this.activeMenu === key ? null : key;
+            }
+        },
+        clampFlyout(key) {
+            const panel = this.$refs['flyout_' + key];
+            if (!panel || !this.flyoutStyle.top) return;
+            const rect = panel.getBoundingClientRect();
+            const pad = 8;
+            let top = parseFloat(this.flyoutStyle.top);
+            if (top + rect.height > window.innerHeight - pad) {
+                top = Math.max(pad, window.innerHeight - rect.height - pad);
+            }
+            this.flyoutStyle = { ...this.flyoutStyle, top: top + 'px' };
+        },
+        closeFlyout() {
+            if (this._ignoreOutside) return;
+            this.flyoutKey = null;
+            this.flyoutStyle = {};
+        },
+        showTip(event, label) {
+            if (!this.isCollapsed() || this.flyoutKey) return;
+            const r = event.currentTarget.getBoundingClientRect();
+            this.tip = {
+                show: true,
+                label,
+                style: {
+                    position: 'fixed',
+                    top: (r.top + r.height / 2) + 'px',
+                    left: (r.right + 10) + 'px',
+                    transform: 'translateY(-50%)',
+                    zIndex: '80',
+                },
+            };
+        },
+        hideTip() {
+            this.tip = { ...this.tip, show: false };
+        },
+     }"
+     @keydown.escape.window="closeFlyout(); hideTip()">
     {{-- Brand --}}
     <div class="sidebar-brand-wrap flex items-center flex-shrink-0 pt-5 pb-4 px-3">
         <a href="{{ route('dashboard') }}" class="flex items-center min-w-0 gap-3">
@@ -60,38 +161,35 @@
         </a>
     </div>
 
-    {{-- Nav (filters via $root.navQuery from header search) --}}
-    <div class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden min-h-0"
-         x-data="{
-            activeMenu: '{{ $activeMenu }}',
-            match(label) {
-                const q = (this.$root.navQuery || '').trim().toLowerCase();
-                return !q || String(label).toLowerCase().includes(q);
-            },
-            matchAny() {
-                const q = (this.$root.navQuery || '').trim().toLowerCase();
-                if (!q) return true;
-                return Array.from(arguments).some(l => String(l).toLowerCase().includes(q));
-            },
-            openSection(key) {
-                if (this.$root.sidebarCollapsed) {
-                    this.$root.expandSidebar();
-                    this.activeMenu = key;
-                } else {
-                    this.activeMenu = this.activeMenu === key ? null : key;
-                }
-            }
-         }">
+    <template x-teleport="body">
+        <div x-show="tip.show"
+             x-cloak
+             x-transition:enter="transition ease-out duration-100"
+             x-transition:enter-start="opacity-0 translate-x-1"
+             x-transition:enter-end="opacity-100 translate-x-0"
+             x-transition:leave="transition ease-in duration-75"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             :style="tip.style"
+             class="sidebar-collapsed-tip"
+             x-text="tip.label"></div>
+    </template>
+
+    {{-- Nav --}}
+    <div class="flex-1 flex flex-col min-h-0"
+         :class="flyoutKey ? 'overflow-visible' : 'overflow-y-auto overflow-x-hidden'"
+         @scroll="closeFlyout(); hideTip()">
 
         <nav class="sidebar-nav-wrap space-y-1 flex-1 pb-2 px-3">
 
-            <div x-show="!$root.navQuery" x-cloak class="sidebar-section-label">Main</div>
+            <div x-show="!getNavQuery()" x-cloak class="sidebar-section-label">Main</div>
 
             {{-- Dashboard --}}
             <a href="{{ route('dashboard') }}"
                x-show="match('Dashboard')"
-               class="sidebar-nav-link group flex items-center gap-3 px-3 py-2.5 text-sm font-medium {{ request()->routeIs('dashboard') ? 'sidebar-nav-link-active' : '' }}"
-               title="Dashboard">
+               @mouseenter="showTip($event, 'Dashboard')"
+               @mouseleave="hideTip()"
+               class="sidebar-nav-link group flex items-center gap-3 px-3 py-2.5 text-sm font-medium {{ request()->routeIs('dashboard') ? 'sidebar-nav-link-active' : '' }}">
                 <svg class="flex-shrink-0 h-5 w-5 {{ request()->routeIs('dashboard') ? '' : 'text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
@@ -101,8 +199,9 @@
             {{-- Pending Approvals --}}
             <a href="{{ route('approvals.index') }}"
                x-show="match('Pending Approvals')"
-               class="sidebar-nav-link group flex items-center gap-3 px-3 py-2.5 text-sm font-medium {{ request()->routeIs('approvals.*') ? 'sidebar-nav-link-active' : '' }}"
-               title="Pending Approvals">
+               @mouseenter="showTip($event, 'Pending Approvals')"
+               @mouseleave="hideTip()"
+               class="sidebar-nav-link group flex items-center gap-3 px-3 py-2.5 text-sm font-medium {{ request()->routeIs('approvals.*') ? 'sidebar-nav-link-active' : '' }}">
                 <svg class="flex-shrink-0 h-5 w-5 {{ request()->routeIs('approvals.*') ? '' : 'text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                 </svg>
@@ -111,12 +210,15 @@
             </a>
 
             {{-- My Workspace --}}
-            <div x-show="matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')">
+            <div class="relative"
+                 x-show="matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')"
+                 @click.outside="flyoutKey === 'workspace' && closeFlyout()">
                 <button type="button"
-                        @click="openSection('workspace')"
-                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'workspace' }"
-                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none"
-                        title="My Workspace">
+                        @click="openSection('workspace', $event)"
+                        @mouseenter="showTip($event, 'My Workspace')"
+                        @mouseleave="hideTip()"
+                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'workspace' || flyoutKey === 'workspace' }"
+                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none">
                     <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
@@ -125,15 +227,17 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'workspace' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')"
+                <div x-show="sectionOpen('workspace') && matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')"
+                     x-ref="flyout_workspace"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
-                     x-transition:enter-start="opacity-0 -translate-y-1"
-                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
                      x-transition:leave="transition ease-in duration-100"
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
-                     class="sidebar-submenu space-y-0.5 mt-1 mb-2">
+                     :class="isCollapsed() && flyoutKey === 'workspace' ? 'sidebar-submenu sidebar-flyout space-y-0.5' : 'sidebar-submenu space-y-0.5 mt-1 mb-2'"
+                     :style="isCollapsed() && flyoutKey === 'workspace' ? flyoutStyle : {}">
                     <a href="{{ route('my-payslips.index') }}" x-show="match('My Payslips')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('my-payslips.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         <span>My Payslips</span>
@@ -181,16 +285,19 @@
                 </div>
             </div>
 
-            <div x-show="!$root.navQuery" x-cloak class="sidebar-section-label pt-2">Manage</div>
+            <div x-show="!getNavQuery()" x-cloak class="sidebar-section-label pt-2">Manage</div>
 
             {{-- People & Culture --}}
             @role('Admin|HR')
-            <div x-show="matchAny('People & Culture', 'Employees', 'Jobs', 'Recruitment', 'Departments', 'Designations', 'Grade Levels', 'Employment Statuses')">
+            <div class="relative"
+                 x-show="matchAny('People & Culture', 'Employees', 'Jobs', 'Recruitment', 'Departments', 'Designations', 'Grade Levels', 'Employment Statuses')"
+                 @click.outside="flyoutKey === 'people' && closeFlyout()">
                 <button type="button"
-                        @click="openSection('people')" 
-                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'people' }"
-                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none"
-                        title="People & Culture">
+                        @click="openSection('people', $event)"
+                        @mouseenter="showTip($event, 'People & Culture')"
+                        @mouseleave="hideTip()"
+                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'people' || flyoutKey === 'people' }"
+                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none">
                     <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
@@ -199,12 +306,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'people' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('People & Culture', 'Employees', 'Jobs', 'Recruitment', 'Departments', 'Designations', 'Grade Levels', 'Employment Statuses')"
+                <div x-show="sectionOpen('people') && matchAny('People & Culture', 'Employees', 'Jobs', 'Recruitment', 'Departments', 'Designations', 'Grade Levels', 'Employment Statuses')"
+                     x-ref="flyout_people"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
-                     x-transition:enter-start="opacity-0 -translate-y-1"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="sidebar-submenu space-y-0.5 mt-1 mb-2">
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     :class="isCollapsed() && flyoutKey === 'people' ? 'sidebar-submenu sidebar-flyout space-y-0.5' : 'sidebar-submenu space-y-0.5 mt-1 mb-2'"
+                     :style="isCollapsed() && flyoutKey === 'people' ? flyoutStyle : {}">
                     @can('view employees')
                     <a href="{{ route('employees.index') }}" x-show="match('Employees')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('employees.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -240,12 +349,15 @@
             @endrole
 
             {{-- Performance & Learning --}}
-            <div x-show="matchAny('Performance & Learning', 'Company Goals', 'Goals', 'Team Goals', 'Reviews', '360 Feedback', 'Courses')">
+            <div class="relative"
+                 x-show="matchAny('Performance & Learning', 'Company Goals', 'Goals', 'Team Goals', 'Reviews', '360 Feedback', 'Courses')"
+                 @click.outside="flyoutKey === 'performance' && closeFlyout()">
                 <button type="button"
-                        @click="openSection('performance')" 
-                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'performance' }"
-                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none"
-                        title="Performance & Learning">
+                        @click="openSection('performance', $event)"
+                        @mouseenter="showTip($event, 'Performance & Learning')"
+                        @mouseleave="hideTip()"
+                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'performance' || flyoutKey === 'performance' }"
+                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none">
                     <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
@@ -254,12 +366,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'performance' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('Performance & Learning', 'Company Goals', 'Goals', 'Team Goals', 'Reviews', '360 Feedback', 'Courses')"
+                <div x-show="sectionOpen('performance') && matchAny('Performance & Learning', 'Company Goals', 'Goals', 'Team Goals', 'Reviews', '360 Feedback', 'Courses')"
+                     x-ref="flyout_performance"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
-                     x-transition:enter-start="opacity-0 -translate-y-1"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="sidebar-submenu space-y-0.5 mt-1 mb-2">
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     :class="isCollapsed() && flyoutKey === 'performance' ? 'sidebar-submenu sidebar-flyout space-y-0.5' : 'sidebar-submenu space-y-0.5 mt-1 mb-2'"
+                     :style="isCollapsed() && flyoutKey === 'performance' ? flyoutStyle : {}">
                     @role('Admin|HR')
                     <a href="{{ route('admin.performance.objectives.index') }}" x-show="match('Company Goals')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.performance.objectives.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
@@ -293,12 +407,15 @@
 
             {{-- Administrative Tools --}}
             @role('Admin')
-            <div x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')">
+            <div class="relative"
+                 x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
+                 @click.outside="flyoutKey === 'admin' && closeFlyout()">
                 <button type="button"
-                        @click="openSection('admin')" 
-                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'admin' }"
-                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none"
-                        title="Administrative Tools">
+                        @click="openSection('admin', $event)"
+                        @mouseenter="showTip($event, 'Administrative Tools')"
+                        @mouseleave="hideTip()"
+                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'admin' || flyoutKey === 'admin' }"
+                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none">
                     <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -308,12 +425,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'admin' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
+                <div x-show="sectionOpen('admin') && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
+                     x-ref="flyout_admin"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
-                     x-transition:enter-start="opacity-0 -translate-y-1"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="sidebar-submenu space-y-0.5 mt-1 mb-2">
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     :class="isCollapsed() && flyoutKey === 'admin' ? 'sidebar-submenu sidebar-flyout space-y-0.5' : 'sidebar-submenu space-y-0.5 mt-1 mb-2'"
+                     :style="isCollapsed() && flyoutKey === 'admin' ? flyoutStyle : {}">
                     <a href="{{ route('admin.assets.index') }}" x-show="match('Asset Management')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.assets.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         <span>Asset Management</span>
@@ -364,12 +483,15 @@
 
             {{-- Finance & Payroll --}}
             @role('Admin|HR')
-            <div x-show="matchAny('Finance & Payroll', 'Salary Structures', 'Tax Brackets', 'Tax Reliefs', 'Overtime Policies', 'Payroll Process', 'Bonuses', 'Penalties', 'Loans', 'Advances', 'Payroll Reports')">
+            <div class="relative"
+                 x-show="matchAny('Finance & Payroll', 'Salary Structures', 'Tax Brackets', 'Tax Reliefs', 'Overtime Policies', 'Payroll Process', 'Bonuses', 'Penalties', 'Loans', 'Advances', 'Payroll Reports')"
+                 @click.outside="flyoutKey === 'finance' && closeFlyout()">
                 <button type="button"
-                        @click="openSection('finance')" 
-                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'finance' }"
-                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none"
-                        title="Finance & Payroll">
+                        @click="openSection('finance', $event)"
+                        @mouseenter="showTip($event, 'Finance & Payroll')"
+                        @mouseleave="hideTip()"
+                        :class="{ 'sidebar-nav-parent-active': activeMenu === 'finance' || flyoutKey === 'finance' }"
+                        class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium focus:outline-none">
                     <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
@@ -378,12 +500,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'finance' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('Finance & Payroll', 'Salary Structures', 'Tax Brackets', 'Tax Reliefs', 'Overtime Policies', 'Payroll Process', 'Bonuses', 'Penalties', 'Loans', 'Advances', 'Payroll Reports')"
+                <div x-show="sectionOpen('finance') && matchAny('Finance & Payroll', 'Salary Structures', 'Tax Brackets', 'Tax Reliefs', 'Overtime Policies', 'Payroll Process', 'Bonuses', 'Penalties', 'Loans', 'Advances', 'Payroll Reports')"
+                     x-ref="flyout_finance"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
-                     x-transition:enter-start="opacity-0 -translate-y-1"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="sidebar-submenu space-y-0.5 mt-1 mb-2">
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     :class="isCollapsed() && flyoutKey === 'finance' ? 'sidebar-submenu sidebar-flyout space-y-0.5' : 'sidebar-submenu space-y-0.5 mt-1 mb-2'"
+                     :style="isCollapsed() && flyoutKey === 'finance' ? flyoutStyle : {}">
                     <a href="{{ route('admin.salary.index') }}" x-show="match('Salary Structures')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.salary.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <span>Salary Structures</span>
@@ -438,7 +562,8 @@
             @csrf
             <button type="submit"
                     class="sidebar-nav-link group w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400"
-                    title="Logout">
+                    @mouseenter="showTip($event, 'Logout')"
+                    @mouseleave="hideTip()">
                 <svg class="flex-shrink-0 h-5 w-5 text-neutral-400 group-hover:text-red-600 dark:group-hover:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
