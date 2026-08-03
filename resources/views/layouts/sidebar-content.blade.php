@@ -18,7 +18,7 @@
         $activeMenu = 'people';
     } elseif (request()->routeIs('performance.goals.*') || request()->routeIs('performance.team-goals.*') || request()->routeIs('performance.reviews.*') || request()->routeIs('employee.peer-feedback.*') || request()->routeIs('admin.performance.objectives.*') || request()->routeIs('lms.*')) {
         $activeMenu = 'performance';
-    } elseif (request()->routeIs('admin.ai.*') || request()->routeIs('admin.assets.*') || request()->routeIs('admin.resignations.*') || request()->routeIs('admin.offboarding.*') || request()->routeIs('admin.documents.*') || request()->routeIs('admin.audit-logs.*') || request()->routeIs('settings.*') || request()->routeIs('admin.leaves.*') || request()->routeIs('admin.attendance.*') || request()->routeIs('admin.leave-types.*') || request()->routeIs('admin.leave-balances.*')) {
+    } elseif (request()->routeIs('admin.ai.*') || request()->routeIs('admin.assets.*') || request()->routeIs('admin.resignations.*') || request()->routeIs('admin.offboarding.*') || request()->routeIs('admin.documents.*') || request()->routeIs('admin.audit-logs.*') || request()->routeIs('admin.approval-chains.*') || request()->routeIs('settings.*') || request()->routeIs('admin.leaves.*') || request()->routeIs('admin.attendance.*') || request()->routeIs('admin.leave-types.*') || request()->routeIs('admin.leave-balances.*')) {
         $activeMenu = 'admin';
     } elseif (request()->routeIs('admin.salary.*') || request()->routeIs('admin.payroll.*') || request()->routeIs('admin.bonuses.*') || request()->routeIs('admin.loans.*') || request()->routeIs('admin.advances.*') || request()->routeIs('admin.payroll-reports.*') || request()->routeIs('admin.tax-reliefs.*') || request()->routeIs('admin.overtime-policies.*') || request()->routeIs('admin.tax-brackets.*') || request()->routeIs('admin.penalties.*')) {
         $activeMenu = 'finance';
@@ -293,7 +293,7 @@
 
             {{-- Administrative Tools --}}
             @role('Admin')
-            <div x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'System Settings')">
+            <div x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')">
                 <button type="button"
                         @click="openSection('admin')" 
                         :class="{ 'sidebar-nav-parent-active': activeMenu === 'admin' }"
@@ -308,7 +308,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="(activeMenu === 'admin' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'System Settings')"
+                <div x-show="(activeMenu === 'admin' || $root.navQuery) && !$root.sidebarCollapsed && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
                      x-transition:enter-start="opacity-0 -translate-y-1"
@@ -349,6 +349,10 @@
                     <a href="{{ route('admin.audit-logs.index') }}" x-show="match('Audit Logs')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.audit-logs.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         <span>Audit Logs</span>
+                    </a>
+                    <a href="{{ route('admin.approval-chains.index') }}" x-show="match('Approval Workflows')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.approval-chains.*') ? 'sidebar-sub-link-active' : '' }}">
+                        <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        <span>Approval Workflows</span>
                     </a>
                     <a href="{{ route('settings.index') }}" x-show="match('System Settings')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('settings.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
