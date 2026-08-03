@@ -182,7 +182,7 @@
                                             file:text-xs file:font-bold
                                             file:bg-neutral-900 file:text-white
                                             hover:file:bg-black transition cursor-pointer">
-                                        <p class="mt-2 text-[10px] text-neutral-400 italic">SVG or transparent PNG recommended (256x256px).</p>
+                                        <p class="mt-2 text-[10px] text-neutral-400 italic">Used as the site logo and browser favicon. SVG or transparent PNG recommended (256x256px).</p>
                                     </div>
                                 </div>
                             </div>

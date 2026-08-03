@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ \App\Models\Setting::get('company_name', config('app.name', 'AIHRM')) }}</title>
+        <x-branding-meta />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,13 +17,13 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
                 <a href="/" class="flex flex-col items-center gap-4 group">
-                    @if($logo = \App\Models\Setting::get('company_logo'))
-                        <img src="{{ asset('storage/' . $logo) }}" alt="Logo" class="h-20 w-auto object-contain">
+                    @if(!empty($companyLogo))
+                        <img src="{{ asset('storage/' . $companyLogo) }}" alt="{{ $companyName ?? 'Logo' }}" class="h-20 w-auto object-contain">
                     @else
                         <x-application-logo class="w-20 h-20 fill-current text-gray-500 hover:text-primary transition-colors" />
                     @endif
                     <h1 class="text-2xl font-black tracking-tight text-neutral-900 group-hover:text-primary transition-colors">
-                        {{ \App\Models\Setting::get('company_name', 'AIHRM') }}
+                        {{ $companyName ?? config('app.name', 'AIHRM') }}
                     </h1>
                 </a>
 

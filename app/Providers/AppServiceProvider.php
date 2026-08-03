@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,9 +47,19 @@ class AppServiceProvider extends ServiceProvider
         // Prefetch DNS for external resources
         Vite::prefetch(concurrency: 3);
 
-        // Load Mail Configuration from Settings
+        // Load branding + mail configuration from Settings
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                $companyName = \App\Models\Setting::get('company_name');
+                $companyLogo = \App\Models\Setting::get('company_logo');
+
+                if (filled($companyName)) {
+                    config(['app.name' => $companyName]);
+                }
+
+                View::share('companyName', filled($companyName) ? $companyName : config('app.name', 'AIHRM'));
+                View::share('companyLogo', $companyLogo ?: null);
+
                 $mailConfig = [
                     'transport' => 'smtp',
                     'host' => \App\Models\Setting::get('smtp_host'),
@@ -58,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
                     'password' => \App\Models\Setting::get('smtp_password'),
                     'from' => [
                         'address' => \App\Models\Setting::get('smtp_from_address'),
-                        'name' => \App\Models\Setting::get('smtp_from_name', 'AIHRM'),
+                        'name' => \App\Models\Setting::get('smtp_from_name', config('app.name', 'AIHRM')),
                     ],
                 ];
 
@@ -68,9 +79,14 @@ class AppServiceProvider extends ServiceProvider
                     config(['mail.from.address' => $mailConfig['from']['address']]);
                     config(['mail.from.name' => $mailConfig['from']['name']]);
                 }
+            } else {
+                View::share('companyName', config('app.name', 'AIHRM'));
+                View::share('companyLogo', null);
             }
         } catch (\Exception $e) {
-            // Failsafe for migration
+            // Failsafe for migration / missing DB
+            View::share('companyName', config('app.name', 'AIHRM'));
+            View::share('companyLogo', null);
         }
 
         // Auto-run pending migrations on deployment

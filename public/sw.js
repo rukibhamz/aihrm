@@ -1,7 +1,7 @@
-const CACHE_NAME = 'aihrm-v2';
+const CACHE_NAME = 'aihrm-v3';
 const ASSETS_TO_CACHE = [
     '/',
-    '/favicon.ico',
+    '/favicon.svg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -34,7 +34,7 @@ self.addEventListener('fetch', (event) => {
 
 // Push notification support
 self.addEventListener('push', (event) => {
-    let data = { title: 'New Announcement', body: 'You have a new announcement', icon: '/favicon.ico' };
+    let data = { title: 'New Announcement', body: 'You have a new announcement', icon: '/favicon.svg' };
 
     if (event.data) {
         try {
@@ -46,8 +46,8 @@ self.addEventListener('push', (event) => {
 
     const options = {
         body: data.body || data.message,
-        icon: data.icon || '/favicon.ico',
-        badge: '/favicon.ico',
+        icon: data.icon || '/favicon.svg',
+        badge: '/favicon.svg',
         vibrate: [100, 50, 100],
         data: {
             url: data.url || '/announcements',
@@ -103,8 +103,8 @@ self.addEventListener('message', (event) => {
         const { title, body, url, id } = event.data;
         self.registration.showNotification(title, {
             body: body,
-            icon: '/favicon.ico',
-            badge: '/favicon.ico',
+            icon: '/favicon.svg',
+            badge: '/favicon.svg',
             vibrate: [100, 50, 100],
             data: { url: url || '/announcements', id: id },
             actions: [

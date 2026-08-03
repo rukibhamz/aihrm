@@ -1,5 +1,5 @@
 {
-  "name": "AIHRM Platform",
+  "name": "AIHRM",
   "short_name": "AIHRM",
   "description": "AI-Powered HR Management System",
   "start_url": "/",
@@ -8,9 +8,10 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "32x32",
-      "type": "image/x-icon"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
