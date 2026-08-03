@@ -108,7 +108,18 @@ $step = $_GET['step'] ?? 1;
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Database Password</label>
-                    <input type="password" name="db_pass" class="input-field" placeholder="Leave blank if none">
+                    <div class="relative" data-password-toggle>
+                        <input type="password" name="db_pass" class="input-field pr-10" placeholder="Leave blank if none">
+                        <button type="button" class="password-toggle-btn absolute inset-y-0 right-0 flex items-center px-3 text-neutral-500 hover:text-neutral-700" aria-label="Show password">
+                            <svg class="eye-open h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg class="eye-closed h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858 3.029a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary mt-6">Continue</button>
             </form>
@@ -244,8 +255,19 @@ $step = $_GET['step'] ?? 1;
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Admin Password</label>
-                        <input type="password" name="admin_password" placeholder="Leave blank for 'password'"
-                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                        <div class="relative" data-password-toggle>
+                            <input type="password" name="admin_password" placeholder="Leave blank for 'password'"
+                                class="w-full px-4 py-2.5 pr-10 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
+                            <button type="button" class="password-toggle-btn absolute inset-y-0 right-0 flex items-center px-3 text-neutral-500 hover:text-neutral-700" aria-label="Show password">
+                                <svg class="eye-open h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg class="eye-closed h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858 3.029a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -304,5 +326,24 @@ $step = $_GET['step'] ?? 1;
 
         <p class="text-center text-xs text-neutral-500 mt-6">&copy; <?= date('Y') ?> AIHRM. All rights reserved.</p>
     </div>
+    <script>
+        document.querySelectorAll('[data-password-toggle]').forEach(function (wrapper) {
+            var input = wrapper.querySelector('input');
+            var button = wrapper.querySelector('.password-toggle-btn');
+            var eyeOpen = wrapper.querySelector('.eye-open');
+            var eyeClosed = wrapper.querySelector('.eye-closed');
+            if (!input || !button) return;
+
+            button.addEventListener('click', function () {
+                var isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+                button.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+                if (eyeOpen && eyeClosed) {
+                    eyeOpen.classList.toggle('hidden', isHidden);
+                    eyeClosed.classList.toggle('hidden', !isHidden);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

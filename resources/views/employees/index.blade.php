@@ -115,15 +115,15 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">New Password</label>
-                                <input type="password" name="password" required 
+                                <x-password-input variant="plain" name="password" required
                                     class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-neutral-900 transition-all text-sm"
-                                    placeholder="••••••••">
+                                    placeholder="••••••••" />
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Confirm New Password</label>
-                                <input type="password" name="password_confirmation" required 
+                                <x-password-input variant="plain" name="password_confirmation" required
                                     class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-neutral-900 transition-all text-sm"
-                                    placeholder="••••••••">
+                                    placeholder="••••••••" />
                             </div>
                         </div>
                     </div>

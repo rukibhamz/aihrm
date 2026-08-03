@@ -55,12 +55,12 @@
                     <!-- Password Section -->
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Password <span class="text-gray-400 font-normal">(Optional)</span></label>
-                        <input type="password" name="password" placeholder="Auto-generated if blank" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
+                        <x-password-input variant="plain" name="password" placeholder="Auto-generated if blank" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm" />
                         <p class="text-xs text-gray-500 mt-1">Leave blank to auto-generate.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Confirm Password</label>
-                        <input type="password" name="password_confirmation" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm">
+                        <x-password-input variant="plain" name="password_confirmation" class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition text-sm" />
                     </div>
 
                     <div>

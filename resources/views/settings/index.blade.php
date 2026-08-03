@@ -259,8 +259,8 @@
 
                             <div>
                                 <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Password</label>
-                                <input type="password" name="smtp_password" value="{{ old('smtp_password', $settings['smtp_password']) }}"
-                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
+                                <x-password-input variant="plain" name="smtp_password" value="{{ old('smtp_password', $settings['smtp_password']) }}"
+                                    class="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium" />
                             </div>
 
                             <div>
@@ -333,7 +333,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Client Secret</label>
-                                    <input type="password" name="azure_client_secret" value="{{ $settings['azure_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono" placeholder="••••••••••••••••••••">
+                                    <x-password-input variant="plain" name="azure_client_secret" value="{{ $settings['azure_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono" placeholder="••••••••••••••••••••" />
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Directory (Tenant) ID</label>
@@ -362,7 +362,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Client Secret</label>
-                                    <input type="password" name="zoho_client_secret" value="{{ $settings['zoho_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono">
+                                    <x-password-input variant="plain" name="zoho_client_secret" value="{{ $settings['zoho_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono" />
                                 </div>
                             </div>
                         </div>
@@ -389,7 +389,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Google Client Secret</label>
-                                    <input type="password" name="google_client_secret" value="{{ $settings['google_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono">
+                                    <x-password-input variant="plain" name="google_client_secret" value="{{ $settings['google_client_secret'] ?? '' }}" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono" />
                                 </div>
                             </div>
                         </div>
