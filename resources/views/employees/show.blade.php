@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="w-full space-y-6">
         <!-- Profile Header Card -->
         <div class="card p-6 bg-white overflow-hidden relative">
             <div class="flex flex-col md:flex-row items-center gap-6">
@@ -272,8 +272,15 @@
             color: #000;
             border-bottom-color: #000 !important;
         }
+        .dark .active-tab {
+            color: #fafafa;
+            border-bottom-color: #fafafa !important;
+        }
         .tab-btn:not(.active-tab) {
             color: #737373;
+        }
+        .dark .tab-btn:not(.active-tab) {
+            color: #a1a1aa;
         }
     </style>
 

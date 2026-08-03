@@ -1,16 +1,15 @@
 <x-app-layout>
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-neutral-200">
-        <div class="p-6 bg-white border-b border-neutral-200">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-neutral-900">Leave Requests Overview</h2>
-                    <p class="text-sm text-neutral-500 mt-1">View all employee leave requests. Line managers handle approvals for their teams.</p>
-                </div>
-                <a href="{{ route('leaves.create') }}" class="btn-primary">Assign Leave</a>
-            </div>
+    <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Leave Requests Overview</h1>
+            <p class="mt-1 text-sm text-neutral-500">View all employee leave requests. Line managers handle approvals for their teams.</p>
+        </div>
+        <a href="{{ route('leaves.create') }}" class="btn-primary whitespace-nowrap">Assign Leave</a>
+    </div>
 
-            <!-- Filters -->
-            <form method="GET" action="{{ route('admin.leaves.index') }}" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="card overflow-hidden">
+        <div class="p-6 border-b border-neutral-200">
+            <form method="GET" action="{{ route('admin.leaves.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Employee..." class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-primary focus:border-primary">
                 </div>
@@ -34,59 +33,57 @@
                     <button type="submit" class="w-full btn-primary">Filter</button>
                 </div>
             </form>
+        </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-neutral-200">
-                    <thead class="bg-neutral-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Employee</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Type</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Dates</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Reason</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-neutral-200">
-                        @forelse ($leaves as $leave)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-neutral-900">{{ $leave->user->name }}</div>
-                                <div class="text-sm text-neutral-500">{{ $leave->user->email }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">{{ $leave->leaveType->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
-                                {{ $leave->start_date }} to {{ $leave->end_date }}
-                            </td>
-                            <td class="px-6 py-4 text-sm text-neutral-500 max-w-xs truncate" title="{{ $leave->reason }}">
-                                {{ $leave->reason }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {{ $leave->status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                       ($leave->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                    {{ ucfirst($leave->status) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('leaves.show', $leave) }}" class="text-primary hover:text-black">
-                                    View Details
-                                </a>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-neutral-500">No leave requests found.</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            <div class="mt-4">
-                {{ $leaves->links() }}
-            </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-neutral-200">
+                <thead class="bg-neutral-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Dates</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Reason</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-neutral-200">
+                    @forelse ($leaves as $leave)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-neutral-900">{{ $leave->user->name }}</div>
+                            <div class="text-sm text-neutral-500">{{ $leave->user->email }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">{{ $leave->leaveType->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+                            {{ $leave->start_date }} to {{ $leave->end_date }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-neutral-500 max-w-xs truncate" title="{{ $leave->reason }}">
+                            {{ $leave->reason }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {{ $leave->status === 'approved' ? 'bg-green-100 text-green-800' : 
+                                   ($leave->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                {{ ucfirst($leave->status) }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('leaves.show', $leave) }}" class="text-primary hover:text-black dark:hover:text-white">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-neutral-500">No leave requests found.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="p-4 border-t border-neutral-200">
+            {{ $leaves->links() }}
         </div>
     </div>
 </x-app-layout>
-
-

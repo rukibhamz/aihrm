@@ -11,8 +11,8 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div>
+        <div class="w-full">
             @if(!$data)
                 <div class="bg-white p-12 text-center rounded-3xl border border-dashed border-gray-200">
                     <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">

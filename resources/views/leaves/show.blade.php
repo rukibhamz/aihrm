@@ -1,24 +1,22 @@
 <x-app-layout>
-    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto w-full">
         <x-flash-messages
             successClass="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg"
             errorClass="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg"
         />
 
         <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <nav class="flex" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('leaves.index') }}" class="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-black">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                            Back to List
-                        </a>
-                    </li>
-                </ol>
-            </nav>
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Leave Request Details</h1>
+                <p class="mt-1 text-sm text-neutral-500">Submitted on {{ $leaf->created_at->format('M d, Y') }} · LR-{{ str_pad($leaf->id, 5, '0', STR_PAD_LEFT) }}</p>
+            </div>
             <div class="flex items-center gap-3">
+                <a href="{{ route('leaves.index') }}" class="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-black dark:hover:text-white">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Back to List
+                </a>
                 <span class="px-3 py-1 text-sm font-semibold rounded-full 
                     {{ $leaf->status === 'approved' ? 'bg-green-100 text-green-800' : 
                        ($leaf->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
@@ -28,17 +26,6 @@
         </div>
 
         <div class="bg-white shadow-sm border border-neutral-200 rounded-xl overflow-hidden">
-            <div class="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-lg font-bold text-neutral-900">Leave Request Details</h3>
-                    <p class="text-sm text-neutral-500">Submitted on {{ $leaf->created_at->format('M d, Y') }}</p>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs font-medium text-neutral-400 uppercase tracking-wider">Reference</span>
-                    <p class="text-sm font-mono text-neutral-600">LR-{{ str_pad($leaf->id, 5, '0', STR_PAD_LEFT) }}</p>
-                </div>
-            </div>
-
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Basic Info -->

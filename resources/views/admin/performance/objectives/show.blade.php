@@ -7,7 +7,7 @@
                 </a>
                 <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Objective Details</h1>
             </div>
-            <p class="text-sm text-neutral-500 ml-8">View details and aligned goals for this company OKR.</p>
+            <p class="text-sm text-neutral-500 ml-8">View details and aligned goals for this company goal.</p>
         </div>
         <div class="flex gap-3">
             <a href="{{ route('admin.performance.objectives.edit', $objective) }}" class="btn-secondary">

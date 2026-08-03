@@ -11,8 +11,8 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div>
+        <div class="w-full">
             @if($data->isEmpty())
                 <div class="bg-white p-12 text-center rounded-3xl border border-dashed border-gray-200">
                     <h3 class="text-lg font-bold text-gray-900">No Departmental Data</h3>

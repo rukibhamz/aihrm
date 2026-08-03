@@ -1,61 +1,64 @@
 <x-app-layout>
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight text-neutral-900">System Settings</h1>
-        <p class="mt-1 text-sm text-neutral-500">Configure your organization's global parameters, branding, and integrations.</p>
-    </div>
+    {{-- Full-bleed settings shell so the save bar docks to the content pane bottom --}}
+    <div class="settings-shell -mx-4 sm:-mx-6 lg:-mx-8 -my-6 min-h-[calc(100dvh-4rem)] flex flex-col">
+        <div class="flex-1 px-4 sm:px-6 lg:px-8 pt-6 pb-8 space-y-6">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-neutral-900">System Settings</h1>
+                <p class="mt-1 text-sm text-neutral-500">Configure your organization's global parameters, branding, and integrations.</p>
+            </div>
 
-    <x-flash-messages
-        successClass="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm"
-        errorClass="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm"
-    />
+            <x-flash-messages
+                successClass="mb-0 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg text-sm"
+                errorClass="mb-0 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm"
+            />
 
 @php /** @var \Illuminate\Support\ViewErrorBag $errors */ @endphp
-    @if($errors->any())
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <ul class="space-y-1">
-                @foreach($errors->all() as $error)
-                    <li class="text-sm text-red-800 flex items-center gap-2">
-                        <svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            @if($errors->any())
+                <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <ul class="space-y-1">
+                        @foreach($errors->all() as $error)
+                            <li class="text-sm text-red-800 flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                {{ $error }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-    <div x-data="{ 
-            activeTab: localStorage.getItem('settings_tab') || 'general',
-            primaryColor: '{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}',
-            secondaryColor: '{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}'
-         }" 
-         x-init="$watch('activeTab', value => localStorage.setItem('settings_tab', value))"
-         class="space-y-6">
-        
-        <!-- Tab Navigation -->
-        <div class="border-b border-neutral-200">
-            <nav class="flex gap-8" aria-label="Tabs">
-                <button @click="activeTab = 'general'" :class="activeTab === 'general' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none">
-                    General
-                </button>
-                <button @click="activeTab = 'branding'" :class="activeTab === 'branding' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none">
-                    Branding
-                </button>
-                <button @click="activeTab = 'email'" :class="activeTab === 'email' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none">
-                    Email (SMTP)
-                </button>
-                <button @click="activeTab = 'sso'" :class="activeTab === 'sso' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none">
-                    Authentication (SSO)
-                </button>
-                <button @click="activeTab = 'system'" :class="activeTab === 'system' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none">
-                    System & Workflows
-                </button>
-            </nav>
-        </div>
+            <div x-data="{ 
+                    activeTab: localStorage.getItem('settings_tab') || 'general',
+                    primaryColor: '{{ old('primary_color', $settings['primary_color'] ?? '#000000') }}',
+                    secondaryColor: '{{ old('secondary_color', $settings['secondary_color'] ?? '#171717') }}'
+                 }" 
+                 x-init="$watch('activeTab', value => localStorage.setItem('settings_tab', value))"
+                 class="space-y-6">
+                
+                <!-- Tab Navigation -->
+                <div class="border-b border-neutral-200 dark:border-zinc-700">
+                    <nav class="flex gap-8 overflow-x-auto" aria-label="Tabs">
+                        <button type="button" @click="activeTab = 'general'" :class="activeTab === 'general' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            General
+                        </button>
+                        <button type="button" @click="activeTab = 'branding'" :class="activeTab === 'branding' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            Branding
+                        </button>
+                        <button type="button" @click="activeTab = 'email'" :class="activeTab === 'email' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            Email (SMTP)
+                        </button>
+                        <button type="button" @click="activeTab = 'sso'" :class="activeTab === 'sso' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            Authentication (SSO)
+                        </button>
+                        <button type="button" @click="activeTab = 'system'" :class="activeTab === 'system' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            System & Workflows
+                        </button>
+                    </nav>
+                </div>
 
-        <!-- Tab Content -->
-        <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+                <!-- Tab Content -->
+                <form id="settings-form" method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+                    @method('PUT')
 
             <!-- General Tab -->
             <div x-show="activeTab === 'general'" x-cloak class="space-y-6 animate-in fade-in duration-300">
@@ -454,28 +457,28 @@
                 </div>
             </div>
 
-            <!-- Sticky Save Bar -->
-            <div class="sticky bottom-0 -mx-8 -mb-8 mt-12 px-8 py-6 bg-white/80 backdrop-blur-md border-t border-neutral-200 flex items-center justify-between z-20">
-                <div>
-                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-widest">Configuration Management</h4>
-                    <p class="text-[10px] text-neutral-500 mt-1 italic">Changes will be applied globally across the organization.</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button type="submit" 
-                        @click="$el.closest('form').action = '{{ route('settings.update') }}'; $el.closest('form').submit();"
-                        class="flex items-center gap-3 px-10 py-3.5 bg-neutral-900 text-white rounded-xl shadow-xl hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all focus:outline-none group">
-                        <span class="font-bold text-xs uppercase tracking-widest">Sync Configurations</span>
-                        <svg class="w-4 h-4 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    </button>
-                </div>
+            <!-- Save actions (bottom of every settings tab) -->
+                </form>
             </div>
-        </form>
+        </div>
+
+        <div class="shrink-0 mt-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-end">
+            <button type="submit"
+                form="settings-form"
+                class="btn-primary">
+                Save
+            </button>
+        </div>
     </div>
 
     <style>
         .active-tab {
             color: #000;
             border-bottom-color: #000 !important;
+        }
+        .dark .active-tab {
+            color: #fafafa;
+            border-bottom-color: #fafafa !important;
         }
         [x-cloak] { display: none !important; }
     </style>

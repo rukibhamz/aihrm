@@ -1,8 +1,11 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 mt-6">
-        <div class="p-6 bg-white border-b border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Request Leave</h2>
+    <div class="mb-8 max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Request Leave</h1>
+        <p class="mt-1 text-sm text-neutral-500">Submit a new leave request for approval</p>
+    </div>
 
+    <div class="max-w-2xl mx-auto card overflow-hidden">
+        <div class="p-6">
             @if($errors->any())
                 <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
                     <ul class="list-disc list-inside">
@@ -18,8 +21,8 @@
 
                 @if(auth()->user()->hasAnyRole(['Admin', 'HR']))
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="user_id">Assign To Employee</label>
-                    <select name="user_id" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <label class="block text-neutral-700 text-sm font-bold mb-2" for="user_id">Assign To Employee</label>
+                    <select name="user_id" required class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
                         <option value="">Select Employee</option>
                         @foreach($users as $employeeUser)
                             <option value="{{ $employeeUser->id }}" {{ old('user_id') == $employeeUser->id ? 'selected' : '' }}>
@@ -27,13 +30,13 @@
                             </option>
                         @endforeach
                     </select>
-                    <p class="text-xs text-gray-500 mt-1">This leave request will be created for the selected employee.</p>
+                    <p class="text-xs text-neutral-500 mt-1">This leave request will be created for the selected employee.</p>
                 </div>
                 @endif
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="leave_type_id">Leave Type</label>
-                    <select name="leave_type_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <label class="block text-neutral-700 text-sm font-bold mb-2" for="leave_type_id">Leave Type</label>
+                    <select name="leave_type_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
                         @foreach($leaveTypes as $type)
                             <option value="{{ $type->id }}">{{ $type->name }} ({{ $type->days_allowed }} days)</option>
                         @endforeach
@@ -42,35 +45,35 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="start_date">Start Date</label>
-                        <input type="date" name="start_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <label class="block text-neutral-700 text-sm font-bold mb-2" for="start_date">Start Date</label>
+                        <input type="date" name="start_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
                     <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="end_date">End Date</label>
-                        <input type="date" name="end_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <label class="block text-neutral-700 text-sm font-bold mb-2" for="end_date">End Date</label>
+                        <input type="date" name="end_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="reason">Reason</label>
-                    <textarea name="reason" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                    <label class="block text-neutral-700 text-sm font-bold mb-2" for="reason">Reason</label>
+                    <textarea name="reason" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="handover_note">Handover Note</label>
-                    <textarea name="handover_note" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>{{ old('handover_note') }}</textarea>
-                    <p class="text-xs text-gray-500 mt-1">Provide key handover details for continuity while on leave.</p>
+                    <label class="block text-neutral-700 text-sm font-bold mb-2" for="handover_note">Handover Note</label>
+                    <textarea name="handover_note" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required>{{ old('handover_note') }}</textarea>
+                    <p class="text-xs text-neutral-500 mt-1">Provide key handover details for continuity while on leave.</p>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="relief_officer_id">Relief Officer (Optional)</label>
-                    <select name="relief_officer_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <label class="block text-neutral-700 text-sm font-bold mb-2" for="relief_officer_id">Relief Officer (Optional)</label>
+                    <select name="relief_officer_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
                         <option value="">Select a Relief Officer</option>
                         @foreach($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
-                    <p class="text-xs text-gray-500 mt-1">The relief officer will be notified to accept your request.</p>
+                    <p class="text-xs text-neutral-500 mt-1">The relief officer will be notified to accept your request.</p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
@@ -85,4 +88,3 @@
         </div>
     </div>
 </x-app-layout>
-

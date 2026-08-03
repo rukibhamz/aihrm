@@ -209,7 +209,7 @@
                                 <option value="{{ $obj->id }}">{{ $obj->title }} ({{ $obj->start_date->format('M Y') }} - {{ $obj->end_date->format('M Y') }})</option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-neutral-500 mt-1">Linking this KPI will automatically contribute to the high-level company OKR's progress.</p>
+                        <p class="text-xs text-neutral-500 mt-1">Linking this KPI will automatically contribute to the high-level company goal's progress.</p>
                     </div>
 
                     <div>

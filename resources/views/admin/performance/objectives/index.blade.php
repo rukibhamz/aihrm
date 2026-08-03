@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Company Objectives (OKRs)</h1>
+            <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Company Goals</h1>
             <p class="mt-1 text-sm text-neutral-500">Manage high-level company goals to align employee performance.</p>
         </div>
         <div class="flex gap-3">
@@ -98,8 +98,8 @@
                                 <svg class="w-12 h-12 text-blue-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
-                                <p class="text-lg font-medium text-neutral-900">No Company Objectives</p>
-                                <p class="text-sm mt-1 mb-4 max-w-md">Create high-level company objectives (OKRs) so employees can align their individual goals to the broader company vision.</p>
+                                <p class="text-lg font-medium text-neutral-900">No Company Goals</p>
+                                <p class="text-sm mt-1 mb-4 max-w-md">Create high-level company goals so employees can align their individual goals to the broader company vision.</p>
                                 <a href="{{ route('admin.performance.objectives.create') }}" class="btn-primary">Create First Objective</a>
                             </div>
                         </td>

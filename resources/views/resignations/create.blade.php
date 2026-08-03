@@ -1,11 +1,11 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
-            <div class="p-6 border-b border-neutral-100 bg-neutral-50">
-                <h2 class="text-xl font-bold text-neutral-900 mb-1">Submit Resignation</h2>
-                <p class="text-sm text-neutral-500">We're sorry to see you go. Please fill out the details below to initiate the exit process.</p>
-            </div>
-            
+    <div class="max-w-2xl mx-auto w-full">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Submit Resignation</h1>
+            <p class="mt-1 text-sm text-neutral-500">We're sorry to see you go. Please fill out the details below to initiate the exit process.</p>
+        </div>
+
+        <div class="card overflow-hidden">
             <form action="{{ route('resignations.store') }}" method="POST" class="p-6 space-y-6">
                 @csrf
 
@@ -42,4 +42,3 @@
         </div>
     </div>
 </x-app-layout>
-

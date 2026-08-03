@@ -1,23 +1,26 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto w-full">
         
         <x-flash-messages
             successClass="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg"
             errorClass="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg"
         />
 
-        <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
-             <div class="p-6 border-b border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 class="text-xl font-bold text-neutral-900">Resignation Status</h2>
-                <span class="px-3 py-1 text-sm font-bold rounded-full uppercase tracking-wide
-                    {{ $resignation->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                    {{ $resignation->status === 'approved' ? 'bg-blue-100 text-blue-800' : '' }}
-                    {{ $resignation->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
-                    {{ $resignation->status === 'completed' ? 'bg-green-100 text-green-800' : '' }}">
-                    {{ ucfirst($resignation->status) }}
-                </span>
+        <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Resignation Status</h1>
+                <p class="mt-1 text-sm text-neutral-500">Reference #RES-{{ $resignation->id }}</p>
             </div>
+            <span class="px-3 py-1 text-sm font-bold rounded-full uppercase tracking-wide
+                {{ $resignation->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                {{ $resignation->status === 'approved' ? 'bg-blue-100 text-blue-800' : '' }}
+                {{ $resignation->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
+                {{ $resignation->status === 'completed' ? 'bg-green-100 text-green-800' : '' }}">
+                {{ ucfirst($resignation->status) }}
+            </span>
+        </div>
 
+        <div class="card overflow-hidden">
             <div class="p-6 space-y-6">
                 <div class="grid grid-cols-2 gap-6">
                     <div>
@@ -56,10 +59,6 @@
                     </ul>
                 </div>
                 @endif
-            </div>
-            
-            <div class="bg-neutral-50 px-6 py-4 border-t border-neutral-100 text-center text-xs text-neutral-500">
-                Resignation Reference #RES-{{ $resignation->id }}
             </div>
         </div>
     </div>

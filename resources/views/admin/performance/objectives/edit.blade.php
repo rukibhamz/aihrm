@@ -7,7 +7,7 @@
                 </a>
                 <h1 class="text-3xl font-bold tracking-tight text-neutral-900">Edit Company Objective</h1>
             </div>
-            <p class="text-sm text-neutral-500 ml-8">Update the details or timeline for this company OKR.</p>
+            <p class="text-sm text-neutral-500 ml-8">Update the details or timeline for this company goal.</p>
         </div>
     </div>
 

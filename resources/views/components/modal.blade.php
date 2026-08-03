@@ -60,7 +60,7 @@ $maxWidth = [
     <!-- Modal Content -->
     <div
         x-show="show"
-        class="relative mb-6 bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto border border-neutral-200"
+        class="relative mb-6 bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto border border-neutral-200 dark:border-zinc-700"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
