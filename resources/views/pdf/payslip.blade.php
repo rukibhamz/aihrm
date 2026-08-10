@@ -28,7 +28,7 @@
 </head>
 <body>
     @php
-        $companyName = \App\Models\Setting::get('company_name', config('app.name', 'AIHRM'));
+        $companyName = \App\Models\Setting::get('company_name', config('app.name', 'YourDigitalHRM'));
         $companyAddress = \App\Models\Setting::get('company_address', '');
         $companyLogo = \App\Models\Setting::get('company_logo', '');
         $currencyPrefix = \App\Models\Setting::get('currency_symbol', \App\Models\Setting::get('currency_code', 'NGN'));

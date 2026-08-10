@@ -261,7 +261,7 @@ try {
     echo "<div>Using Database Connection: <strong>$dbConnection</strong> ($dbName)</div>";
 
     // Use firstOrNew to avoid 'NOT NULL' constraint on insert
-    $user = \App\Models\User::firstOrNew(['email' => 'admin@aihrm.com']);
+    $user = \App\Models\User::firstOrNew(['email' => 'admin@yourdigitalhrm.com']);
     $user->name = 'System Admin';
     if (!$user->exists) {
         $user->password = \Illuminate\Support\Facades\Hash::make('password');
@@ -279,7 +279,7 @@ try {
     
     echo "<div class='status ok'>
         <strong>Admin Account Verified:</strong><br>
-        Email: <code>admin@aihrm.com</code><br>
+        Email: <code>admin@yourdigitalhrm.com</code><br>
         Password: <code>password</code> (if new)
     </div>";
 } catch (Exception $e) {

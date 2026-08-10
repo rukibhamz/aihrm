@@ -7,13 +7,13 @@
 **1. Create backup script:**
 ```bash
 #!/bin/bash
-# File: /home/scripts/backup-aihrm-db.sh
+# File: /home/scripts/backup-yourdigitalhrm-db.sh
 
 # Configuration
-DB_NAME="aihrm"
+DB_NAME="yourdigitalhrm"
 DB_USER="your_db_user"
 DB_PASS="your_db_password"
-BACKUP_DIR="/home/backups/aihrm"
+BACKUP_DIR="/home/backups/yourdigitalhrm"
 DATE=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=30
 
@@ -21,25 +21,25 @@ RETENTION_DAYS=30
 mkdir -p $BACKUP_DIR
 
 # Backup database
-mysqldump -u$DB_USER -p$DB_PASS $DB_NAME | gzip > $BACKUP_DIR/aihrm_$DATE.sql.gz
+mysqldump -u$DB_USER -p$DB_PASS $DB_NAME | gzip > $BACKUP_DIR/yourdigitalhrm_$DATE.sql.gz
 
 # Delete backups older than retention period
-find $BACKUP_DIR -name "aihrm_*.sql.gz" -mtime +$RETENTION_DAYS -delete
+find $BACKUP_DIR -name "yourdigitalhrm_*.sql.gz" -mtime +$RETENTION_DAYS -delete
 
 # Log backup
-echo "$(date): Backup completed - aihrm_$DATE.sql.gz" >> $BACKUP_DIR/backup.log
+echo "$(date): Backup completed - yourdigitalhrm_$DATE.sql.gz" >> $BACKUP_DIR/backup.log
 ```
 
 **2. Make script executable:**
 ```bash
-chmod +x /home/scripts/backup-aihrm-db.sh
+chmod +x /home/scripts/backup-yourdigitalhrm-db.sh
 ```
 
 **3. Add to crontab (daily at 2 AM):**
 ```bash
 crontab -e
 # Add this line:
-0 2 * * * /home/scripts/backup-aihrm-db.sh
+0 2 * * * /home/scripts/backup-yourdigitalhrm-db.sh
 ```
 
 ---
@@ -49,12 +49,12 @@ crontab -e
 **1. Create backup script:**
 ```batch
 @echo off
-REM File: C:\backup-scripts\backup-aihrm.bat
+REM File: C:\backup-scripts\backup-yourdigitalhrm.bat
 
-SET DB_NAME=aihrm
+SET DB_NAME=yourdigitalhrm
 SET DB_USER=root
 SET DB_PASS=
-SET BACKUP_DIR=C:\aihrm-backups
+SET BACKUP_DIR=C:\yourdigitalhrm-backups
 SET MYSQL_PATH=C:\xampp\mysql\bin
 SET DATE=%date:~-4,4%%date:~-10,2%%date:~-7,2%_%time:~0,2%%time:~3,2%%time:~6,2%
 SET DATE=%DATE: =0%
@@ -63,12 +63,12 @@ REM Create backup directory
 if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%"
 
 REM Backup database
-"%MYSQL_PATH%\mysqldump.exe" -u%DB_USER% -p%DB_PASS% %DB_NAME% > "%BACKUP_DIR%\aihrm_%DATE%.sql"
+"%MYSQL_PATH%\mysqldump.exe" -u%DB_USER% -p%DB_PASS% %DB_NAME% > "%BACKUP_DIR%\yourdigitalhrm_%DATE%.sql"
 
 REM Compress with 7-Zip (if installed)
 if exist "C:\Program Files\7-Zip\7z.exe" (
-    "C:\Program Files\7-Zip\7z.exe" a -tgzip "%BACKUP_DIR%\aihrm_%DATE%.sql.gz" "%BACKUP_DIR%\aihrm_%DATE%.sql"
-    del "%BACKUP_DIR%\aihrm_%DATE%.sql"
+    "C:\Program Files\7-Zip\7z.exe" a -tgzip "%BACKUP_DIR%\yourdigitalhrm_%DATE%.sql.gz" "%BACKUP_DIR%\yourdigitalhrm_%DATE%.sql"
+    del "%BACKUP_DIR%\yourdigitalhrm_%DATE%.sql"
 )
 
 echo %date% %time%: Backup completed >> "%BACKUP_DIR%\backup.log"
@@ -77,10 +77,10 @@ echo %date% %time%: Backup completed >> "%BACKUP_DIR%\backup.log"
 **2. Schedule with Task Scheduler:**
 - Open Task Scheduler
 - Create Basic Task
-- Name: "AIHRM Database Backup"
+- Name: "YourDigitalHRM Database Backup"
 - Trigger: Daily at 2:00 AM
 - Action: Start a program
-- Program: `C:\backup-scripts\backup-aihrm.bat`
+- Program: `C:\backup-scripts\backup-yourdigitalhrm.bat`
 
 ---
 
@@ -166,7 +166,7 @@ protected function schedule(Schedule $schedule)
 # Configure: aws configure
 
 # Add to backup script:
-aws s3 cp $BACKUP_DIR/aihrm_$DATE.sql.gz s3://your-bucket/aihrm-backups/
+aws s3 cp $BACKUP_DIR/yourdigitalhrm_$DATE.sql.gz s3://your-bucket/yourdigitalhrm-backups/
 ```
 
 ### Google Cloud Storage
@@ -175,7 +175,7 @@ aws s3 cp $BACKUP_DIR/aihrm_$DATE.sql.gz s3://your-bucket/aihrm-backups/
 # Configure: gcloud init
 
 # Add to backup script:
-gsutil cp $BACKUP_DIR/aihrm_$DATE.sql.gz gs://your-bucket/aihrm-backups/
+gsutil cp $BACKUP_DIR/yourdigitalhrm_$DATE.sql.gz gs://your-bucket/yourdigitalhrm-backups/
 ```
 
 ---
@@ -185,10 +185,10 @@ gsutil cp $BACKUP_DIR/aihrm_$DATE.sql.gz gs://your-bucket/aihrm-backups/
 ### From Backup File
 ```bash
 # Decompress
-gunzip aihrm_20250124_020000.sql.gz
+gunzip yourdigitalhrm_20250124_020000.sql.gz
 
 # Restore
-mysql -u root -p aihrm < aihrm_20250124_020000.sql
+mysql -u root -p yourdigitalhrm < yourdigitalhrm_20250124_020000.sql
 ```
 
 ### Laravel Command

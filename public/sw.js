@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aihrm-v3';
+const CACHE_NAME = 'yourdigitalhrm-v1';
 const ASSETS_TO_CACHE = [
     '/',
     '/favicon.svg',

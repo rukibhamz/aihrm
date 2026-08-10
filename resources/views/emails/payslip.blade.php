@@ -113,7 +113,7 @@
     </div>
     
     <div class="footer">
-        <p>&copy; {{ date('Y') }} AIHRM. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} YourDigitalHRM. All rights reserved.</p>
         <p>This is an automated email. Please do not reply.</p>
     </div>
 </body>

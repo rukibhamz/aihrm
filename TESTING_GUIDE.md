@@ -9,7 +9,7 @@
 2. **Create Database**
    - Open: http://localhost/phpmyadmin
    - Click "New"
-   - Database name: `aihrm`
+   - Database name: `yourdigitalhrm`
    - Collation: `utf8mb4_unicode_ci`
    - Click "Create"
 
@@ -22,7 +22,7 @@
 ### Step 2: Database Configuration
 - Fill in:
   - Host: `127.0.0.1`
-  - Database: `aihrm`
+  - Database: `yourdigitalhrm`
   - Username: `root`
   - Password: (leave blank if default XAMPP)
 - Click "Next"
@@ -38,7 +38,7 @@
 
 ### Step 4: Admin Setup
 - Default credentials shown:
-  - Email: admin@aihrm.com
+  - Email: admin@yourdigitalhrm.com
   - Password: password
 - Click "Finish Installation"
 - Expected: "Installation Complete!" message
@@ -46,7 +46,7 @@
 ### Step 5: First Login
 - URL: `http://localhost/aihrm/platform/public`
 - Login with:
-  - Email: `admin@aihrm.com`
+  - Email: `admin@yourdigitalhrm.com`
   - Password: `password`
 - Expected: Dashboard appears
 

@@ -99,7 +99,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         // Assign Admin role to default admin user
-        $adminUser = User::where('email', 'admin@aihrm.com')->first();
+        $adminUser = User::where('email', 'admin@yourdigitalhrm.com')->first();
         if ($adminUser) {
             $adminUser->assignRole('Admin');
         }

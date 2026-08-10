@@ -52,7 +52,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <span class="text-xl font-bold text-gray-900">AIHRM</span>
+                <span class="text-xl font-bold text-gray-900">YourDigitalHRM</span>
             </div>
             
             <div class="hidden md:flex items-center gap-8">
@@ -271,7 +271,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
-                    <span class="text-lg font-bold text-gray-900 tracking-tight">AIHRM</span>
+                    <span class="text-lg font-bold text-gray-900 tracking-tight">YourDigitalHRM</span>
                 </div>
                 <p class="text-sm text-gray-500 leading-relaxed">
                     Building the future of human resource management with powerful, integrated tools for modern businesses.
@@ -299,7 +299,7 @@
         </div>
         
         <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-xs text-gray-400">&copy; {{ date('Y') }} AIHRM Inc. All rights reserved.</p>
+            <p class="text-xs text-gray-400">&copy; {{ date('Y') }} YourDigitalHRM Inc. All rights reserved.</p>
             <div class="flex items-center gap-4">
                 <a href="#" class="text-gray-400 hover:text-gray-600">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>

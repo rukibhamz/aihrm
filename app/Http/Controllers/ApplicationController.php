@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\JobPosting;
+use App\Jobs\ScreenApplicationJob;
 use App\Notifications\ApplicationStatusChanged;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
 {
@@ -70,7 +71,7 @@ class ApplicationController extends Controller
         $resumePath = $request->file('resume')->store('resumes', 'public');
 
         // Create application
-        Application::create([
+        $application = Application::create([
             'job_posting_id' => $job->id,
             'candidate_name' => $validated['candidate_name'],
             'candidate_email' => $validated['candidate_email'],
@@ -85,9 +86,16 @@ class ApplicationController extends Controller
             'linkedin_url' => $validated['linkedin_url'] ?? null,
             'portfolio_url' => $validated['portfolio_url'] ?? null,
             'resume_path' => $resumePath,
-            'status' => 'pending',
+            'status' => 'applied',
             'custom_answers' => $request->input('custom_answers', []),
         ]);
+
+        // AI resume screening + optional ATS automation (queued; runs sync if QUEUE_CONNECTION=sync)
+        try {
+            ScreenApplicationJob::dispatch($application->id);
+        } catch (\Throwable $e) {
+            Log::error('Failed to dispatch ScreenApplicationJob: ' . $e->getMessage());
+        }
 
         return redirect()->route('applications.success')
             ->with('success', 'Application submitted successfully! We will review your resume and get back to you soon.');

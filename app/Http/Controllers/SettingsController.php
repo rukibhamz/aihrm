@@ -11,7 +11,7 @@ class SettingsController extends Controller
     public function index()
     {
         $settings = [
-            'company_name' => Setting::get('company_name', 'AIHRM'),
+            'company_name' => Setting::get('company_name', 'YourDigitalHRM'),
             'company_email' => Setting::get('company_email', ''),
             'company_phone' => Setting::get('company_phone', ''),
             'company_address' => Setting::get('company_address', ''),
@@ -32,7 +32,7 @@ class SettingsController extends Controller
             'smtp_password' => Setting::get('smtp_password', ''),
             'smtp_encryption' => Setting::get('smtp_encryption', 'tls'),
             'smtp_from_address' => Setting::get('smtp_from_address', ''),
-            'smtp_from_name' => Setting::get('smtp_from_name', 'AIHRM'),
+            'smtp_from_name' => Setting::get('smtp_from_name', 'YourDigitalHRM'),
             
             // SSO Settings
             'azure_client_id' => Setting::get('azure_client_id', ''),
@@ -50,6 +50,18 @@ class SettingsController extends Controller
             // Branding & Theme
             'primary_color' => Setting::get('primary_color', '#000000'),
             'secondary_color' => Setting::get('secondary_color', '#171717'), // Default to neutral-900 equivalent
+
+            // AI & ATS
+            'ai_provider' => Setting::get('ai_provider', config('ai.default_provider', 'gemini')),
+            'ai_model' => Setting::get('ai_model', ''),
+            'ai_base_url' => Setting::get('ai_base_url', ''),
+            'ai_api_key_set' => filled(Setting::get('ai_api_key')) || filled(config('services.gemini.api_key')) || filled(env('OPENAI_API_KEY')) || filled(env('ANTHROPIC_API_KEY')),
+            'ai_auto_screen' => Setting::get('ai_auto_screen', 'yes'),
+            'ai_auto_reject' => Setting::get('ai_auto_reject', 'no'),
+            'ai_auto_rejection_email' => Setting::get('ai_auto_rejection_email', 'yes'),
+            'ai_auto_interview_email' => Setting::get('ai_auto_interview_email', 'yes'),
+            'ai_interview_score_threshold' => Setting::get('ai_interview_score_threshold', '70'),
+            'ai_reject_score_threshold' => Setting::get('ai_reject_score_threshold', '40'),
         ];
 
         return view('settings.index', compact('settings'));
@@ -98,6 +110,18 @@ class SettingsController extends Controller
             // Branding & Theme
             'primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             'secondary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+
+            // AI & ATS
+            'ai_provider' => 'nullable|in:gemini,openai,anthropic,openai_compatible',
+            'ai_model' => 'nullable|string|max:120',
+            'ai_base_url' => 'nullable|string|max:500',
+            'ai_api_key' => 'nullable|string|max:500',
+            'ai_auto_screen' => 'nullable|in:yes,no',
+            'ai_auto_reject' => 'nullable|in:yes,no',
+            'ai_auto_rejection_email' => 'nullable|in:yes,no',
+            'ai_auto_interview_email' => 'nullable|in:yes,no',
+            'ai_interview_score_threshold' => 'nullable|integer|min:0|max:100',
+            'ai_reject_score_threshold' => 'nullable|integer|min:0|max:100',
         ]);
 
         // Handle logo upload
@@ -134,7 +158,7 @@ class SettingsController extends Controller
         Setting::set('smtp_password', $validated['smtp_password'] ?? '');
         Setting::set('smtp_encryption', $validated['smtp_encryption'] ?? 'tls');
         Setting::set('smtp_from_address', $validated['smtp_from_address'] ?? '');
-        Setting::set('smtp_from_name', $validated['smtp_from_name'] ?? 'AIHRM');
+        Setting::set('smtp_from_name', $validated['smtp_from_name'] ?? 'YourDigitalHRM');
         
         // Update mail configuration dynamically
         $this->updateMailConfig();
@@ -158,6 +182,20 @@ class SettingsController extends Controller
         Setting::set('primary_color', $validated['primary_color'] ?? '#000000');
         Setting::set('secondary_color', $validated['secondary_color'] ?? '#171717');
 
+        // Save AI & ATS
+        Setting::set('ai_provider', $validated['ai_provider'] ?? 'gemini');
+        Setting::set('ai_model', $validated['ai_model'] ?? '');
+        Setting::set('ai_base_url', $validated['ai_base_url'] ?? '');
+        if (! empty($validated['ai_api_key'])) {
+            \App\Services\Ai\AiConfig::setEncryptedApiKey($validated['ai_api_key']);
+        }
+        Setting::set('ai_auto_screen', $validated['ai_auto_screen'] ?? 'yes');
+        Setting::set('ai_auto_reject', $validated['ai_auto_reject'] ?? 'no');
+        Setting::set('ai_auto_rejection_email', $validated['ai_auto_rejection_email'] ?? 'yes');
+        Setting::set('ai_auto_interview_email', $validated['ai_auto_interview_email'] ?? 'yes');
+        Setting::set('ai_interview_score_threshold', (string) ($validated['ai_interview_score_threshold'] ?? 70));
+        Setting::set('ai_reject_score_threshold', (string) ($validated['ai_reject_score_threshold'] ?? 40));
+
         return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
     }
     
@@ -175,7 +213,7 @@ class SettingsController extends Controller
             'password' => Setting::get('smtp_password'),
             'from' => [
                 'address' => Setting::get('smtp_from_address'),
-                'name' => Setting::get('smtp_from_name', 'AIHRM'),
+                'name' => Setting::get('smtp_from_name', 'YourDigitalHRM'),
             ],
         ];
         
@@ -198,9 +236,9 @@ class SettingsController extends Controller
             $this->updateMailConfig();
             
             // Send test email
-            \Mail::raw('This is a test email from AIHRM. If you received this, your email configuration is working correctly!', function ($message) use ($validated) {
+            \Mail::raw('This is a test email from YourDigitalHRM. If you received this, your email configuration is working correctly!', function ($message) use ($validated) {
                 $message->to($validated['test_email'])
-                    ->subject('AIHRM - Test Email');
+                    ->subject('YourDigitalHRM - Test Email');
             });
             
             return back()->with('success', 'Test email sent successfully to ' . $validated['test_email']);

@@ -1,6 +1,6 @@
 {
-  "name": "AIHRM",
-  "short_name": "AIHRM",
+  "name": "YourDigitalHRM",
+  "short_name": "YourDigitalHRM",
   "description": "AI-Powered HR Management System",
   "start_url": "/",
   "display": "standalone",

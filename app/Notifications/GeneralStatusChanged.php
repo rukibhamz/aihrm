@@ -50,7 +50,7 @@ class GeneralStatusChanged extends Notification
             $mail->action('View Details', $this->actionUrl);
         }
 
-        return $mail->line('Thank you for using AIHRM!');
+        return $mail->line('Thank you for using YourDigitalHRM!');
     }
 
     /**

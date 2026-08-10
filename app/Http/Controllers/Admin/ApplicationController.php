@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ScreenApplicationJob;
 use App\Models\Application;
 use App\Models\JobPosting;
+use App\Notifications\ApplicationStatusChanged;
+use App\Services\Ai\AiConfig;
+use App\Services\AtsAutomationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-// use App\Mail\ApplicationStatusChanged; // To be created
+use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
 {
@@ -22,7 +25,7 @@ class ApplicationController extends Controller
     {
         $jobId = $request->get('job_posting_id');
         
-        $query = Application::with('jobPosting');
+        $query = Application::with(['jobPosting', 'resumeAnalysis']);
         
         if ($jobId) {
             $query->where('job_posting_id', $jobId);
@@ -32,7 +35,7 @@ class ApplicationController extends Controller
 
         // Group by status
         $board = [
-            'applied' => $applications->where('status', 'applied'),
+            'applied' => $applications->whereIn('status', ['applied', 'pending']),
             'screening' => $applications->where('status', 'screening'),
             'interview' => $applications->where('status', 'interview'),
             'offer' => $applications->where('status', 'offer'),
@@ -47,13 +50,12 @@ class ApplicationController extends Controller
 
     public function show(Application $application)
     {
-        $application->load('jobPosting', 'interviews.interviewer', 'interviews.scorecard');
+        $application->load('jobPosting', 'interviews.interviewer', 'interviews.scorecard', 'resumeAnalysis');
         $interviewers = \App\Models\User::role(['Admin', 'Manager', 'HR'])->get();
         return view('admin.recruitment.show', compact('application', 'interviewers'));
     }
 
     public function updateStatus(Request $request, Application $application)
-
     {
         $request->validate([
             'status' => 'required|in:applied,screening,interview,offer,hired,rejected',
@@ -64,13 +66,16 @@ class ApplicationController extends Controller
         
         $application->update(['status' => $newStatus]);
 
-        // Send Email Notification if status changed
         if ($oldStatus !== $newStatus) {
             try {
-                $application->notify(new \App\Notifications\ApplicationStatusChanged($application));
+                $application->loadMissing('jobPosting');
+                if ($newStatus === 'rejected' && AiConfig::autoRejectionEmail()) {
+                    app(AtsAutomationService::class)->sendRejectionEmail($application);
+                } elseif ($newStatus !== 'rejected') {
+                    $application->notify(new ApplicationStatusChanged($application));
+                }
             } catch (\Exception $e) {
-                // Log and continue, don't fail the request
-                \Illuminate\Support\Facades\Log::error('Failed to send status update email: ' . $e->getMessage());
+                Log::error('Failed to send status update email: ' . $e->getMessage());
             }
         }
 
@@ -79,5 +84,15 @@ class ApplicationController extends Controller
         }
 
         return redirect()->back()->with('success', 'Candidate status updated.');
+    }
+
+    /**
+     * Re-run AI screening for an application.
+     */
+    public function rescreen(Application $application)
+    {
+        ScreenApplicationJob::dispatch($application->id);
+
+        return back()->with('success', 'AI screening queued for this application.');
     }
 }

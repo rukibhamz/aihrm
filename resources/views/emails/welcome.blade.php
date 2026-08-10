@@ -44,13 +44,13 @@
 </head>
 <body>
     <div class="header">
-        <h1>Welcome to AIHRM!</h1>
+        <h1>Welcome to YourDigitalHRM!</h1>
     </div>
     
     <div class="content">
         <h2>Hello {{ $user->name }},</h2>
         
-        <p>Welcome to AIHRM - Your AI-powered Human Resource Management System!</p>
+        <p>Welcome to YourDigitalHRM - Your AI-powered Human Resource Management System!</p>
         
         <p>Your account has been successfully created. Here are your login details:</p>
         
@@ -61,13 +61,13 @@
         
         <p><strong>Important:</strong> Please change your password after your first login for security purposes.</p>
         
-        <a href="{{ url('/login') }}" class="button">Login to AIHRM</a>
+        <a href="{{ url('/login') }}" class="button">Login to YourDigitalHRM</a>
         
         <p style="margin-top: 30px;">If you have any questions, please contact your HR administrator.</p>
     </div>
     
     <div class="footer">
-        <p>&copy; {{ date('Y') }} AIHRM. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} YourDigitalHRM. All rights reserved.</p>
     </div>
 </body>
 </html>

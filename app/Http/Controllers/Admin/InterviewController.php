@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\AtsAutomationService;
 use Illuminate\Http\Request;
 
 class InterviewController extends Controller
@@ -18,14 +19,18 @@ class InterviewController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $application->interviews()->create($validated);
+        $interview = $application->interviews()->create($validated);
 
-        // Auto-move application to interview stage if still in screening
-        if (in_array($application->status, ['applied', 'screening'])) {
+        if (in_array($application->status, ['applied', 'pending', 'screening'], true)) {
             $application->update(['status' => 'interview']);
         }
 
-        return back()->with('success', 'Interview scheduled successfully.');
+        app(AtsAutomationService::class)->sendInterviewInvitation(
+            $application->fresh(['jobPosting']),
+            $interview->fresh(['interviewer'])
+        );
+
+        return back()->with('success', 'Interview scheduled successfully. Candidate invitation email queued if enabled.');
     }
 
     public function update(Request $request, \App\Models\Interview $interview)
@@ -62,7 +67,7 @@ class InterviewController extends Controller
             'leadership' => $validated['leadership'],
         ];
 
-        $totalScore = round(array_sum($criteriaScores) / count($criteriaScores) * 20); // Scale to 0-100
+        $totalScore = round(array_sum($criteriaScores) / count($criteriaScores) * 20);
 
         $interview->scorecard()->updateOrCreate(
             ['interview_id' => $interview->id],
@@ -76,7 +81,6 @@ class InterviewController extends Controller
             ]
         );
 
-        // Auto-mark interview completed
         if ($interview->status === 'scheduled') {
             $interview->update(['status' => 'completed']);
         }
@@ -87,6 +91,7 @@ class InterviewController extends Controller
     public function destroy(\App\Models\Interview $interview)
     {
         $interview->delete();
+
         return back()->with('success', 'Interview removed.');
     }
 }

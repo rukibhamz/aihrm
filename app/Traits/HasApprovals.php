@@ -37,7 +37,7 @@ trait HasApprovals
 
         // If no chain exists, we just instantly return true (auto-approve)
         // or throw an exception depending on business rules.
-        // For AIHRM, if no chain exists, it implies no approval required.
+        // For YourDigitalHRM, if no chain exists, it implies no approval required.
         if (!$chain || !\Illuminate\Support\Facades\Schema::hasTable('approval_requests')) {
             return false;
         }

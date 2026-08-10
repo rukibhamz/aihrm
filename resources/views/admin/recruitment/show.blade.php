@@ -10,12 +10,22 @@
             <h1 class="text-3xl font-bold tracking-tight text-neutral-900">{{ $application->candidate_name }}</h1>
             <p class="text-neutral-500">Applying for: <span class="font-semibold text-neutral-800">{{ $application->jobPosting->title }}</span></p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 flex-wrap">
+            @if($application->ai_score !== null)
+                <span class="px-3 py-1 text-sm font-bold rounded-full border
+                    {{ $application->ai_score >= 80 ? 'bg-green-50 text-green-800 border-green-200' : ($application->ai_score >= 50 ? 'bg-yellow-50 text-yellow-800 border-yellow-200' : 'bg-red-50 text-red-800 border-red-200') }}">
+                    AI {{ $application->ai_score }}%
+                </span>
+            @endif
             <span class="px-3 py-1 text-sm font-bold rounded-full uppercase tracking-wide
                 {{ $application->status === 'hired' ? 'bg-green-100 text-green-800' : 
                    ($application->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800') }}">
                 {{ $application->status }}
             </span>
+            <form action="{{ route('admin.applications.rescreen', $application) }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="btn-secondary text-xs px-3 py-1.5">Re-screen with AI</button>
+            </form>
         </div>
     </div>
 
@@ -81,6 +91,45 @@
                     </div>
                 </div>
             </div>
+
+            @if($application->resumeAnalysis)
+            <div class="bg-white rounded-xl shadow-sm border border-neutral-200 p-6">
+                <h2 class="text-lg font-bold text-neutral-900 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    AI Screening
+                </h2>
+                <div class="space-y-3 text-sm">
+                    @if($application->resumeAnalysis->ai_feedback)
+                        <p class="text-neutral-700 leading-relaxed">{{ $application->resumeAnalysis->ai_feedback }}</p>
+                    @endif
+                    @if($application->resumeAnalysis->strengths)
+                        <div>
+                            <dt class="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Strengths</dt>
+                            <p class="text-neutral-700">{{ $application->resumeAnalysis->strengths }}</p>
+                        </div>
+                    @endif
+                    @if($application->resumeAnalysis->gaps)
+                        <div>
+                            <dt class="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Gaps</dt>
+                            <p class="text-neutral-700">{{ $application->resumeAnalysis->gaps }}</p>
+                        </div>
+                    @endif
+                    @php
+                        $keywords = array_slice(($application->resumeAnalysis->extracted_data['keywords'] ?? []), 0, 8);
+                    @endphp
+                    @if(!empty($keywords))
+                        <div class="flex flex-wrap gap-1 pt-1">
+                            @foreach($keywords as $keyword)
+                                <span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-[11px] font-medium rounded border border-blue-100">{{ $keyword }}</span>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($application->resumeAnalysis->updated_at)
+                        <p class="text-xs text-neutral-400 pt-1">Last screened {{ $application->resumeAnalysis->updated_at->diffForHumans() }}</p>
+                    @endif
+                </div>
+            </div>
+            @endif
 
             <div class="bg-black text-white rounded-xl shadow-lg p-6">
                 <h2 class="text-lg font-bold mb-4">Pipeline Status</h2>

@@ -5,7 +5,7 @@ ini_set('memory_limit', '512M');
 
 if (file_exists(__DIR__ . '/../storage/installed') && file_exists(__DIR__ . '/../.env')) {
     header("Content-Type: text/html; charset=UTF-8");
-    echo "AIHRM is already installed. If you need to re-install, please remove the <code>storage/installed</code> file.";
+    echo "YourDigitalHRM is already installed. If you need to re-install, please remove the <code>storage/installed</code> file.";
     exit;
 }
 
@@ -20,7 +20,7 @@ $step = $_GET['step'] ?? 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Install AIHRM</title>
+    <title>Install YourDigitalHRM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -67,7 +67,7 @@ $step = $_GET['step'] ?? 1;
                 <div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
                     <span class="text-white font-bold text-lg">AI</span>
                 </div>
-                <span class="font-bold text-2xl tracking-tight">AIHRM</span>
+                <span class="font-bold text-2xl tracking-tight">YourDigitalHRM</span>
             </div>
             <p class="text-neutral-600 text-sm">Installation Wizard</p>
         </div>
@@ -100,7 +100,7 @@ $step = $_GET['step'] ?? 1;
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Database Name</label>
-                    <input type="text" name="db_name" value="aihrm" class="input-field" required>
+                    <input type="text" name="db_name" value="yourdigitalhrm" class="input-field" required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-neutral-700 mb-2">Database Username</label>
@@ -238,7 +238,7 @@ $step = $_GET['step'] ?? 1;
                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6 text-sm">
                     <strong>💡 Quick Setup:</strong><br>
                     Leave fields blank to use default credentials:<br>
-                    Email: <code class="font-mono">admin@aihrm.com</code><br>
+                    Email: <code class="font-mono">admin@yourdigitalhrm.com</code><br>
                     Password: <code class="font-mono">password</code>
                 </div>
                 
@@ -250,7 +250,7 @@ $step = $_GET['step'] ?? 1;
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 mb-2">Admin Email</label>
-                        <input type="email" name="admin_email" placeholder="Leave blank for admin@aihrm.com"
+                        <input type="email" name="admin_email" placeholder="Leave blank for admin@yourdigitalhrm.com"
                             class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black transition text-sm">
                     </div>
                     <div>
@@ -283,7 +283,7 @@ $step = $_GET['step'] ?? 1;
                         $app->make(Illuminate\Contracts\Http\Kernel::class)->handle(Illuminate\Http\Request::capture());
 
                         $name = !empty($_POST['admin_name']) ? $_POST['admin_name'] : 'System Admin';
-                        $email = !empty($_POST['admin_email']) ? $_POST['admin_email'] : 'admin@aihrm.com';
+                        $email = !empty($_POST['admin_email']) ? $_POST['admin_email'] : 'admin@yourdigitalhrm.com';
                         $pass = !empty($_POST['admin_password']) ? $_POST['admin_password'] : 'password';
 
                         // Create/Update Admin User
@@ -310,7 +310,7 @@ $step = $_GET['step'] ?? 1;
 
                         echo '<svg class="w-16 h-16 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
                         echo '<h2 class="text-2xl font-bold mb-2">Installation Complete!</h2>';
-                        echo '<p class="text-neutral-600 mb-8">AIHRM has been successfully installed and configured.</p>';
+                        echo '<p class="text-neutral-600 mb-8">YourDigitalHRM has been successfully installed and configured.</p>';
                         echo '<p class="text-sm text-neutral-500 mb-8">Admin: <strong>' . htmlspecialchars($email) . '</strong></p>';
                         echo '<a href="index.php" class="btn-primary inline-block">Go to Login</a>';
                     } catch (Exception $e) {
@@ -324,7 +324,7 @@ $step = $_GET['step'] ?? 1;
             <?php endif; ?>
         </div>
 
-        <p class="text-center text-xs text-neutral-500 mt-6">&copy; <?= date('Y') ?> AIHRM. All rights reserved.</p>
+        <p class="text-center text-xs text-neutral-500 mt-6">&copy; <?= date('Y') ?> YourDigitalHRM. All rights reserved.</p>
     </div>
     <script>
         document.querySelectorAll('[data-password-toggle]').forEach(function (wrapper) {

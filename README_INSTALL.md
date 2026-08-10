@@ -17,7 +17,7 @@ If the automated installer fails, please follow these steps:
     ```
     Edit `.env` and set your database credentials:
     ```
-    DB_DATABASE=aihrm
+    DB_DATABASE=yourdigitalhrm
     DB_USERNAME=root
     DB_PASSWORD=
     ```

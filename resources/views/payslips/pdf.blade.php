@@ -29,7 +29,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="company-name">AIHRM ENTERPRISE</div>
+        <div class="company-name">YourDigitalHRM ENTERPRISE</div>
         <div class="payslip-title">PAYSLIP: {{ date('F', mktime(0, 0, 0, $payslip->payroll->month, 10)) }} {{ $payslip->payroll->year }}</div>
     </div>
 
@@ -104,7 +104,7 @@
 
     <div class="footer">
         This is a computer-generated document and does not require a signature.<br>
-        AIHRM - Advanced AI Human Resource Management System
+        YourDigitalHRM - Advanced AI Human Resource Management System
     </div>
 </body>
 </html>

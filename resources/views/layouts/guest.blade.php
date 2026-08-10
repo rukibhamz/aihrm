@@ -23,7 +23,7 @@
                         <x-application-logo class="w-20 h-20 fill-current text-gray-500 hover:text-primary transition-colors" />
                     @endif
                     <h1 class="text-2xl font-black tracking-tight text-neutral-900 group-hover:text-primary transition-colors">
-                        {{ $companyName ?? config('app.name', 'AIHRM') }}
+                        {{ $companyName ?? config('app.name', 'YourDigitalHRM') }}
                     </h1>
                 </a>
 

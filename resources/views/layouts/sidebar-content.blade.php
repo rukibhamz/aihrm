@@ -9,6 +9,7 @@
             || request()->routeIs('my-bonuses.*')
             || request()->routeIs('my-advances.*')
             || request()->routeIs('my-loans.*')
+            || request()->routeIs('chatbot.*')
             || (request()->routeIs('leaves.*') && !request()->routeIs('leaves.approvals'))
             || (request()->routeIs('finance.*') && !request()->routeIs('finance.approvals') && !request()->routeIs('finance.approve.*') && !request()->routeIs('finance.reject') && !request()->routeIs('finance.mark-paid'))
         )
@@ -152,7 +153,7 @@
             @endif
             <div class="sidebar-brand-text min-w-0">
                 <span class="block font-semibold text-[0.9375rem] tracking-tight text-neutral-900 dark:text-white truncate leading-tight">
-                    {{ $companyName ?? config('app.name', 'AIHRM') }}
+                    {{ $companyName ?? config('app.name', 'YourDigitalHRM') }}
                 </span>
                 <span class="block text-[0.6875rem] text-neutral-500 dark:text-neutral-400 truncate leading-tight mt-0.5">
                     {{ $userEmail ?: $userRole }}
@@ -211,7 +212,7 @@
 
             {{-- My Workspace --}}
             <div class="relative"
-                 x-show="matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')"
+                 x-show="matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans', 'AI Assistant')"
                  @click.outside="flyoutKey === 'workspace' && closeFlyout()">
                 <button type="button"
                         @click="openSection('workspace', $event)"
@@ -227,7 +228,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="sectionOpen('workspace') && matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans')"
+                <div x-show="sectionOpen('workspace') && matchAny('My Workspace', 'My Payslips', 'Announcements', 'My Documents', 'Attendance', 'Clock-in QR', 'Leaves', 'Relief Requests', 'Claims', 'My Bonuses', 'Salary Advances', 'Loans', 'AI Assistant')"
                      x-ref="flyout_workspace"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
@@ -281,6 +282,10 @@
                     <a href="{{ route('my-loans.index') }}" x-show="match('Loans')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('my-loans.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                         <span>Loans</span>
+                    </a>
+                    <a href="{{ route('chatbot.index') }}" x-show="match('AI Assistant')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('chatbot.*') ? 'sidebar-sub-link-active' : '' }}">
+                        <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        <span>AI Assistant</span>
                     </a>
                 </div>
             </div>
@@ -408,7 +413,7 @@
             {{-- Administrative Tools --}}
             @role('Admin')
             <div class="relative"
-                 x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
+                 x-show="matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'AI Compliance', 'AI Performance', 'System Settings')"
                  @click.outside="flyoutKey === 'admin' && closeFlyout()">
                 <button type="button"
                         @click="openSection('admin', $event)"
@@ -425,7 +430,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <div x-show="sectionOpen('admin') && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'System Settings')"
+                <div x-show="sectionOpen('admin') && matchAny('Administrative Tools', 'Asset Management', 'Leave Admin', 'Leave Types', 'Leave Balances', 'Gatekeeper Scanner', 'Resignations', 'Offboarding Tasks', 'Document Center', 'Audit Logs', 'Approval Workflows', 'AI Compliance', 'AI Performance', 'System Settings')"
                      x-ref="flyout_admin"
                      x-cloak
                      x-transition:enter="transition ease-out duration-150"
@@ -472,6 +477,14 @@
                     <a href="{{ route('admin.approval-chains.index') }}" x-show="match('Approval Workflows')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.approval-chains.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                         <span>Approval Workflows</span>
+                    </a>
+                    <a href="{{ route('admin.ai.compliance') }}" x-show="match('AI Compliance')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.ai.compliance*') ? 'sidebar-sub-link-active' : '' }}">
+                        <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <span>AI Compliance</span>
+                    </a>
+                    <a href="{{ route('admin.ai.performance') }}" x-show="match('AI Performance')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('admin.ai.performance*') ? 'sidebar-sub-link-active' : '' }}">
+                        <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>AI Performance</span>
                     </a>
                     <a href="{{ route('settings.index') }}" x-show="match('System Settings')" class="sidebar-sub-link group flex items-center gap-2.5 px-2.5 py-1.5 {{ request()->routeIs('settings.*') ? 'sidebar-sub-link-active' : '' }}">
                         <svg class="h-3.5 w-3.5 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>

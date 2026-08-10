@@ -1,6 +1,6 @@
 # 🚀 Production Deployment & Maintenance Guide
 
-This guide outlines the steps to ensure **AIHRM** is secure, performant, and reliable in a production environment.
+This guide outlines the steps to ensure **YourDigitalHRM** is secure, performant, and reliable in a production environment.
 
 ## 🛡️ 1. Security Hardening
 - **SSL/HTTPS**: Ensure your web server (Nginx/Apache) has a valid SSL certificate (e.g., Let's Encrypt).
@@ -16,7 +16,7 @@ I have implemented a custom backup command to protect your data.
   ```
 - **Scheduled Backup**: Add this to your server's crontab (e.g., daily at 2 AM):
   ```cron
-  0 2 * * * cd /path/to/aihrm/platform && php artisan app:system-backup >> /dev/null 2>&1
+  0 2 * * * cd /path/to/YourDigitalHRM/platform && php artisan app:system-backup >> /dev/null 2>&1
   ```
 Backups are stored in `platform/storage/app/backups/`.
 
@@ -38,4 +38,4 @@ npm run build
 - **AI Token Usage**: Monitor your Gemini API usage to ensure no interruptions in AI services.
 
 ---
-**AIHRM - Empowering Human Resources with Intelligence**
+**YourDigitalHRM - Empowering Human Resources with Intelligence**

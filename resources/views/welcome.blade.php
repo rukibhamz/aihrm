@@ -27,7 +27,7 @@
                     </svg>
                 </div>
                 @endif
-                <span class="text-xl font-bold text-gray-900">{{ $companyName ?? config('app.name', 'AIHRM') }}</span>
+                <span class="text-xl font-bold text-gray-900">{{ $companyName ?? config('app.name', 'YourDigitalHRM') }}</span>
             </div>
             
             <div class="hidden md:flex items-center gap-8">
@@ -72,7 +72,7 @@
                         </h1>
                         
                         <p id="hero-desc" class="text-lg text-gray-600 mb-8 leading-relaxed">
-                            Streamline your HR processes with AIHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.
+                            Streamline your HR processes with YourDigitalHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.
                         </p>
                     </div>
                     
@@ -90,7 +90,7 @@
                 <!-- Right Image -->
                 <div class="relative w-full overflow-hidden rounded-2xl shadow-2xl group order-1 lg:order-2">
                     <div class="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl z-10"></div>
-                    <img id="hero-image" src="{{ asset('images/hero_team.png') }}" alt="AIHRM System Dashboard" class="w-full h-auto object-cover transform transition-all duration-500 hover:scale-[1.02]">
+                    <img id="hero-image" src="{{ asset('images/hero_team.png') }}" alt="YourDigitalHRM System Dashboard" class="w-full h-auto object-cover transform transition-all duration-500 hover:scale-[1.02]">
                 </div>
                 
             </div>
@@ -192,7 +192,7 @@
                             Ready to transform your HR?
                         </h2>
                         <p class="text-gray-400 text-lg mb-8">
-                            Join thousands of companies using AIHRM to build better workplaces. Start your 14-day free trial today.
+                            Join thousands of companies using YourDigitalHRM to build better workplaces. Start your 14-day free trial today.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
                             <a href="{{ route('login') }}" class="inline-block px-8 py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 text-center">
@@ -237,11 +237,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <span class="text-lg font-bold text-gray-900">AIHRM</span>
+                <span class="text-lg font-bold text-gray-900">YourDigitalHRM</span>
             </div>
             
             <p class="text-sm text-gray-500">
-                &copy; {{ date('Y') }} AIHRM Inc. All rights reserved.
+                &copy; {{ date('Y') }} YourDigitalHRM Inc. All rights reserved.
             </p>
             
             <div class="flex items-center gap-5">
@@ -261,7 +261,7 @@
         const slides = [
             {
                 title: 'Your Workforce,<br><span class="text-blue-600">Fully Managed.</span>',
-                desc: 'Streamline your HR processes with AIHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.',
+                desc: 'Streamline your HR processes with YourDigitalHRM. From automated onboarding to complex payroll, manage your entire employee lifecycle in one secure, intuitive platform.',
                 image: '{{ asset('images/hero_team.png') }}'
             },
             {

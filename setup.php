@@ -6,7 +6,7 @@
 
 // Configuration
 $repoUrl = 'https://github.com/rukibhamz/aihrm/archive/refs/heads/main.zip'; // Placeholder
-$zipFile = 'aihrm_install.zip';
+$zipFile = 'yourdigitalhrm_install.zip';
 $extractPath = __DIR__;
 
 // 1. Check Requirements

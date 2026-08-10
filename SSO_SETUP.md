@@ -6,7 +6,7 @@ Complete setup instructions for enabling Single Sign-On with **Azure AD**, **Goo
 
 ## Prerequisites
 
-- AIHRM must be accessible via HTTPS (SSO providers require secure callback URLs)
+- YourDigitalHRM must be accessible via HTTPS (SSO providers require secure callback URLs)
 - Admin access to the respective provider's developer console
 - Your application's base URL (e.g., `https://hrm.yourcompany.com`)
 
@@ -19,7 +19,7 @@ Complete setup instructions for enabling Single Sign-On with **Azure AD**, **Goo
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Navigate to **Azure Active Directory** → **App registrations** → **New registration**
 3. Fill in:
-   - **Name**: `AIHRM` (or your company name)
+   - **Name**: `YourDigitalHRM` (or your company name)
    - **Supported account types**: Choose one:
      - "Accounts in this organizational directory only" (single-tenant)
      - "Accounts in any organizational directory" (multi-tenant)
@@ -34,7 +34,7 @@ Complete setup instructions for enabling Single Sign-On with **Azure AD**, **Goo
 1. Copy the **Application (client) ID** → This is your **Client ID**
 2. Copy the **Directory (tenant) ID** → This is your **Tenant ID**
 3. Go to **Certificates & secrets** → **New client secret**
-   - Add a description (e.g., "AIHRM SSO")
+   - Add a description (e.g., "YourDigitalHRM SSO")
    - Set expiry (recommended: 24 months)
    - Click **Add** and immediately copy the **Value** → This is your **Client Secret**
 
@@ -45,7 +45,7 @@ Complete setup instructions for enabling Single Sign-On with **Azure AD**, **Goo
 3. Add: `User.Read`, `email`, `profile`, `openid`
 4. Click **Grant admin consent** for your organization
 
-### Step 4: Configure in AIHRM
+### Step 4: Configure in YourDigitalHRM
 
 1. Go to **System Settings** → **Single Sign-On (SSO)**
 2. Under **Microsoft Azure AD**:
@@ -74,12 +74,12 @@ AZURE_REDIRECT_URI=https://your-domain.com/auth/azure/callback
 3. Go to **APIs & Services** → **Credentials** → **Create Credentials** → **OAuth client ID**
 4. If prompted, configure the **OAuth consent screen**:
    - User Type: **Internal** (for Google Workspace) or **External**
-   - App name: `AIHRM`
+   - App name: `YourDigitalHRM`
    - Support email: your admin email
    - Developer contact: your email
 5. For the OAuth client:
    - Application type: **Web application**
-   - Name: `AIHRM SSO`
+   - Name: `YourDigitalHRM SSO`
    - Authorized redirect URIs: Add:
      ```
      https://your-domain.com/auth/google/callback
@@ -96,7 +96,7 @@ AZURE_REDIRECT_URI=https://your-domain.com/auth/azure/callback
 1. Go to **APIs & Services** → **Library**
 2. Search and enable: **Google People API**
 
-### Step 4: Configure in AIHRM
+### Step 4: Configure in YourDigitalHRM
 
 1. Go to **System Settings** → **Single Sign-On (SSO)**
 2. Under **Google Workspace**:
@@ -120,7 +120,7 @@ GOOGLE_REDIRECT_URI=https://your-domain.com/auth/google/callback
 1. Go to [Zoho API Console](https://api-console.zoho.com)
 2. Click **Add Client** → **Server-based Applications**
 3. Fill in:
-   - **Client Name**: `AIHRM`
+   - **Client Name**: `YourDigitalHRM`
    - **Homepage URL**: `https://your-domain.com`
    - **Authorized Redirect URIs**:
      ```
@@ -133,7 +133,7 @@ GOOGLE_REDIRECT_URI=https://your-domain.com/auth/google/callback
 - Copy the **Client ID**
 - Copy the **Client Secret**
 
-### Step 3: Configure in AIHRM
+### Step 3: Configure in YourDigitalHRM
 
 1. Go to **System Settings** → **Single Sign-On (SSO)**
 2. Under **Zoho Workspace**:

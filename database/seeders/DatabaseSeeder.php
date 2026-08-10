@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Create Admin User
         User::firstOrCreate(
-            ['email' => 'admin@aihrm.com'],
+            ['email' => 'admin@yourdigitalhrm.com'],
             [
                 'name' => 'System Admin',
                 'password' => Hash::make('password'),

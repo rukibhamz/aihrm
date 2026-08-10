@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
                     config(['app.name' => $companyName]);
                 }
 
-                View::share('companyName', filled($companyName) ? $companyName : config('app.name', 'AIHRM'));
+                View::share('companyName', filled($companyName) ? $companyName : config('app.name', 'YourDigitalHRM'));
                 View::share('companyLogo', $companyLogo ?: null);
 
                 $mailConfig = [
@@ -69,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
                     'password' => \App\Models\Setting::get('smtp_password'),
                     'from' => [
                         'address' => \App\Models\Setting::get('smtp_from_address'),
-                        'name' => \App\Models\Setting::get('smtp_from_name', config('app.name', 'AIHRM')),
+                        'name' => \App\Models\Setting::get('smtp_from_name', config('app.name', 'YourDigitalHRM')),
                     ],
                 ];
 
@@ -80,12 +80,12 @@ class AppServiceProvider extends ServiceProvider
                     config(['mail.from.name' => $mailConfig['from']['name']]);
                 }
             } else {
-                View::share('companyName', config('app.name', 'AIHRM'));
+                View::share('companyName', config('app.name', 'YourDigitalHRM'));
                 View::share('companyLogo', null);
             }
         } catch (\Exception $e) {
             // Failsafe for migration / missing DB
-            View::share('companyName', config('app.name', 'AIHRM'));
+            View::share('companyName', config('app.name', 'YourDigitalHRM'));
             View::share('companyLogo', null);
         }
 

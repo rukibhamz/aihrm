@@ -20,7 +20,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <span class="text-xl font-bold text-gray-900">AIHRM</span>
+                <span class="text-xl font-bold text-gray-900">YourDigitalHRM</span>
             </div>
             
             <div class="hidden md:flex items-center gap-8">
@@ -154,7 +154,7 @@
                 <div class="bg-white p-6 lg:p-8 rounded-xl border border-gray-100 shadow-sm">
                     <h3 class="font-bold text-gray-900 mb-3 text-lg">About the Department</h3>
                     <p class="text-sm text-gray-500 leading-relaxed mb-6">
-                        The {{ $job->department ?? 'team' }} at AIHRM is on a mission to automate the complexities of workforce management. We value clean execution, peer learning, and building products that users truly love.
+                        The {{ $job->department ?? 'team' }} at YourDigitalHRM is on a mission to automate the complexities of workforce management. We value clean execution, peer learning, and building products that users truly love.
                     </p>
                     <div class="w-full h-32 bg-gray-200 rounded-lg mb-4 overflow-hidden">
                         <img src="{{ asset('images/hero_team.png') }}" class="w-full h-full object-cover" alt="Team Photo">
@@ -223,9 +223,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <span class="text-lg font-bold text-gray-900 tracking-tight">AIHRM</span>
+                <span class="text-lg font-bold text-gray-900 tracking-tight">YourDigitalHRM</span>
             </div>
-            <p class="text-sm text-gray-500">&copy; {{ date('Y') }} AIHRM Inc. All rights reserved.</p>
+            <p class="text-sm text-gray-500">&copy; {{ date('Y') }} YourDigitalHRM Inc. All rights reserved.</p>
         </div>
     </footer>
     

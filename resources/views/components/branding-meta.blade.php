@@ -7,14 +7,14 @@
     try {
         $resolvedName = $companyName
             ?? \App\Models\Setting::get('company_name')
-            ?? config('app.name', 'AIHRM');
+            ?? config('app.name', 'YourDigitalHRM');
         $logoPath = $companyLogo ?? \App\Models\Setting::get('company_logo');
     } catch (\Throwable $e) {
-        $resolvedName = config('app.name', 'AIHRM');
+        $resolvedName = config('app.name', 'YourDigitalHRM');
         $logoPath = null;
     }
 
-    $appName = filled($resolvedName) ? $resolvedName : 'AIHRM';
+    $appName = filled($resolvedName) ? $resolvedName : 'YourDigitalHRM';
     $pageTitle = $title
         ? ($suffix === false ? $title : trim($title.' | '.$appName))
         : $appName;

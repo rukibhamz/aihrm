@@ -8,7 +8,7 @@
         (function () {
             try {
                 var root = document.documentElement;
-                var theme = localStorage.getItem('aihrm-theme');
+                var theme = localStorage.getItem('yourdigitalhrm-theme');
                 if (theme === 'dark') root.classList.add('dark');
                 else root.classList.remove('dark');
 
@@ -622,7 +622,7 @@
       x-init="
           $watch('darkMode', value => {
               document.documentElement.classList.toggle('dark', value);
-              localStorage.setItem('aihrm-theme', value ? 'dark' : 'light');
+              localStorage.setItem('yourdigitalhrm-theme', value ? 'dark' : 'light');
           });
           $watch('navQuery', value => {
               if (value && sidebarCollapsed) expandSidebar();
@@ -654,7 +654,7 @@
                         <span class="text-white dark:text-neutral-900 font-bold text-sm">AI</span>
                     </div>
                 @endif
-                <span class="font-semibold text-lg tracking-tight text-neutral-900 dark:text-white truncate">{{ $companyName ?? config('app.name', 'AIHRM') }}</span>
+                <span class="font-semibold text-lg tracking-tight text-neutral-900 dark:text-white truncate">{{ $companyName ?? config('app.name', 'YourDigitalHRM') }}</span>
             </a>
             <div class="flex items-center gap-1.5 flex-shrink-0">
                 <button type="button"
@@ -1017,6 +1017,9 @@
         @endauth
     </script>
     @stack('scripts')
+    @auth
+        <x-chatbot-widget />
+    @endauth
 </body>
 </html>
 

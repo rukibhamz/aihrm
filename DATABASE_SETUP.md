@@ -2,10 +2,10 @@
 
 Before running migrations, you need to:
 
-1. **Create a MySQL database** named `aihrm`:
+1. **Create a MySQL database** named `yourdigitalhrm`:
    - Open phpMyAdmin (http://localhost/phpmyadmin)
    - Click "New" to create a database
-   - Name it: `aihrm`
+   - Name it: `yourdigitalhrm`
    - Collation: `utf8mb4_unicode_ci`
 
 2. **Configure .env file**:
@@ -14,7 +14,7 @@ Before running migrations, you need to:
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=aihrm
+   DB_DATABASE=yourdigitalhrm
    DB_USERNAME=root
    DB_PASSWORD=
    ```

@@ -49,8 +49,11 @@
                         <button type="button" @click="activeTab = 'sso'" :class="activeTab === 'sso' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
                             Authentication (SSO)
                         </button>
+                        <button type="button" @click="activeTab = 'ai'" :class="activeTab === 'ai' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
+                            AI &amp; ATS
+                        </button>
                         <button type="button" @click="activeTab = 'system'" :class="activeTab === 'system' ? 'active-tab' : 'text-neutral-500 hover:text-neutral-700'" class="pb-4 text-sm font-semibold border-b-2 border-transparent transition-all outline-none whitespace-nowrap">
-                            System & Workflows
+                            System &amp; Workflows
                         </button>
                     </nav>
                 </div>
@@ -408,6 +411,118 @@
                                     </select>
                                     <p class="mt-2 text-[10px] text-neutral-400 italic font-medium leading-relaxed">If enabled, the system will automatically create an employee profile upon a successful SSO handshake for unrecorded email addresses.</p>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI & ATS Tab -->
+            <div x-show="activeTab === 'ai'" x-cloak class="space-y-6 animate-in fade-in duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="card p-8">
+                            <h3 class="text-lg font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                AI Provider
+                            </h3>
+                            <p class="text-sm text-neutral-500 mb-6">Use Google Gemini, OpenAI, Anthropic, or any OpenAI-compatible API (Groq, DeepSeek, local gateways, etc.). Keys are stored encrypted.</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Provider</label>
+                                    <select name="ai_provider" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-medium bg-white">
+                                        <option value="gemini" {{ ($settings['ai_provider'] ?? '') === 'gemini' ? 'selected' : '' }}>Google Gemini</option>
+                                        <option value="openai" {{ ($settings['ai_provider'] ?? '') === 'openai' ? 'selected' : '' }}>OpenAI</option>
+                                        <option value="anthropic" {{ ($settings['ai_provider'] ?? '') === 'anthropic' ? 'selected' : '' }}>Anthropic Claude</option>
+                                        <option value="openai_compatible" {{ ($settings['ai_provider'] ?? '') === 'openai_compatible' ? 'selected' : '' }}>Custom (OpenAI-compatible)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Model</label>
+                                    <input type="text" name="ai_model" value="{{ old('ai_model', $settings['ai_model'] ?? '') }}"
+                                           placeholder="e.g. gemini-2.0-flash, gpt-4o-mini, claude-3-5-sonnet-20241022"
+                                           class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Base URL <span class="font-normal normal-case">(custom only)</span></label>
+                                    <input type="text" name="ai_base_url" value="{{ old('ai_base_url', $settings['ai_base_url'] ?? '') }}"
+                                           placeholder="https://api.openai.com/v1"
+                                           class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">API Key</label>
+                                    <x-password-input variant="plain" name="ai_api_key" value=""
+                                        class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm font-mono"
+                                        placeholder="{{ !empty($settings['ai_api_key_set']) ? '•••••••• (leave blank to keep current)' : 'Paste API key' }}" />
+                                    <p class="mt-2 text-[11px] text-neutral-400">Leave blank to keep the existing key. You can also set GEMINI_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY in .env as fallbacks.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-8">
+                            <h3 class="text-lg font-bold text-neutral-900 mb-6">ATS automation</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Auto-screen applications</label>
+                                    <select name="ai_auto_screen" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm bg-white">
+                                        <option value="yes" {{ ($settings['ai_auto_screen'] ?? 'yes') === 'yes' ? 'selected' : '' }}>Enabled</option>
+                                        <option value="no" {{ ($settings['ai_auto_screen'] ?? '') === 'no' ? 'selected' : '' }}>Disabled</option>
+                                    </select>
+                                    <p class="mt-1 text-[11px] text-neutral-400">Score résumés when candidates apply.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Auto-reject low scores</label>
+                                    <select name="ai_auto_reject" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm bg-white">
+                                        <option value="no" {{ ($settings['ai_auto_reject'] ?? 'no') === 'no' ? 'selected' : '' }}>Disabled (recommended)</option>
+                                        <option value="yes" {{ ($settings['ai_auto_reject'] ?? '') === 'yes' ? 'selected' : '' }}>Enabled</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Reject score below</label>
+                                    <input type="number" min="0" max="100" name="ai_reject_score_threshold"
+                                           value="{{ old('ai_reject_score_threshold', $settings['ai_reject_score_threshold'] ?? 40) }}"
+                                           class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Strong match score at / above</label>
+                                    <input type="number" min="0" max="100" name="ai_interview_score_threshold"
+                                           value="{{ old('ai_interview_score_threshold', $settings['ai_interview_score_threshold'] ?? 70) }}"
+                                           class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Auto rejection emails</label>
+                                    <select name="ai_auto_rejection_email" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm bg-white">
+                                        <option value="yes" {{ ($settings['ai_auto_rejection_email'] ?? 'yes') === 'yes' ? 'selected' : '' }}>Enabled</option>
+                                        <option value="no" {{ ($settings['ai_auto_rejection_email'] ?? '') === 'no' ? 'selected' : '' }}>Disabled</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Auto interview invitations</label>
+                                    <select name="ai_auto_interview_email" class="w-full px-4 py-3 border border-neutral-200 rounded-xl text-sm bg-white">
+                                        <option value="yes" {{ ($settings['ai_auto_interview_email'] ?? 'yes') === 'yes' ? 'selected' : '' }}>Enabled</option>
+                                        <option value="no" {{ ($settings['ai_auto_interview_email'] ?? '') === 'no' ? 'selected' : '' }}>Disabled</option>
+                                    </select>
+                                    <p class="mt-1 text-[11px] text-neutral-400">Sent when an interview is scheduled.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="card p-6 bg-neutral-50">
+                            <h4 class="text-sm font-bold text-neutral-900 mb-3">What AI powers</h4>
+                            <ul class="text-sm text-neutral-600 space-y-2 list-disc pl-4">
+                                <li>Résumé screening & match scores</li>
+                                <li>Applicant skill extraction</li>
+                                <li>HR chatbot assistant</li>
+                                <li>Compliance & performance insights</li>
+                                <li>Interview invite / rejection email drafts</li>
+                            </ul>
+                            <div class="mt-6 space-y-2">
+                                <a href="{{ route('admin.ai.compliance') }}" class="block text-sm font-semibold text-neutral-900 hover:underline">Open AI Compliance →</a>
+                                <a href="{{ route('admin.ai.performance') }}" class="block text-sm font-semibold text-neutral-900 hover:underline">Open AI Performance →</a>
+                                <a href="{{ route('chatbot.index') }}" class="block text-sm font-semibold text-neutral-900 hover:underline">Open HR Chatbot →</a>
                             </div>
                         </div>
                     </div>

@@ -74,7 +74,7 @@
 
         function downloadRecoveryCodes() {
             const codes = @json($recoveryCodes);
-            const text = 'AIHRM Recovery Codes\n' +
+            const text = 'YourDigitalHRM Recovery Codes\n' +
                         'Generated: ' + new Date().toLocaleString() + '\n\n' +
                         codes.join('\n') + '\n\n' +
                         'Keep these codes in a safe place. Each code can only be used once.';
@@ -83,7 +83,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'aihrm-recovery-codes.txt';
+            a.download = 'yourdigitalhrm-recovery-codes.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

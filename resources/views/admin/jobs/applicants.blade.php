@@ -158,10 +158,18 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="{{ route('admin.applications.show', $application) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition shadow-sm">
-                                    Profile
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                                </a>
+                                <div class="inline-flex items-center gap-2">
+                                    <form action="{{ route('admin.applications.rescreen', $application) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" title="Re-run AI screening" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-indigo-700 hover:bg-indigo-50 transition shadow-sm">
+                                            AI
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('admin.applications.show', $application) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition shadow-sm">
+                                        Profile
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty

@@ -113,7 +113,7 @@
 <body>
     <div class="container">
         <div class="inner-border">
-            <div class="header">AIHRM Platform</div>
+            <div class="header">YourDigitalHRM Platform</div>
             <div class="sub-header">Certificate of Completion</div>
             
             <p class="context">This is to certify that</p>
@@ -127,7 +127,7 @@
             <p class="context" style="margin-top: 30px;">
                 Issued on {{ \Carbon\Carbon::parse($completion->completed_at)->format('F d, Y') }}
                 <br>
-                Verification ID: AIHRM-{{ strtoupper(substr(md5($completion->id), 0, 8)) }}
+                Verification ID: YourDigitalHRM-{{ strtoupper(substr(md5($completion->id), 0, 8)) }}
             </p>
 
             <div class="footer">
